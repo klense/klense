@@ -1,0 +1,12 @@
+Options +FollowSymLinks  
+RewriteEngine On
+
+RewriteBase /www/klense/src/public/
+	
+RewriteCond %{SCRIPT_FILENAME} !-d  
+RewriteCond %{SCRIPT_FILENAME} !-f  
+	
+RewriteRule ^.*$ ./index.php  
+
+php_value post_max_size 10M
+php_value upload_max_filesize 10M
