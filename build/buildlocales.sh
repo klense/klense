@@ -8,6 +8,10 @@ do
 done
 
 
+reldir=`dirname $0`
+cd $reldir
+
+
 for D in ../src/public/content/locales/*
 do
 	if [ -d "$D" ]; then
