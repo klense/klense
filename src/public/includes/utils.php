@@ -9,6 +9,13 @@ function to_utf8($str)
 	}
 }
 
+function htmles($string)
+{
+	$flags = ENT_COMPAT;
+	if(defined("ENT_HTML5")) $flags |= ENT_HTML5;
+	return htmlspecialchars($string, $flags, 'UTF-8', true);
+}
+
 // Genera testo HTML da inserire dentro agli elementi INPUT o TEXTAREA (dato che i ritorni a capo e gli spazi non vengono convertiti in entita' html)
 function show_input_html($string)
 {

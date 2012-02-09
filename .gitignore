@@ -2,3 +2,4 @@
 .directory
 *.kate-swp
 src/public/config.override.php
+src/public/content/locales/*/LC_MESSAGES/*.mo

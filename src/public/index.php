@@ -1,8 +1,8 @@
 <?php
 	require_once("includes/global.php");
-	require_once("includes/utils.php");
-	require_once("includes/classes/Session.php");
-	require_once("includes/classes/User.php");
+	
+	//require_once("includes/classes/Session.php");
+	//require_once("includes/classes/User.php");
 
 	Session::refreshSession();
 

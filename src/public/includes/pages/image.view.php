@@ -18,30 +18,30 @@
 
 	//$img->rebuildThumbnails(); // TODO cron
 
-	$smarty->assign('pageTitle', htmlspecialchars($img->getDisplayName() . " | klense", ENT_QUOTES));
+	$smarty->assign('pageTitle', htmles($img->getDisplayName() . " | klense"));
 
-	$smarty->assign('image_displayName', htmlspecialchars($img->getDisplayName(), ENT_QUOTES));
-	$smarty->assign('image_filename', htmlspecialchars($GLOB['base_url'] . '/' . $img->getSafeFilename('wh_size4'), ENT_QUOTES)); // Use full url for compatibility with external services (e.g. facebook)
+	$smarty->assign('image_displayName', htmles($img->getDisplayName()));
+	$smarty->assign('image_filename', htmles($GLOB['base_url'] . '/' . $img->getSafeFilename('wh_size4'))); // Use full url for compatibility with external services (e.g. facebook)
 
-	$smarty->assign('user_publicname', htmlspecialchars($user->getPublicName(), ENT_QUOTES));
-	$smarty->assign('user_url', 'user/' . htmlspecialchars($user->getPublicName(), ENT_QUOTES));
+	$smarty->assign('user_publicname', htmles($user->getPublicName()));
+	$smarty->assign('user_url', 'user/' . htmles($user->getPublicName()));
 
 	$exif = $img->getExif();
 	$exif_disp = array();
 	$myexif = array();
 
 	if(isset($exif['IFD0']['Make']))
-		$exif_disp['make'] = array('descr'=>'Produttore', 'val'=>htmlspecialchars($exif['IFD0']['Make'], ENT_QUOTES));
+		$exif_disp['make'] = array('descr'=>'Produttore', 'val'=>htmles($exif['IFD0']['Make']));
 	if(isset($exif['IFD0']['Model']))
-		$exif_disp['model'] = array('descr'=>'Modello', 'val'=>htmlspecialchars($exif['IFD0']['Model'], ENT_QUOTES));
+		$exif_disp['model'] = array('descr'=>'Modello', 'val'=>htmles($exif['IFD0']['Model']));
 
 	if(isset($exif['IFD0']['Make']) && isset($exif['IFD0']['Model']))
-		$myexif['make_model'] = htmlspecialchars($exif['IFD0']['Make'] . ' ' . $exif['IFD0']['Model'], ENT_QUOTES);
+		$myexif['make_model'] = htmles($exif['IFD0']['Make'] . ' ' . $exif['IFD0']['Model']);
 	if(isset($exif['IFD0']['DateTime'])) {
 		$dtime = new DateTime($exif['IFD0']['DateTime'], $user->getTimezone());
 		$dtime->setTimezone(new DateTimeZone(date_default_timezone_get()));
-		$myexif['shot_date'] = htmlspecialchars($dtime->format('d/m/Y'), ENT_QUOTES);
-		$myexif['shot_time'] = htmlspecialchars($dtime->format('H:i'), ENT_QUOTES);
+		$myexif['shot_date'] = htmles($dtime->format('d/m/Y'));
+		$myexif['shot_time'] = htmles($dtime->format('H:i'));
 	}
 
 	$smarty->assign('exif', $exif_disp);
@@ -49,8 +49,8 @@
 
 	$otherSizes = array(
 					array(
-						'descr'=>htmlspecialchars(_('Originale'), ENT_QUOTES),
-						'link'=>htmlspecialchars($GLOB['base_url'] . '/' . $img->getSafeFilename(), ENT_QUOTES),
+						'descr'=>htmles(__('Original')),
+						'link'=>htmles($GLOB['base_url'] . '/' . $img->getSafeFilename()),
 						'w'=>$img->getWidth(),
 						'h'=>$img->getHeight()
 					));

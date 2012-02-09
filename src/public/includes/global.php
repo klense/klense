@@ -2,8 +2,14 @@
 // Operazioni di inizializzazione globali
 
 
-// Carica la configurazione
+// Load configuration
 require_once("config.php");
+
+// Load internationalization file
+require_once("includes/i18n.php");
+
+// Load utilities file
+require_once("includes/utils.php");
 
 
 // Inizializza Smarty
@@ -25,5 +31,17 @@ ini_set('upload_max_filesize', $cfg['max_upload_size']);
 // Inizializza la connessione al DB
 mysql_connect($cfg['dbhost'], $cfg['dbuser'], $cfg['dbpass']);
 mysql_select_db($cfg['dbname']);
+
+// Autoload classes
+function klense_autoload($class_name)
+{
+	// $a = My_New_Class ==> includes/classes/My/New/Class.php
+	$class_name_p = str_replace("_", "/", $class_name);
+	$path = 'includes/classes/' . $class_name_p . '.php';
+	if(file_exists($path)) {
+		require_once($path);
+	} else throw new Exception("Unable to load $class_name.");
+}
+spl_autoload_register('klense_autoload');
 
 ?>
