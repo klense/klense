@@ -1,5 +1,7 @@
 <?php
 
+	if(!isset($GLOB)) die();
+
 	require_once("includes/classes/Image.php");
 
 	// ini_set('exif.encode_unicode', 'UTF-8'); (SERVE?)

@@ -1,5 +1,7 @@
 <?php
 
+	if(!isset($GLOB)) die();
+
 	require_once("includes/classes/Image.php");
 
 	if(!isset($GLOB['params'][2])) pageNotFound();

@@ -1,4 +1,7 @@
 <?php
+
+	if(!isset($GLOB)) die();
+
 	$smarty->assign('pageTitle', "klense - login");
 	$smarty->assign('error', '');
 

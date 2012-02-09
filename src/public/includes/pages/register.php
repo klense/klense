@@ -1,5 +1,7 @@
 <?php
 
+	if(!isset($GLOB)) die();
+
 	if(Session::isAuthenticated()) {
 		// Vai alla pagina principale
 		header("location: " . currentFullBaseUrl());

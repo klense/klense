@@ -1,4 +1,7 @@
 <?php
+
+	if(!isset($GLOB)) die();
+
 	$smarty->assign('pageTitle', "klense");
 	$smarty->assign('error', 'Error activating account.');
 

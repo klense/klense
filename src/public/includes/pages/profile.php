@@ -1,4 +1,7 @@
 <?php
+
+	if(!isset($GLOB)) die();
+
 	$smarty->assign('pageTitle', "Backmon");
 	$smarty->assign('back_link', '?m=overview');
 	$smarty->assign('back_text', '« Lista profili');
