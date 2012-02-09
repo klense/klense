@@ -1,5 +1,15 @@
 <?php
 
+	/*	##### DEVELOPERS #####
+	 *
+	 *	Please do not apply your personal settings to
+	 *	this file. Write them in config.override.php instead.
+	 *
+	 *	This file should contain ONLY default values.
+	 *	Contents of this file will be visible from Version Control Systems.
+	 *	config.override.php is PRIVATE and IGNORED from VCS.
+	 */
+
 	$cfg['dbhost'] = '127.0.0.1';
 	$cfg['dbuser'] = 'root';
 	$cfg['dbpass'] = 'root';
