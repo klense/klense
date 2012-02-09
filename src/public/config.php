@@ -7,7 +7,7 @@
 	 *
 	 *	This file should contain ONLY default values.
 	 *	Contents of this file will be visible from Version Control Systems.
-	 *	config.override.php is PRIVATE and IGNORED from VCS.
+	 *	config.override.php is PRIVATE and IGNORED by VCS.
 	 */
 
 	$cfg['dbhost'] = '127.0.0.1';
@@ -25,7 +25,7 @@
 	$cfg['max_upload_size'] = 8388608; // 8MB
 	$cfg['upload_dir'] = 'content/uploads'; // WITHOUT final slash. E.g. 'content/uploads'
 
-	$cfg['path_start'] = 4; // Int. If app installed in http://example.org/test/klense/, then this parameter = 2. If installed in http://example.org/, it is = 0.
+	$cfg['path_start'] = 0; // Int. If app installed in http://example.org/test/klense/, then this parameter = 2. If installed in http://example.org/, it is = 0.
 	$cfg['session_expire_time'] = 0; // Tempo (in secondi) prima che la sessione scada. Se impostato a zero, la sessione scade alla chiusura del browser.
 
 	@include("config.override.php");
