@@ -9,7 +9,7 @@
 	<meta name="Keywords" content="" />
 	<base href="{$absolute_base_url}" />
 
-	<link rel="shortcut icon" href="content/style/images/favicon.ico" />
+	<link rel="shortcut icon" href="{$absolute_base_url}/content/style/images/favicon.ico" />
 
 	<title>{block name=title}{$pageTitle}{/block}</title>
 
