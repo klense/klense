@@ -52,6 +52,7 @@ class Image {
 					$this->_file_name = $row['file_name'];
 					$this->_owner_id = (int)$row['owner_id'];
 					$this->_exif = unserialize($row['exif']);
+					if($this->_exif === false) $this->_exif = array();
 					$this->_upload_time = new DateTime($row['upload_time'], new DateTimeZone('UTC'));
 					$this->_tags = (trim($row['tags']) == '') ? array() : explode(' ', $row['tags']);
 					$this->_width = (int)$row['width'];
@@ -158,9 +159,12 @@ class Image {
 				$sql = "UPDATE {$cfg['table_prefix']}_images SET 
 							display_name = '" 		. mysql_real_escape_string($this->_display_name) . "',
 							owner_id = " 			. (int)$this->_owner_id . ",
-							exif = '"				. mysql_real_escape_string($this->_exif) . "',
+							exif = '"				. mysql_real_escape_string(serialize($this->_exif)) . "',
 							upload_time = '"		. $this->_upload_time->format('Y-m-d H:i:s') . "',
 							tags = '"				. mysql_real_escape_string(implode(' ', $this->_tags)) . "',
+							width = " 				. (int)$this->_width . ",
+							height = " 				. (int)$this->_height . ",
+							mime = '"				. mysql_real_escape_string($this->_mime) . "',
 							hide_exif = "			. (int)$this->_hide_exif . ",
 							description = '"		. mysql_real_escape_string($this->_description) . "'
 						WHERE (id = {$this->_id})";

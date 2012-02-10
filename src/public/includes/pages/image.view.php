@@ -16,8 +16,11 @@
 
 	$owner = new User($userid);
 
-	//$img->rebuildThumbnails();
-	//$img->regenerateMetadata();
+	/*
+	$img->rebuildThumbnails();
+	$img->regenerateMetadata();
+	$img->save();
+	*/
 
 	$smarty->assign('pageTitle', htmles($img->getDisplayName() . " | klense"));
 
