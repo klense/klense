@@ -17,6 +17,7 @@ class Image {
 	private $_height = 0;
 	private $_mime = '';
 	private $_hide_exif = false;
+	private $_description = '';
 
 	public function __construct($id=0, array $file=null)
 	{
@@ -37,7 +38,8 @@ class Image {
 						width,
 						height,
 						mime,
-						hide_exif
+						hide_exif,
+						description
 					FROM {$cfg['table_prefix']}_images WHERE id = {$this->_id}";
 
 			$result = mysql_query($query);
@@ -56,6 +58,7 @@ class Image {
 					$this->_height = (int)$row['height'];
 					$this->_mime = $row['mime'];
 					$this->_hide_exif = (bool)$row['hide_exif'];
+					$this->_description = $row['description'];
 				} else throw new Exception('ID does not exist.', 1010001);
 			} else throw new Exception('Query error.', 10100002);
 
@@ -80,7 +83,12 @@ class Image {
 	function getId() { return $this->_id; }
 
 	function getDisplayName() { return $this->_display_name; }
-	function setDisplayName($value) { $this->_display_name = $value; }
+	function setDisplayName($value)
+	{
+		if(mb_strlen($value) <= 128) {
+			$this->_display_name = $value;
+		} else throw new Exception('Overflow.', 10000008);
+	}
 
 	function getFilename() { return $this->_file_name; }
 	
@@ -131,6 +139,14 @@ class Image {
 
 	function getHideExif() { return $this->_hide_exif; }
 	function setHideExif($value) { $this->_hide_exif = (bool)$value; }
+
+	function getDescription() { return $this->_description; }
+	function setDescription($value)
+	{
+		if(mb_strlen($value) <= 1024) {
+			$this->_description = $value;
+		} else throw new Exception('Overflow.', 10000008);
+	}
 	
 	/*
 	* Salva le modifiche a un record esistente (id > 0), o ne crea uno nuovo (id = 0).
@@ -152,7 +168,8 @@ class Image {
 							exif = '"				. mysql_real_escape_string($this->_exif) . "',
 							upload_time = '"		. $this->_upload_time->format('Y-m-d H:i:s') . "',
 							tags = '"				. mysql_real_escape_string(implode(' ', $this->_tags)) . "',
-							hide_exif = "			. (int)$this->_hide_exif . "
+							hide_exif = "			. (int)$this->_hide_exif . ",
+							description = '"		. mysql_real_escape_string($this->_description) . "'
 						WHERE (id = {$this->_id})";
 
 				if(mysql_query($sql)) {
@@ -168,7 +185,7 @@ class Image {
 					$this->_file_name = $filename;
 					
 					$sql = "INSERT INTO {$cfg['table_prefix']}_images
-							(display_name, file_name, owner_id, exif, upload_time, tags, width, height, mime, hide_exif)
+							(display_name, file_name, owner_id, exif, upload_time, tags, width, height, mime, hide_exif, description)
 							VALUES (
 								'" . mysql_real_escape_string($this->_display_name) . "',
 								'" . mysql_real_escape_string($this->_file_name) . "',
@@ -179,7 +196,8 @@ class Image {
 								 " . (int)$this->_width . ",
 								 " . (int)$this->_height . ",
 								'" . mysql_real_escape_string($this->_mime) . "',
-								 " . (int)$this->_hide_exif . "
+								 " . (int)$this->_hide_exif . ",
+								'" . mysql_real_escape_string($this->_description) . "'
 							)";
 
 					if(mysql_query($sql)) {

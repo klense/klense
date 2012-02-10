@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: klense\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-09 14:42+0100\n"
-"PO-Revision-Date: 2012-02-09 14:42+0100\n"
+"POT-Creation-Date: 2012-02-10 01:11+0100\n"
+"PO-Revision-Date: 2012-02-10 01:11+0100\n"
 "Last-Translator: Daniele Di Sarli <danieleds0@gmail.com>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -22,7 +22,16 @@ msgstr ""
 msgid "Error uploading %s"
 msgstr "Errore nel caricamento di %s"
 
-#: src/public/includes/pages/image.view.php:52
+#: src/public/includes/pages/image.view.php:56
+#: src/public/includes/pages/image.view.php:63
+msgid "Medium"
+msgstr "Media"
+
+#: src/public/includes/pages/image.view.php:70
+msgid "Large"
+msgstr "Grande"
+
+#: src/public/includes/pages/image.view.php:77
 msgid "Original"
 msgstr "Originale"
 

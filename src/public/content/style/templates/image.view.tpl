@@ -21,7 +21,7 @@
 		<img src="{$image_filename}" alt="{$image_displayName}" /></a>
 	</div>
 	<div class="image_title">{$image_displayName}</div>
-	<div class="image_description">Free description.</div>
+	<div class="image_description">{$image_description}</div>
 {/block}
 {block name=bottom_sidebar}
 	<div class="image_sidebar_sections">

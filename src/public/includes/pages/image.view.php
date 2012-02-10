@@ -22,6 +22,7 @@
 
 	$smarty->assign('image_displayName', htmles($img->getDisplayName()));
 	$smarty->assign('image_filename', htmles($GLOB['base_url'] . '/' . $img->getSafeFilename('wh_size4'))); // Use full url for compatibility with external services (e.g. facebook)
+	$smarty->assign('image_description', htmles($img->getDescription()));
 
 	$smarty->assign('user_publicname', htmles($user->getPublicName()));
 	$smarty->assign('user_url', 'user/' . htmles($user->getPublicName()));
@@ -47,15 +48,51 @@
 	$smarty->assign('exif', $exif_disp);
 	$smarty->assign('myexif', $myexif);
 
-	$otherSizes = array(
-					array(
-						'descr'=>htmles(__('Original')),
-						'link'=>htmles($GLOB['base_url'] . '/' . $img->getSafeFilename()),
-						'w'=>$img->getWidth(),
-						'h'=>$img->getHeight()
-					));
+
+	/* Build "Other sizes" array */
+	if($img->getWidth() != 0 && $img->getHeight() != 0) { // Prevent DivisionByZero on malformed DB entries
+		$otherSizes_prep = array(
+						array(
+							'file'=>$img->getFilename() . '--h_500',
+							'descr'=>htmles(__('Medium')),
+							'link'=>htmles($GLOB['base_url'] . '/' . $img->getSafeFilename('h_500')),
+							'w'=>(int)(500 * $img->getWidth() / $img->getHeight()),
+							'h'=>500
+						),
+						array(
+							'file'=>$img->getFilename() . '--h_768',
+							'descr'=>htmles(__('Medium')),
+							'link'=>htmles($GLOB['base_url'] . '/' . $img->getSafeFilename('h_768')),
+							'w'=>(int)(768 * $img->getWidth() / $img->getHeight()),
+							'h'=>768
+						),
+						array(
+							'file'=>$img->getFilename() . '--h_1024',
+							'descr'=>htmles(__('Large')),
+							'link'=>htmles($GLOB['base_url'] . '/' . $img->getSafeFilename('h_1024')),
+							'w'=>(int)(1024 * $img->getWidth() / $img->getHeight()),
+							'h'=>1024
+						),
+						array(
+							'file'=>$img->getFilename(),
+							'descr'=>htmles(__('Original')),
+							'link'=>htmles($GLOB['base_url'] . '/' . $img->getSafeFilename()),
+							'w'=>$img->getWidth(),
+							'h'=>$img->getHeight()
+						)
+				);
+		$otherSizes = array();
+		foreach($otherSizes_prep as $size) {
+			if(file_exists($size['file'])) {
+				$otherSizes[] = array('descr'=>$size['descr'], 'link'=>$size['link'], 'w'=>$size['w'], 'h'=>$size['h']);
+			}
+		}
+	}
+
 	$smarty->assign('otherSizes', $otherSizes);
 
+
+	/* Tags */
 	$smarty->assign('tags', $img->getTags());
 	
 

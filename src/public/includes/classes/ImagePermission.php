@@ -1,7 +1,5 @@
 <?php
 
-require_once("includes/classes/User.php");
-
 class ImagePermission {
 
 	private $_image_id = 0;
