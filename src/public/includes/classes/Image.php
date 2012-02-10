@@ -53,7 +53,7 @@ class Image {
 					$this->_owner_id = (int)$row['owner_id'];
 					$this->_exif = unserialize($row['exif']);
 					$this->_upload_time = new DateTime($row['upload_time'], new DateTimeZone('UTC'));
-					$this->_tags = explode(' ', $row['tags']);
+					$this->_tags = (trim($row['tags']) == '') ? array() : explode(' ', $row['tags']);
 					$this->_width = (int)$row['width'];
 					$this->_height = (int)$row['height'];
 					$this->_mime = $row['mime'];

@@ -38,8 +38,8 @@
 	// Visit JavaScript Kit at http://www.javascriptkit.com/ for this script and 100s more
 	</script>
 
-	<link rel="stylesheet" type="text/css" href="content/style/style.css?v=1" />
-	<link rel="stylesheet" type="text/css" href="content/style/style.print.css?v=1" media="print" />
+	<link rel="stylesheet" type="text/css" href="content/style/style.css?v=20120210" />
+	<link rel="stylesheet" type="text/css" href="content/style/style.print.css?v=20120210" media="print" />
 	{block name=head}{/block}
 </head>
 <body>

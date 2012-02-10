@@ -54,17 +54,19 @@
 		<div>
 			<div class="headingSlide opened"><a href="#" onclick="return false;">Altre dimensioni</a></div>
 			<div class="contentSlide opened" style="padding">
-				<ul>
-					{foreach from=$otherSizes item=size}
-						<li><a href="#">{$size.descr} ({$size.w}x{$size.h})</a> · <a href="{$size.link}">download</a></li>
-					{/foreach}
-				</ul>
+				{foreach from=$otherSizes item=size}
+					<div><a href="#">{$size.descr} ({$size.w}x{$size.h})</a> · <a href="{$size.link}">download</a></div>
+				{/foreach}
 			</div>
 		</div>
 		<div>
 			<div class="headingSlide opened"><a href="#" onclick="return false;">Tag</a></div>
 			<div class="contentSlide opened">
-				<div class="tags">{foreach from=$tags item=tag}<a href="#">{$tag}</a> {/foreach}</div>
+				{if count($tags) > 0}
+					<div class="tags">{foreach from=$tags item=tag}<a href="#">{$tag}</a> {/foreach}</div>
+				{else}
+					<div>Nessuno</div>
+				{/if}
 			</div>
 		</div>
 	</div>
