@@ -200,9 +200,15 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 	max-height:470px;
 }
 
-.image_title {
-	font-size: 1.8em;
+.image_meta {
 	margin-top: 10px;
+}
+.image_meta .image_title {
+	font-size: 1.8em;
+}
+.image_meta .image_editlink {
+	font-size: 0.9em;
+	margin-left: 6px;
 }
 
 .placeholder { color: #aaa; }

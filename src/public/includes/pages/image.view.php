@@ -14,7 +14,7 @@
 	$userid = User::getUserIdFromUsername($GLOB['params'][2]);
 	if(!($userid > 0 && $img->getOwnerId() == $userid)) pageNotFound();
 
-	$user = new User($userid);
+	$owner = new User($userid);
 
 	//$img->rebuildThumbnails(); // TODO cron
 
@@ -24,8 +24,9 @@
 	$smarty->assign('image_filename', htmles($GLOB['base_url'] . '/' . $img->getSafeFilename('wh_size4'))); // Use full url for compatibility with external services (e.g. facebook)
 	$smarty->assign('image_description', htmles($img->getDescription()));
 
-	$smarty->assign('user_publicname', htmles($user->getPublicName()));
-	$smarty->assign('user_url', 'user/' . htmles($user->getPublicName()));
+	$smarty->assign('user_publicname', htmles($owner->getPublicName()));
+	$smarty->assign('user_url', 'user/' . htmles($owner->getPublicName()));
+	$smarty->assign('is_owner', (isset($_SESSION["uid"]) && $owner->getId() == $_SESSION["uid"]));
 
 	$exif = $img->getExif();
 	$exif_disp = array();
@@ -39,7 +40,7 @@
 	if(isset($exif['IFD0']['Make']) && isset($exif['IFD0']['Model']))
 		$myexif['make_model'] = htmles($exif['IFD0']['Make'] . ' ' . $exif['IFD0']['Model']);
 	if(isset($exif['IFD0']['DateTime'])) {
-		$dtime = new DateTime($exif['IFD0']['DateTime'], $user->getTimezone());
+		$dtime = new DateTime($exif['IFD0']['DateTime'], $owner->getTimezone());
 		$dtime->setTimezone(new DateTimeZone(date_default_timezone_get()));
 		$myexif['shot_date'] = htmles($dtime->format('d/m/Y'));
 		$myexif['shot_time'] = htmles($dtime->format('H:i'));

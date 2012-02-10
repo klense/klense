@@ -32,7 +32,12 @@
 		$smarty->assign('user', array('username' => htmlspecialchars($GLOB['user']->getUsername())));
 
 		$timezone = $GLOB['user']->getTimezone()->getName();
+
+		$GLOB['locale'] = 'it_IT'; // ottenere da lingua utente TODO
+	} else {
+		$GLOB['locale'] = 'it_IT'; // ottenere da lingua browser TODO
 	}
+	apply_locale();
 
 	// Imposta il fuso orario dell'utente
 	date_default_timezone_set($timezone);

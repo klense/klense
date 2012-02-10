@@ -6,8 +6,15 @@
 	<div class="image_container">
 		<img src="{$image_filename}" alt="{$image_displayName}" /></a>
 	</div>
-	<div class="image_title">{$image_displayName}</div>
-	<div class="image_description">{$image_description}</div>
+	<div class="image_meta">
+		<span class="image_title">{$image_displayName}</span>
+		{if $is_owner}<span class="image_editlink"><a href="#">modifica</a></span>{/if}
+		<div class="image_description">{$image_description}</div>
+	</div>
+	<div style="margin-top: 50px;">
+		<div style="font-size: 1.3em;">Commenti</div>
+		<textarea style="width: 500px; height: 80px;" maxlength="1000"></textarea>
+	</div>
 {/block}
 {block name=bottom_sidebar}
 	<div class="image_sidebar_sections">
