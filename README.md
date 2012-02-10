@@ -13,7 +13,7 @@ Requirements
 Getting started
 ---------------
 
-1. Extract the source code
+1. Extract the source code in your web space
 2. Setup the DB
     1. Run the queries located in `db/database.sql`
 3. Set configuration
