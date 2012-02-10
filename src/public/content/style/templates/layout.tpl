@@ -18,12 +18,6 @@
 	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css" type="text/css" media="all" />
 	
 	<link rel="stylesheet" type="text/css" href="content/js/csshorizontalmenu/csshorizontalmenu.css" />
-	<script type="text/javascript" src="content/js/csshorizontalmenu/csshorizontalmenu.js">
-	// CSS Horizontal List Menu- by JavaScript Kit (www.javascriptkit.com)
-	// Menu interface credits: http://www.dynamicdrive.com/style/csslibrary/item/glossy-vertical-menu/ 
-	// This notice must stay intact for usage
-	// Visit JavaScript Kit at http://www.javascriptkit.com/ for this script and 100s more
-	</script>
 
 	<script type="text/javascript" src="content/js/modernizr/modernizr.js"></script>
 	<script type="text/javascript" src="content/js/pages/common.js"></script>
@@ -59,6 +53,12 @@
 							</ul>
 						</li>
 					</ul>
+					<script type="text/javascript" src="content/js/csshorizontalmenu/csshorizontalmenu.js">
+					// CSS Horizontal List Menu- by JavaScript Kit (www.javascriptkit.com)
+					// Menu interface credits: http://www.dynamicdrive.com/style/csslibrary/item/glossy-vertical-menu/ 
+					// This notice must stay intact for usage
+					// Visit JavaScript Kit at http://www.javascriptkit.com/ for this script and 100s more
+					</script>
 					<!--<br style="clear: left;" />-->
 				</div>
 			</div>

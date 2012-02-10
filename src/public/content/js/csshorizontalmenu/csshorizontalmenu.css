@@ -60,10 +60,7 @@ background: #FFFFFF;
 color: #FF9E2E;
 }
 
-/* Fa in modo che l'aspetto del top-level menu non cambi
- * quando si sposta il mouse su un submenu. Hack sporco.
- */
-.horizontalcssmenu ul li[style="z-index: 100;"] a{
+.horizontalcssmenu ul li._cssmenu_opened a{
 	background: #FF9E2E;
 	color: #FFFFFF;
 }
