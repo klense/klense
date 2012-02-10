@@ -1,13 +1,9 @@
 <?php
 	require_once("includes/global.php");
-	
-	//require_once("includes/classes/Session.php");
-	//require_once("includes/classes/User.php");
-
-	Session::refreshSession();
 
 	header('Content-Type: text/html;charset=UTF-8');
 
+	Session::refreshSession();
 	$smarty->assign('authenticated', Session::isAuthenticated());
 
 	$url = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
