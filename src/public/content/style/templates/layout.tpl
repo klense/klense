@@ -16,20 +16,7 @@
 	<script type="text/javascript" src="content/js/jquery.min.js"></script>
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css" type="text/css" media="all" />
-
-	<script type="text/javascript" src="content/js/modernizr/modernizr.js"></script>
-	<!--<script type="text/javascript" src="content/js/placeholder/jquery.placeholder.min.js"></script>-->
-
-	<script>
-		Modernizr.load({
-			test: Modernizr.input.placeholder,
-			nope: 'content/js/placeholder/jquery.placeholder.min.js',
-			complete: function () {
-				if(!Modernizr.input.placeholder) $('input, textarea').placeholder();
-			}
-		});
-	</script>
-
+	
 	<link rel="stylesheet" type="text/css" href="content/js/csshorizontalmenu/csshorizontalmenu.css" />
 	<script type="text/javascript" src="content/js/csshorizontalmenu/csshorizontalmenu.js">
 	// CSS Horizontal List Menu- by JavaScript Kit (www.javascriptkit.com)
@@ -37,6 +24,9 @@
 	// This notice must stay intact for usage
 	// Visit JavaScript Kit at http://www.javascriptkit.com/ for this script and 100s more
 	</script>
+
+	<script type="text/javascript" src="content/js/modernizr/modernizr.js"></script>
+	<script type="text/javascript" src="content/js/pages/common.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="content/style/style.css?v=20120210" />
 	<link rel="stylesheet" type="text/css" href="content/style/style.print.css?v=20120210" media="print" />

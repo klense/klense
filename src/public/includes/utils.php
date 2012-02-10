@@ -369,6 +369,7 @@ function pageNotFound()
 	global $smarty;
 
 	header("HTTP/1.0 404 Not Found");
+	$smarty->assign('pageTitle', htmles(__("Page not found") . " | klense"));
 	$smarty->display('404.tpl');
 	exit();
 }
