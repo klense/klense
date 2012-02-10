@@ -66,20 +66,13 @@ class Image {
 			// Inizializza
 			$this->__file = $file;
 			if($this->upload_is_valid($file)) {
-				$this->_mime = $file['type'];
-				$image = new ImageManipulator();
-				$image->load($file['tmp_name']);
-				$this->_width = $image->getWidth();
-				$this->_height = $image->getHeight();
-				if($file['type'] == 'image/jpeg' || $file['type'] == 'image/tiff') {
-					$this->_exif = exif_read_data( $file['tmp_name'], null, true );
-				}
+				generateMetadata($file['tmp_name'], $file['type']);
 			} else throw new Exception('Upload not valid.', 10100007);
 
 			$this->_upload_time = new DateTime('now', new DateTimeZone('UTC'));
 		}
 	}
-	
+
 	function getId() { return $this->_id; }
 
 	function getDisplayName() { return $this->_display_name; }
@@ -427,6 +420,24 @@ class Image {
 		if($this->getId() > 0) {
 			return $this->buildThumbnails($this->getFilename());
 		}
+	}
+
+	private function generateMetadata($filename, $mimetype)
+	{
+		$this->_mime = $mimetype;
+		$image = new ImageManipulator();
+		$image->load($filename);
+		$this->_width = $image->getWidth();
+		$this->_height = $image->getHeight();
+		if($mimetype == 'image/jpeg' || $mimetype == 'image/tiff') {
+			$this->_exif = exif_read_data( $filename, null, true );
+		}
+		return true;
+	}
+
+	public function regenerateMetadata()
+	{
+		return $this->generateMetadata($this->getFilename(), $this->getMimeType());
 	}
 
 	public static function upload_is_valid(array $file)

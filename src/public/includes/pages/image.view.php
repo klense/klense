@@ -16,7 +16,8 @@
 
 	$owner = new User($userid);
 
-	//$img->rebuildThumbnails(); // TODO cron
+	//$img->rebuildThumbnails();
+	//$img->regenerateMetadata();
 
 	$smarty->assign('pageTitle', htmles($img->getDisplayName() . " | klense"));
 
