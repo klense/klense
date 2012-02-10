@@ -366,6 +366,7 @@ function rearrange_files_array( $arr ){
 
 function pageNotFound()
 {
+	header("HTTP/1.0 404 Not Found");
 	echo "404. Your page is not here. Really. Sorry.";
 	exit();
 }
