@@ -1,7 +1,7 @@
 Options +FollowSymLinks  
 RewriteEngine On
 
-RewriteBase /www/klense/src/public/
+RewriteBase __REPLACE_REWRITEBASE___
 	
 RewriteCond %{SCRIPT_FILENAME} !-d  
 RewriteCond %{SCRIPT_FILENAME} !-f  

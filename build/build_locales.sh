@@ -4,14 +4,14 @@ CMDS="msgfmt echo"
  
 for i in $CMDS
 do
-	command -v $i >/dev/null && continue || { echo "$i command not found."; exit 1; }
+	command -v $i >/dev/null && continue || { echo -e "\033[1m\E[31m$i command not found.";tput sgr0; exit 1; }
 done
 
 
 reldir=`dirname $0`
 cd $reldir
 
-
+echo -e '\033[1mBuilding *.mo files...';tput sgr0
 for D in ../src/public/content/locales/*
 do
 	if [ -d "$D" ]; then
@@ -19,3 +19,4 @@ do
 		continue
 	fi
 done
+echo -e '\033[1m\E[32m*.mo files built.';tput sgr0
