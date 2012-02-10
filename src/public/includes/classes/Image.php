@@ -254,10 +254,20 @@ class Image {
 	}
 
 	// Return an address that executes a php script
-	public function getSafeFilename($suffix = '', $extension = false)
+	public function getSafeFilename($suffix = '', $extension = true)
 	{
 		if($this->getId() > 0) {
-			return 'image/get/' . $this->getId() . '/' . $suffix;
+			$ret = 'image/get/' . $this->getId() . '/' . $suffix;
+
+			if($extension) {
+				if($this->getMimeType() == 'image/jpeg') {
+					$ret .= '.jpg';
+				} elseif($this->getMimeType() == 'image/png') {
+					$ret .= '.png';
+				}
+			}
+
+			return $ret;
 		} else return false;
 	}
 	

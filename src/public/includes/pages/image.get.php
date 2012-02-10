@@ -7,8 +7,11 @@
 	if(!isset($GLOB['params'][2])) pageNotFound();
 	if(!isset($GLOB['params'][3]))
 		$suffix = '';
-	else
-		$suffix = str_replace(array('.', '/', '\\'), '', $GLOB['params'][3]);
+	else {
+		$suffix = $GLOB['params'][3];
+		$suffix = mb_substr($suffix, 0, mb_strrpos($suffix,'.')); // remove optional extension
+		$suffix = str_replace(array('.', '/', '\\'), '', $suffix);
+	}
 
 	try {
 		$img = new Image($GLOB['params'][2]);
