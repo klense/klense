@@ -51,46 +51,12 @@
 
 
 	/* Build "Other sizes" array */
-	if($img->getWidth() != 0 && $img->getHeight() != 0) { // Prevent DivisionByZero on malformed DB entries
-		$otherSizes_prep = array(
-						array(
-							'file'=>$img->getFilename() . '--h_500',
-							'descr'=>htmles(__('Medium')),
-							'link'=>htmles($GLOB['base_url'] . '/' . $img->getSafeFilename('h_500')),
-							'w'=>(int)(500 * $img->getWidth() / $img->getHeight()),
-							'h'=>500
-						),
-						array(
-							'file'=>$img->getFilename() . '--h_768',
-							'descr'=>htmles(__('Medium')),
-							'link'=>htmles($GLOB['base_url'] . '/' . $img->getSafeFilename('h_768')),
-							'w'=>(int)(768 * $img->getWidth() / $img->getHeight()),
-							'h'=>768
-						),
-						array(
-							'file'=>$img->getFilename() . '--h_1024',
-							'descr'=>htmles(__('Large')),
-							'link'=>htmles($GLOB['base_url'] . '/' . $img->getSafeFilename('h_1024')),
-							'w'=>(int)(1024 * $img->getWidth() / $img->getHeight()),
-							'h'=>1024
-						),
-						array(
-							'file'=>$img->getFilename(),
-							'descr'=>htmles(__('Original')),
-							'link'=>htmles($GLOB['base_url'] . '/' . $img->getSafeFilename()),
-							'w'=>$img->getWidth(),
-							'h'=>$img->getHeight()
-						)
-				);
-		$otherSizes = array();
-		foreach($otherSizes_prep as $size) {
-			if(file_exists($size['file'])) {
-				$otherSizes[] = array('descr'=>$size['descr'], 'link'=>$size['link'], 'w'=>$size['w'], 'h'=>$size['h']);
-			}
-		}
-	}
+	$otherSizes = $img->getAllSizes();
+	//$maxSize = $img->getBiggestSize(true, $otherSizes);
+	$maxSize = (isset($otherSizes['h_768'])) ? $otherSizes['h_768'] : $otherSizes['original'];
 
 	$smarty->assign('otherSizes', $otherSizes);
+	$smarty->assign('maxSize', $maxSize['link']);
 
 
 	/* Tags */

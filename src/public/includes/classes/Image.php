@@ -254,7 +254,7 @@ class Image {
 	}
 
 	// Return an address that executes a php script
-	public function getSafeFilename($suffix = '')
+	public function getSafeFilename($suffix = '', $extension = false)
 	{
 		if($this->getId() > 0) {
 			return 'image/get/' . $this->getId() . '/' . $suffix;
@@ -478,6 +478,88 @@ class Image {
 			}
 			return $ret;
 		} else throw new Exception('Query error.', 10000002);
+	}
+
+	// For external use
+	function getAllSizes()
+	{
+		global $GLOB;
+
+		$otherSizes = array();
+		$origWidth = $this->getWidth();
+		$origHeight = $this->getHeight();
+
+		if($origWidth != 0 && $origHeight != 0) { // Prevent DivisionByZero on malformed DB entries
+
+			$otherSizes_prep = array(
+							'h_500' => array(
+								'file'=>$this->getFilename() . '--h_500',
+								'descr'=>__('Medium'),
+								'link'=>$GLOB['base_url'] . '/' . $this->getSafeFilename('h_500'),
+								'w'=>(int)(500 * $origWidth / $origHeight),
+								'h'=>500
+							),
+							'h_768' => array(
+								'file'=>$this->getFilename() . '--h_768',
+								'descr'=>__('Medium'),
+								'link'=>$GLOB['base_url'] . '/' . $this->getSafeFilename('h_768'),
+								'w'=>(int)(768 * $origWidth / $origHeight),
+								'h'=>768
+							),
+							'h_1024' => array(
+								'file'=>$this->getFilename() . '--h_1024',
+								'descr'=>__('Large'),
+								'link'=>$GLOB['base_url'] . '/' . $this->getSafeFilename('h_1024'),
+								'w'=>(int)(1024 * $origWidth / $origHeight),
+								'h'=>1024
+							),
+							'original' => array(
+								'file'=>$this->getFilename(),
+								'descr'=>__('Original'),
+								'link'=>$GLOB['base_url'] . '/' . $this->getSafeFilename(),
+								'w'=>$origWidth,
+								'h'=>$origHeight
+							)
+					);
+			foreach($otherSizes_prep as $k => $size) {
+				if(file_exists($size['file'])) {
+					$otherSizes[$k] = array('descr'=>$size['descr'], 'link'=>$size['link'], 'w'=>$size['w'], 'h'=>$size['h']);
+				}
+			}
+
+		}
+
+		return $otherSizes;
+	}
+
+	function getBiggestSize($fallback_original, array $allSizes = null)
+	{
+		if($allSizes === null) $allSizes = $this->getAllSizes();
+
+		$bigger = null;
+
+		if(count($allSizes) > 0) {
+
+			foreach($allSizes as $k => $size) {
+				if(is_null($bigger) || $size['h'] > $bigger['h']) {
+					if($k != 'original') {
+						$bigger = $size;
+					}
+				}
+			}
+
+			if($bigger == null) {
+				if($fallback_original)
+					return $allSizes['original'];
+				else
+					return false;
+			} else {
+				return $bigger;
+			}
+
+		} else {
+			return false;
+		}
 	}
 
 	/*

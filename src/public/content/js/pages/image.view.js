@@ -10,4 +10,11 @@ $(function() {
 		}
 		$(this).next(".contentSlide").slideToggle(200);
 	});
+	
+	$(".fancybox_img").fancybox({
+		'overlayShow'	: true,
+		'overlayOpacity': 0.8,
+		'overlayColor' : '#000',
+		'type' : 'image'
+	});
 });

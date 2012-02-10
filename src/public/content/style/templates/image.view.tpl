@@ -1,10 +1,14 @@
 {extends file="layout.tpl"}
 {block name=head}
+	<script type="text/javascript" src="content/js/jquery.fancybox/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
+	<script type="text/javascript" src="content/js/jquery.fancybox/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+	<link rel="stylesheet" type="text/css" href="content/js/jquery.fancybox/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+
 	<script type="text/javascript" src="content/js/pages/image.view.js"></script>
 {/block}
 {block name=content}
 	<div class="image_container">
-		<img src="{$image_filename}" alt="{$image_displayName}" /></a>
+		<a class="fancybox_img" href="{$maxSize}"><img src="{$image_filename}" alt="{$image_displayName}" /></a>
 	</div>
 	<div class="image_meta">
 		<span class="image_title">{$image_displayName}</span>
@@ -48,7 +52,7 @@
 			<div class="headingSlide opened"><a href="#" onclick="return false;">Altre dimensioni</a></div>
 			<div class="contentSlide opened" style="padding">
 				{foreach from=$otherSizes item=size}
-					<div><a href="#">{$size.descr} ({$size.w}x{$size.h})</a> · <a href="{$size.link}">download</a></div>
+					<div><a href="{$size.link}">{$size.descr} ({$size.w}x{$size.h})</a></div>
 				{/foreach}
 			</div>
 		</div>
