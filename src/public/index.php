@@ -68,6 +68,8 @@
 					require 'includes/pages/image.upload.php';
 				} else if($GLOB['params'][1] == 'view') {
 					require 'includes/pages/image.view.php';
+				} else if($GLOB['params'][1] == 'edit-overlay') {
+					require 'includes/pages/image.edit.overlay.php';
 				} else if($GLOB['params'][1] == 'get') {
 					require 'includes/pages/image.get.php';
 				} else pageNotFound();

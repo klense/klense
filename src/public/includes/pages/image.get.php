@@ -9,7 +9,10 @@
 		$suffix = '';
 	else {
 		$suffix = $GLOB['params'][3];
-		$suffix = mb_substr($suffix, 0, mb_strrpos($suffix,'.')); // remove optional extension
+		$lastdot = mb_strrpos($suffix,'.');
+		if($lastdot !== false) { // remove optional extension
+			$suffix = mb_substr($suffix, 0, $lastdot);
+		}
 		$suffix = str_replace(array('.', '/', '\\'), '', $suffix);
 	}
 
@@ -39,7 +42,6 @@
 	ini_set('zlib.output_compression', 'Off');
 
 	// File Exists?
-	echo $fullPath;
 	if( file_exists($fullPath) ){
 
 		$fsize = filesize($fullPath); 

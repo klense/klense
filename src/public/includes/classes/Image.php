@@ -107,21 +107,25 @@ class Image {
 		} else throw new Exception('Invalid upload time.', 10000003);
 	}
 
-	function getTags()
+	function getTags($escape = false)
 	{
 		$exit_vals = array();
 		foreach($this->_tags as $key => $item) {
 			$exit_vals[$key] = str_replace('_', ' ', $item);
+			if($escape) $exit_vals[$key] = htmles($exit_vals[$key]);
 		}
 		return $exit_vals;
 	}
+	function getTagsString() { return implode(', ', $this->getTags()); }
 	function setTags(array $value)
 	{
+		// TODO Check max length for DB field
 		$vals = array_unique($value);
 		$exit_vals = array();
 		foreach($vals as $key => $item) {
-			$exit_vals[$key] = mb_strtolower(str_replace(' ', '_', $item));
+			$exit_vals[$key] = mb_strtolower(str_replace(' ', '_', trim($item)));
 		}
+		
 		$this->_tags = array_unique($exit_vals);
 	}
 

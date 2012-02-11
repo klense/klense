@@ -53,6 +53,8 @@
 	$smarty->assign('exif', $exif_disp);
 	$smarty->assign('myexif', $myexif);
 
+	$smarty->assign('hide_exif', $img->getHideExif());
+
 
 	/* Build "Other sizes" array */
 	$otherSizes = $img->getAllSizes();
@@ -64,8 +66,12 @@
 
 
 	/* Tags */
-	$smarty->assign('tags', $img->getTags());
-	
+	$smarty->assign('tags', $img->getTags(true));
+	$smarty->assign('tags_str', htmles($img->getTagsString()));
+
+	/* Edit overlay form */
+	$smarty->assign('edit_form', $smarty->fetch('image.edit.overlay.tpl'));
+
 
 	$smarty->display('image.view.tpl');
 

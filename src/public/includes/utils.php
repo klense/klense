@@ -16,41 +16,6 @@ function htmles($string)
 	return htmlspecialchars($string, $flags, 'UTF-8', true);
 }
 
-// Genera testo HTML da inserire dentro agli elementi INPUT o TEXTAREA (dato che i ritorni a capo e gli spazi non vengono convertiti in entita' html)
-function show_input_html($string)
-{
-	$string = to_utf8($string);
-	$str = htmlentities($string, ENT_QUOTES, 'UTF-8');
-	return utf8_encode($str);
-
-	////$str = str_replace("  ", "&nbsp; ", htmlspecialchars($string));
-	////$enc = mb_detect_encoding($string, "ASCII,UTF-8");
-	//$str = htmlentities($string, ENT_QUOTES, 'UTF-8');
-	//if(strlen($str) == 0 && strlen($string) > 0) {
-		//// Durante la conversione c'e' stato un problema relativo alla codifica.
-		//// Provo con un'altra codifica
-		//$str = htmlentities($string, ENT_QUOTES, 'ISO8859-15');
-	//}
-
-	//return utf8_encode($str);
-}
-
-function show_html($string)
-{
-	$str = show_input_html($string);
-	$str = nl2br_x($str);
-	$str = str_replace('  ','&nbsp;&nbsp;',$str);
-	return $str;
-}
-
-function nl2br_x($string) {
-	// La funzione originale nl2br($str, true); creava problemi: su alcune macchine restituiva una stringa completamente vuota.
-	$string = str_replace("\r\n",'<br />',$string);
-	$string = str_replace("\n",'<br />',$string);
-	$string = str_replace("\r",'<br />',$string);
-	return $string;
-}
-
 function jsescape1($str) {
 	return str_replace("'", '\\\'', $str);  // sostituisce ' con \'
 }

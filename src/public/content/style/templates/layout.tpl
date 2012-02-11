@@ -22,8 +22,8 @@
 	<script type="text/javascript" src="content/js/modernizr/modernizr.js"></script>
 	<script type="text/javascript" src="content/js/pages/common.js"></script>
 
-	<link rel="stylesheet" type="text/css" href="content/style/style.css?v=20120210" />
-	<link rel="stylesheet" type="text/css" href="content/style/style.print.css?v=20120210" media="print" />
+	<link rel="stylesheet" type="text/css" href="content/style/style.css?v=20120211" />
+	<link rel="stylesheet" type="text/css" href="content/style/style.print.css?v=20120211" media="print" />
 	{block name=head}{/block}
 </head>
 <body>

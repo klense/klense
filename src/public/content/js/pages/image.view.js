@@ -22,4 +22,16 @@ $(function() {
 		'titleShow' : false,
 		'type' : 'image'
 	});
+	
+	$(window).resize(function() {
+		$.fancybox.reshow();
+	});
+	
+	$("#image_edit_link").fancybox({
+		'scrolling'		: 'no',
+		'titleShow'		: false,
+		'onClosed'		: function() {
+			$("#login_error").hide();
+		}
+	});
 });
