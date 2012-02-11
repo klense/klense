@@ -119,14 +119,18 @@ class Image {
 	function getTagsString() { return implode(', ', $this->getTags()); }
 	function setTags(array $value)
 	{
-		// TODO Check max length for DB field
 		$vals = array_unique($value);
 		$exit_vals = array();
 		foreach($vals as $key => $item) {
 			$exit_vals[$key] = mb_strtolower(str_replace(' ', '_', trim($item)));
 		}
 		
-		$this->_tags = array_unique($exit_vals);
+		$tags = array_unique($exit_vals);
+
+		// Check max length for DB field
+		if(mb_strlen(implode(' ', $tags)) <= 128) {
+			$this->_tags = $tags;
+		} else throw new Exception('Overflow.', 10000008);
 	}
 
 	function getWidth() { return $this->_width; }
@@ -305,7 +309,12 @@ class Image {
 			if(self::buildThumbnails($end_filename)) {
 				return $end_filename;
 			} else {
-				//unlink TODO
+				$files = glob($end_filename . "--*");
+				foreach($files as $file) {
+					if(is_file($file)) {
+						unlink($file);
+					}
+				}
 			}
 		}
 
