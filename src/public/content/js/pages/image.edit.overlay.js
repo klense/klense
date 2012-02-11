@@ -1,13 +1,7 @@
 $(function() {
+	$("#edit_form .form_error").hide();
+	
 	$("#edit_form form").bind("submit", function() {
-		
-		/*
-		if ($("#login_name").val().length < 1 || $("#login_pass").val().length < 1) {
-			$("#login_error").show();
-			$.fancybox.resize();
-			return false;
-		}
-		*/
 		
 		$.fancybox.showActivity();
 		
@@ -17,8 +11,14 @@ $(function() {
 			url		: "image/edit-overlay/7",
 			data	: $(this).serializeArray(),
 			success: function(data) {
-				if(data == "1") location.reload();
-				
+				$.fancybox.hideActivity();
+				if(data == "1") {
+					location.reload();
+				} else {
+					$("#edit_form .form_error").show();
+					$("#edit_form .form_error").html(data);
+					$.fancybox.resize();
+				}
 			}
 		});
 		
