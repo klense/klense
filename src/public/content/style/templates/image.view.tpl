@@ -30,11 +30,11 @@
 			{if isset($myexif.make_model)}
 				<div>
 					Foto scattata con una <a href="#">{$myexif.make_model}</a>
-					{if isset($myexif.shot_date)}in data {$myexif.shot_date}, ore {$myexif.shot_time}.{else}.{/if}
+					{if isset($myexif.shot_ownerdate)}in data <time datetime="{$myexif.shot_userdatetime_iso}" title="Fuso orario corrente: {$myexif.shot_userdatetime}">{$myexif.shot_ownerdate}, ore {$myexif.shot_ownertime}.{else}</time>.{/if}
 				</div>
 			{else}
-				{if isset($myexif.shot_date)}
-					<div>Foto scattata in data {$myexif.shot_date}, ore {$myexif.shot_time}.</div>
+				{if isset($myexif.shot_ownerdate)}
+					<div>Foto scattata in data <time datetime="{$myexif.shot_userdatetime_iso}" title="Fuso orario corrente: {$myexif.shot_userdatetime}">{$myexif.shot_ownerdate}, ore {$myexif.shot_ownertime}</time>.</div>
 				{/if}
 			{/if}
 			<div>

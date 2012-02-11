@@ -31,7 +31,7 @@ $(function() {
 		'scrolling'		: 'no',
 		'titleShow'		: false,
 		'onClosed'		: function() {
-			$("#login_error").hide();
+			$("#edit_form .form_error").hide();
 		}
 	});
 });

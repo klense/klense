@@ -45,9 +45,12 @@
 		$myexif['make_model'] = htmles($exif['IFD0']['Make'] . ' ' . $exif['IFD0']['Model']);
 	if(isset($exif['IFD0']['DateTime'])) {
 		$dtime = new DateTime($exif['IFD0']['DateTime'], $owner->getTimezone());
+		// TODO Use preferred locale format when printing date/times
+		$myexif['shot_ownerdate'] = htmles($dtime->format('d/m/Y'));
+		$myexif['shot_ownertime'] = htmles($dtime->format('H:i'));
 		$dtime->setTimezone(new DateTimeZone(date_default_timezone_get()));
-		$myexif['shot_date'] = htmles($dtime->format('d/m/Y'));
-		$myexif['shot_time'] = htmles($dtime->format('H:i'));
+		$myexif['shot_userdatetime_iso'] = htmles($dtime->format('c'));
+		$myexif['shot_userdatetime'] = htmles($dtime->format('d/m/Y H:i'));
 	}
 
 	$smarty->assign('exif', $exif_disp);

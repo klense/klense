@@ -1,0 +1,14 @@
+.tooltip {
+	display:none;
+	/*background:url(tooltip/black_arrow.png);*/
+	font-size:12px;
+	/*height:70px;*/
+	/*width:160px;*/
+	padding:25px;
+	background: #000;
+	color:#fff;
+}
+
+.tooltip-show.tooltip-underline {
+	border-bottom: 1px dotted #222222;
+}

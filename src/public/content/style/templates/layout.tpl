@@ -13,11 +13,14 @@
 
 	<title>{block name=title}{$pageTitle}{/block}</title>
 
-	<script type="text/javascript" src="content/js/jquery.min.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css" type="text/css" media="all" />
 	
 	<link rel="stylesheet" type="text/css" href="content/js/csshorizontalmenu/csshorizontalmenu.css" />
+
+	<!--<script src="http://cdn.jquerytools.org/1.2.6/all/jquery.tools.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="content/js/jquery.tools/tooltip/tooltip.css" />-->
 
 	<script type="text/javascript" src="content/js/modernizr/modernizr.js"></script>
 	<script type="text/javascript" src="content/js/pages/common.js"></script>

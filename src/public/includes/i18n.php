@@ -15,7 +15,7 @@
 
 		//putenv('LANGUAGE='.$GLOB['locale']);
 		putenv('LANG='.$GLOB['locale']);
-		//putenv('LC_ALL='.$GLOB['locale']);
+		putenv('LC_ALL='.$GLOB['locale']);
 		//putenv('LC_MESSAGES='.$GLOB['locale']);
 		_setlocale(LC_ALL,$GLOB['locale']);
 		//_setlocale(LC_CTYPE,$GLOB['locale']);

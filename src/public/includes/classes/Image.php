@@ -67,7 +67,7 @@ class Image {
 			// Inizializza
 			$this->__file = $file;
 			if($this->upload_is_valid($file)) {
-				generateMetadata($file['tmp_name'], $file['type']);
+				$this->generateMetadata($file['tmp_name'], $file['type']);
 			} else throw new Exception('Upload not valid.', 10100007);
 
 			$this->_upload_time = new DateTime('now', new DateTimeZone('UTC'));
