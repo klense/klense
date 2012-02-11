@@ -1,3 +1,6 @@
+<script>
+	var image_id = {$image_id};
+</script>
 <script type="text/javascript" src="content/js/pages/image.edit.overlay.js"></script>
 <div style="display:none">
 	<div id="edit_form" class="image_edit_form_overlay">

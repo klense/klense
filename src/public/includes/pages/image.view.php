@@ -24,6 +24,7 @@
 
 	$smarty->assign('pageTitle', htmles($img->getDisplayName() . " | klense"));
 
+	$smarty->assign('image_id', $img->getId());
 	$smarty->assign('image_displayName', htmles($img->getDisplayName()));
 	$smarty->assign('image_filename', htmles($GLOB['base_url'] . '/' . $img->getSafeFilename('wh_size4'))); // Use full url for compatibility with external services (e.g. facebook)
 	$smarty->assign('image_description', htmles($img->getDescription()));

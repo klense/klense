@@ -8,7 +8,7 @@ $(function() {
 		$.ajax({
 			type	: "POST",
 			cache	: false,
-			url		: "image/edit-overlay/7",
+			url		: "image/edit-overlay/" + image_id,
 			data	: $(this).serializeArray(),
 			success: function(data) {
 				$.fancybox.hideActivity();
