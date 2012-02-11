@@ -230,7 +230,7 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 }
 
 .image_meta {
-	margin-top: 10px;
+	margin-top: 5px;
 }
 .image_meta .image_title {
 	font-size: 1.8em;
