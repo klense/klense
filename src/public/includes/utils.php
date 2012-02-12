@@ -24,6 +24,18 @@ function jsescape2($str) {
 	return str_replace('"', '\"', $str);    // sostituisce " con \"
 }
 
+function escape_array(array $arr) {
+	$out = array();
+	foreach($arr as $key=>$val) {
+		if(is_array($val)) {
+			$out[$key] = escape_array($val);
+		} else {
+			$out[$key] = htmles($val);
+		}
+	}
+	return $out;
+}
+
 function getRealIpAddress()
 {
     if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet

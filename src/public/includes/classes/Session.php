@@ -26,7 +26,7 @@ class Session
 	public static function authenticate($userid)
 	{
 		if($userid > 0) {
-			Session::refreshSession();
+			//Session::refreshSession();
 			$_SESSION["uid"] = $userid;
 			return true;
 		}
@@ -39,7 +39,7 @@ class Session
 	*/
 	public static function isAuthenticated()
 	{
-		Session::refreshSession();
+		//Session::refreshSession();
 
 		if(isset($_SESSION["uid"]))
 			return true;

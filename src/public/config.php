@@ -26,7 +26,7 @@
 	$cfg['upload_dir'] = 'content/uploads'; // WITHOUT final slash. E.g. 'content/uploads'
 
 	$cfg['path_start'] = 0; // Int. If app installed in http://example.org/test/klense/, then this parameter = 2. If installed in http://example.org/, it is = 0.
-	$cfg['session_expire_time'] = 0; // Tempo (in secondi) prima che la sessione scada. Se impostato a zero, la sessione scade alla chiusura del browser.
+	$cfg['session_expire_time'] = 604800; // Tempo (in secondi) di inattività prima che la sessione scada. Se impostato a zero, la sessione scade alla chiusura del browser.
 
 	@include("config.override.php");
 	

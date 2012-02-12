@@ -193,6 +193,13 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 	padding-left: 30px;
 }
 
+.completeExif {
+	font-size: 0.9em;
+}
+.completeExif tr > td:first-child {
+	padding-right: 20px;
+}
+
 .image_sidebar_sections > div {
 	margin-top: 5px;
 	margin-bottom: 10px;

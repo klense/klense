@@ -457,6 +457,130 @@ class Image {
 		return $this->generateMetadata($this->getFilename(), $this->getMimeType());
 	}
 
+	public function getUserFriendlyExif($escape = false)
+	{
+		$exif = $this->getExif();
+		$out_exif = array();
+
+		if(isset($exif['IFD0']['Make']))			$out_exif['IFD0/Make'] = array('descr'=>__('Make'), 'val'=>$exif['IFD0']['Make']);
+		if(isset($exif['IFD0']['Model']))			$out_exif['IFD0/Model'] = array('descr'=>__('Model'), 'val'=>$exif['IFD0']['Model']);
+		if(isset($exif['IFD0']['DateTime']))		$out_exif['IFD0/DateTime'] = array('descr'=>__('Date and time'), 'val'=>$exif['IFD0']['DateTime']);
+		if(isset($exif['IFD0']['Software']))		$out_exif['IFD0/Software'] = array('descr'=>__('Software'), 'val'=>$exif['IFD0']['Software']);
+		if(isset($exif['IFD0']['Copyright']))		$out_exif['IFD0/Copyright'] = array('descr'=>__('Copyright'), 'val'=>$exif['IFD0']['Copyright']);
+		if(isset($exif['IFD0']['Orientation'])) {
+			$v = "";
+			switch((int)$exif['IFD0']['Orientation']) {
+				case 1:	$v = __("Horizontal"); break;
+				case 2:	$v = __("Mirror horizontal"); break;
+				case 3:	$v = __("Rotate 180"); break;
+				case 4:	$v = __("Mirror vertical"); break;
+				case 5:	$v = __("Mirror horizontal and rotate 270 CW"); break;
+				case 6:	$v = __("Rotate 90 CW"); break;
+				case 7:	$v = __("Mirror horizontal and rotate 90 CW"); break;
+				case 8:	$v = __("Rotate 270 CW"); break;
+			}
+			$out_exif['IFD0/Orientation'] = array('descr'=>__('Orientation'), 'val'=>$v);
+		}
+		if(isset($exif['IFD0']['XResolution']))		$out_exif['IFD0/XResolution'] = array('descr'=>__('X resolution'), 'val'=>$exif['IFD0']['XResolution']);
+		if(isset($exif['IFD0']['YResolution']))		$out_exif['IFD0/YResolution'] = array('descr'=>__('Y resolution'), 'val'=>$exif['IFD0']['YResolution']);
+		if(isset($exif['IFD0']['ResolutionUnit'])) {
+			$v = "";
+			switch((int)$exif['IFD0']['ResolutionUnit']) {
+				case 1:	$v = __("None"); break;
+				case 2:	$v = __("Inches"); break;
+				case 3:	$v = __("Centimeters"); break;
+			}
+			$out_exif['IFD0/ResolutionUnit'] = array('descr'=>__('Resolution unit'), 'val'=>$v);
+		}
+		if(isset($exif['COMPUTED']['ApertureFNumber']))	$out_exif['COMPUTED/ApertureFNumber'] = array('descr'=>__('Aperture'), 'val'=>$exif['COMPUTED']['ApertureFNumber']);
+		if(isset($exif['EXIF']['FNumber']))		$out_exif['EXIF/FNumber'] = array('descr'=>__('F number'), 'val'=>$exif['EXIF']['FNumber']);
+		if(isset($exif['EXIF']['ExposureTime']))		$out_exif['EXIF/ExposureTime'] = array('descr'=>__('Exposure time'), 'val'=>$exif['EXIF']['ExposureTime']);
+		if(isset($exif['EXIF']['ISOSpeedRatings']))		$out_exif['EXIF/ISOSpeedRatings'] = array('descr'=>__('ISO'), 'val'=>$exif['EXIF']['ISOSpeedRatings']);
+		if(isset($exif['EXIF']['LightSource'])) {
+			$v = "";
+			switch((int)$exif['EXIF']['LightSource']) {
+				case 0:		$v = __("Unknown"); break;
+				case 1:		$v = __("Fluorescent"); break;
+				case 2:		$v = __("Fluorescent"); break;
+				case 3:		$v = __("Tungsten (Incandescent)"); break;
+				case 4:		$v = __("Flash"); break;
+				case 9:		$v = __("Fine Weather"); break;
+				case 10:	$v = __("Cloudy"); break;
+				case 11:	$v = __("Shade"); break;
+				case 12:	$v = __("Daylight Fluorescent"); break;
+				case 13:	$v = __("Day White Fluorescent"); break;
+				case 14:	$v = __("Cool White Fluorescent"); break;
+				case 15:	$v = __("White Fluorescent"); break;
+				case 16:	$v = __("Warm White Fluorescent"); break;
+				case 17:	$v = __("Standard Light A"); break;
+				case 18:	$v = __("Standard Light B"); break;
+				case 19:	$v = __("Standard Light C"); break;
+				case 20:	$v = __("D55"); break;
+				case 21:	$v = __("D65"); break;
+				case 22:	$v = __("D75"); break;
+				case 23:	$v = __("D50"); break;
+				case 24:	$v = __("ISO Studio Tungsten"); break;
+				case 255:	$v = __("Other"); break;
+			}
+			$out_exif['EXIF/LightSource'] = array('descr'=>__('Light source'), 'val'=>$v);
+		}
+		if(isset($exif['EXIF']['Flash'])) {
+			$v = "";
+			switch((int)$exif['EXIF']['Flash']) {
+				case 0x0:	$v = __("No Flash"); break;
+				case 0x1:	$v = __("Fired"); break;
+				case 0x5:	$v = __("Fired, Return not detected"); break;
+				case 0x7:	$v = __("Fired, Return detected"); break;
+				case 0x8:	$v = __("On, Did not fire"); break;
+				case 0x9:	$v = __("On, Fired"); break;
+				case 0xd:	$v = __("On, Return not detected"); break;
+				case 0xf:	$v = __("On, Return detected"); break;
+				case 0x10:	$v = __("Off, Did not fire"); break;
+				case 0x14:	$v = __("Off, Did not fire, Return not detected"); break;
+				case 0x18:	$v = __("Auto, Did not fire"); break;
+				case 0x19:	$v = __("Auto, Fired"); break;
+				case 0x1d:	$v = __("Auto, Fired, Return not detected"); break;
+				case 0x1f:	$v = __("Auto, Fired, Return detected"); break;
+				case 0x20:	$v = __("No flash function"); break;
+				case 0x30:	$v = __("Off, No flash function"); break;
+				case 0x41:	$v = __("Fired, Red-eye reduction"); break;
+				case 0x45:	$v = __("Fired, Red-eye reduction, Return not detected"); break;
+				case 0x47:	$v = __("Fired, Red-eye reduction, Return detected"); break;
+				case 0x49:	$v = __("On, Red-eye reduction"); break;
+				case 0x4d:	$v = __("On, Red-eye reduction, Return not detected"); break;
+				case 0x4f:	$v = __("On, Red-eye reduction, Return detected"); break;
+				case 0x50:	$v = __("Off, Red-eye reduction"); break;
+				case 0x58:	$v = __("Auto, Did not fire, Red-eye reduction"); break;
+				case 0x59:	$v = __("Auto, Fired, Red-eye reduction"); break;
+				case 0x5d:	$v = __("Auto, Fired, Red-eye reduction, Return not detected"); break;
+				case 0x5f:	$v = __("Auto, Fired, Red-eye reduction, Return detected"); break;
+			}
+			$out_exif['EXIF/Flash'] = array('descr'=>__('Flash'), 'val'=>$v);
+		}
+		if(isset($exif['EXIF']['ExposureMode'])) {
+			$v = "";
+			switch((int)$exif['EXIF']['ExposureMode']) {
+				case 0:		$v = __("Auto"); break;
+				case 1:		$v = __("Manual"); break;
+				case 2:		$v = __("Auto bracket"); break;
+			}
+			$out_exif['EXIF/ExposureMode'] = array('descr'=>__('Exposure mode'), 'val'=>$v);
+		}
+		if(isset($exif['EXIF']['WhiteBalance'])) {
+			$v = "";
+			switch((int)$exif['EXIF']['WhiteBalance']) {
+				case 0:		$v = __("Auto"); break;
+				case 1:		$v = __("Manual"); break;
+			}
+			$out_exif['EXIF/WhiteBalance'] = array('descr'=>__('White balance'), 'val'=>$v);
+		}
+
+		if($escape)
+			$out_exif = escape_array($out_exif);
+
+		return $out_exif;
+	}
+
 	public static function upload_is_valid(array $file)
 	{
 		global $cfg, $GLOB;

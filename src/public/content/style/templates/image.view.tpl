@@ -40,15 +40,13 @@
 			<div>
 				<div class="headingSlide closed"><a href="#" onclick="return false;">Dati EXIF</a></div>
 				<div class="contentSlide closed" style="padding">
-					<table>
-						<tr>
-							<td>Exif 1</td>
-							<td>val1</td>
-						</tr>
-						<tr>
-							<td>Exif 2</td>
-							<td>val2</td>
-						</tr>
+					<table class="completeExif">
+						{foreach from=$exif_e item=exif}
+							<tr>
+								<td>{$exif.descr}</td>
+								<td>{$exif.val}</td>
+							</tr>
+						{/foreach}
 					</table>
 				</div>
 			</div>

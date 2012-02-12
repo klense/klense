@@ -33,19 +33,14 @@
 	$smarty->assign('user_url', 'user/' . htmles($owner->getPublicName()));
 	$smarty->assign('is_owner', (isset($_SESSION["uid"]) && $owner->getId() == $_SESSION["uid"]));
 
-	$exif = $img->getExif();
-	$exif_disp = array();
-	$myexif = array();
+	$exif = $img->getUserFriendlyExif(false); // Exif not escaped
+	$exif_e = escape_array($exif); // Exif escaped
+	$myexif = array(); // Elaborated exif data
 
-	if(isset($exif['IFD0']['Make']))
-		$exif_disp['make'] = array('descr'=>'Produttore', 'val'=>htmles($exif['IFD0']['Make']));
-	if(isset($exif['IFD0']['Model']))
-		$exif_disp['model'] = array('descr'=>'Modello', 'val'=>htmles($exif['IFD0']['Model']));
-
-	if(isset($exif['IFD0']['Make']) && isset($exif['IFD0']['Model']))
-		$myexif['make_model'] = htmles($exif['IFD0']['Make'] . ' ' . $exif['IFD0']['Model']);
-	if(isset($exif['IFD0']['DateTime'])) {
-		$dtime = new DateTime($exif['IFD0']['DateTime'], $owner->getTimezone());
+	if(isset($exif['IFD0/Make']) && isset($exif['IFD0/Model']))
+		$myexif['make_model'] = htmles($exif['IFD0/Make']['val'] . ' ' . $exif['IFD0/Model']['val']);
+	if(isset($exif['IFD0/DateTime'])) {
+		$dtime = new DateTime($exif['IFD0/DateTime']['val'], $owner->getTimezone());
 		// TODO Use preferred locale format when printing date/times
 		$myexif['shot_ownerdate'] = htmles($dtime->format('d/m/Y'));
 		$myexif['shot_ownertime'] = htmles($dtime->format('H:i'));
@@ -54,7 +49,7 @@
 		$myexif['shot_userdatetime'] = htmles($dtime->format('d/m/Y H:i'));
 	}
 
-	$smarty->assign('exif', $exif_disp);
+	$smarty->assign('exif_e', $exif_e);
 	$smarty->assign('myexif', $myexif);
 
 	$smarty->assign('hide_exif', $img->getHideExif());
