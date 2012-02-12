@@ -66,6 +66,8 @@
 			if(isset($GLOB['params'][1])) {
 				if($GLOB['params'][1] == 'upload') {
 					require 'includes/pages/image.upload.php';
+				} else if($GLOB['params'][1] == 'upload_b') {
+					require 'includes/pages/image.upload.backend.php';
 				} else if($GLOB['params'][1] == 'view') {
 					require 'includes/pages/image.view.php';
 				} else if($GLOB['params'][1] == 'edit-overlay') {

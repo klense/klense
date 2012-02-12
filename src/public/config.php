@@ -22,7 +22,7 @@
 	$cfg['recaptcha_publickey'] = '';
 	$cfg['recaptcha_privatekey'] = '';
 
-	$cfg['max_upload_size'] = 8388608; // 8MB
+	$cfg['max_upload_size'] = 8388608; // 8MB - Remember to change this value in .htaccess and in plupload too
 	$cfg['upload_dir'] = 'content/uploads'; // WITHOUT final slash. E.g. 'content/uploads'
 
 	$cfg['path_start'] = 0; // Int. If app installed in http://example.org/test/klense/, then this parameter = 2. If installed in http://example.org/, it is = 0.

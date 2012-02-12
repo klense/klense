@@ -19,7 +19,9 @@ class Image {
 	private $_hide_exif = false;
 	private $_description = '';
 
-	public function __construct($id=0, array $file=null)
+	private $standard_uploader = true;
+
+	public function __construct($id=0, array $file=null, $standard_uploader=true)
 	{
 		$id = (int)$id;
 		$this->_id = $id;
@@ -66,7 +68,8 @@ class Image {
 		} else {
 			// Inizializza
 			$this->__file = $file;
-			if($this->upload_is_valid($file)) {
+			$this->standard_uploader = $standard_uploader;
+			if($this->upload_is_valid($file, $this->standard_uploader)) {
 				$this->generateMetadata($file['tmp_name'], $file['type']);
 			} else throw new Exception('Upload not valid.', 10100007);
 
@@ -185,7 +188,7 @@ class Image {
 
 				// Esegue un INSERT
 				$user = $this->getOwner();
-				$filename = $this->store($this->__file, $user->getUsername());
+				$filename = $this->store($this->__file, $user->getUsername(), $this->standard_uploader);
 				if($filename !== false) {
 					$this->_file_name = $filename;
 					
@@ -251,7 +254,7 @@ class Image {
 	// Controlla i campi per fare l'INSERT (es. username duplicati)
 	private function check_fields_insert()
 	{
-		if($this->upload_is_valid($this->__file) == false) {
+		if($this->upload_is_valid($this->__file, $this->standard_uploader) == false) {
 			return false;
 		}
 
@@ -277,7 +280,7 @@ class Image {
 	}
 	
 	// Store an uploaded (and ALREADY VALIDATED) image
-	private static function store($file, $username)
+	private static function store($file, $username, $standard_uploader = true)
 	{
 		global $cfg;
 
@@ -303,7 +306,12 @@ class Image {
 		$end_filename = $incremental_path . '/' . $out_server_filename;
 
 		// Move uploaded file
-		if(move_uploaded_file($file['tmp_name'], $end_filename)) {
+		if($standard_uploader)
+			$moved = move_uploaded_file($file['tmp_name'], $end_filename);
+		else
+			$moved = rename($file['tmp_name'], $end_filename);
+
+		if($moved) {
 
 			// Generate thumbnails
 			if(self::buildThumbnails($end_filename)) {
@@ -581,13 +589,13 @@ class Image {
 		return $out_exif;
 	}
 
-	public static function upload_is_valid(array $file)
+	public static function upload_is_valid(array $file, $standard_uploader = true)
 	{
 		global $cfg, $GLOB;
 
 		if($file['error'] == 0) {
 			if(in_array($file['type'], $GLOB['supported_mimes'])) {
-				if(is_uploaded_file($file['tmp_name'])) {
+				if(!$standard_uploader || is_uploaded_file($file['tmp_name'])) {
 					if($file['size'] <= $cfg['max_upload_size']) {
 
 						// Tutti i controlli sono stati superati.

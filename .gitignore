@@ -6,3 +6,5 @@ src/public/content/locales/*/LC_MESSAGES/*.mo
 src/public/content/uploads/*
 !src/public/content/uploads/index.html
 src/public/.htaccess
+src/public/content/uploads-temp/*
+!src/public/content/uploads-temp/index.html
