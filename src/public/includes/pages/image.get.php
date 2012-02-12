@@ -8,12 +8,7 @@
 	if(!isset($GLOB['params'][3]))
 		$suffix = '';
 	else {
-		$suffix = $GLOB['params'][3];
-		$lastdot = mb_strrpos($suffix,'.');
-		if($lastdot !== false) { // remove optional extension
-			$suffix = mb_substr($suffix, 0, $lastdot);
-		}
-		$suffix = str_replace(array('.', '/', '\\'), '', $suffix);
+		$suffix = str_replace(array('.', '/', '\\'), '', $GLOB['params'][3]);
 	}
 
 	try {

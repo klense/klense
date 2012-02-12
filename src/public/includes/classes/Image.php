@@ -259,17 +259,17 @@ class Image {
 	}
 
 	// Return an address that executes a php script
-	public function getSafeFilename($suffix = '', $extension = true)
+	public function getSafeFilename($suffix = '')
 	{
 		if($this->getId() > 0) {
 			$ret = 'image/get/' . $this->getId() . '/' . $suffix;
 
-			if($extension) {
-				if($this->getMimeType() == 'image/jpeg') {
-					$ret .= '.jpg';
-				} elseif($this->getMimeType() == 'image/png') {
-					$ret .= '.png';
-				}
+			// Add image file name
+			$ret .= '/klense-' . $this->getId() . '-' . $suffix;
+			if($this->getMimeType() == 'image/jpeg') {
+				$ret .= '.jpg';
+			} elseif($this->getMimeType() == 'image/png') {
+				$ret .= '.png';
 			}
 
 			return $ret;
