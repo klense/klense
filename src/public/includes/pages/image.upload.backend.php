@@ -11,7 +11,7 @@
 	if(!isset($_REQUEST["name"])) die('No direct access');
 
 	// Settings
-	$targetDir = "content/uploads-temp";
+	$targetDir = $cfg['temp_upload_dir'];
 
 	$cleanupTargetDir = true; // Remove old files
 	$maxFileAge = 2 * 3600; // Temp file age in seconds

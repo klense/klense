@@ -44,6 +44,10 @@
 
 	$smarty->assign('base_url_params', htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES));
 
+	$smarty->assign('sidebar_top_ad', $cfg['sidebar_top_ad']);
+	$smarty->assign('before_footer_ad', $cfg['before_footer_ad']);
+	$smarty->assign('analytics_code', $cfg['analytics_code']);
+
 
 	switch($GLOB['params'][0]) {
 		case 'logout':

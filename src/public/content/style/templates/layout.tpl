@@ -28,6 +28,7 @@
 	<link rel="stylesheet" type="text/css" href="content/style/style.css?v=20120212" />
 	<link rel="stylesheet" type="text/css" href="content/style/style.print.css?v=20120212" media="print" />
 	{block name=head}{/block}
+	{$analytics_code}
 </head>
 <body>
 	{block name=header}	
@@ -78,19 +79,15 @@
 	{/block}
 	<div id="wrapper">
 		<div id="right_sidebar">
-			{block name=top_sidebar}
-			<script type="text/javascript">
-			/* <![CDATA[ */
-			document.write('<s'+'cript type="text/javascript" src="http://ad.altervista.org/js.ad/size=300X250/r='+new Date().getTime()+'"><\/s'+'cript>');
-			/* ]]> */
-			</script>
-			{/block}
+			{block name=top_sidebar}{$sidebar_top_ad}{/block}
+			{block name=middle_sidebar}{/block}
 			{block name=bottom_sidebar}{/block}
 		</div>
 		<div id="main_content">
 			{block name=content}{/block}
 			{block name=footer}
 				<div id="footer">
+					{$before_footer_ad}
 					<hr />
 					<span>klense</span>
 				</div>

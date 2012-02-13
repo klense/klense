@@ -23,7 +23,7 @@
 		{$edit_form}
 	{/if}
 {/block}
-{block name=bottom_sidebar}
+{block name=middle_sidebar}
 	<div class="image_sidebar_sections">
 		<div class="image_owner">Di <a href="{$user_url}">{$user_publicname}</a></div>
 		{if $hide_exif == false}
