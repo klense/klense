@@ -351,4 +351,7 @@ function pageNotFound()
 	exit();
 }
 
+/* Other utils */
+require_once('includes/UrlLinker.php');
+
 ?>

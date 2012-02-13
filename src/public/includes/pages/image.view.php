@@ -28,7 +28,7 @@
 	$smarty->assign('image_id', $img->getId());
 	$smarty->assign('image_displayName', htmles($img->getDisplayName()));
 	$smarty->assign('image_filename', htmles($GLOB['base_url'] . '/' . $img->getSafeFilename('wh_size4'))); // Use full url for compatibility with external services (e.g. facebook)
-	$smarty->assign('image_description', htmles($img->getDescription()));
+	$smarty->assign('image_description', htmlEscapeAndLinkUrls($img->getDescription()));
 
 	$smarty->assign('user_publicname', htmles($owner->getPublicName()));
 	$smarty->assign('user_url', 'user/' . htmles($owner->getPublicName()));
