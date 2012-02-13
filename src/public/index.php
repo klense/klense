@@ -35,7 +35,7 @@
 
 		$GLOB['locale'] = 'it_IT'; // ottenere da lingua utente TODO
 	} else {
-		$GLOB['locale'] = 'it_IT'; // ottenere da lingua browser TODO
+		$GLOB['locale'] = 'it_IT'; // ottenere da lingua browser HTTP_ACCEPT_LANGUAGE TODO
 	}
 	apply_locale();
 

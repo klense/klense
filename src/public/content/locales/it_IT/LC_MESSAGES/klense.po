@@ -2,36 +2,380 @@ msgid ""
 msgstr ""
 "Project-Id-Version: klense\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-10 01:11+0100\n"
-"PO-Revision-Date: 2012-02-10 01:11+0100\n"
+"POT-Creation-Date: 2012-02-13 12:06+0100\n"
+"PO-Revision-Date: 2012-02-13 12:07+0100\n"
 "Last-Translator: Daniele Di Sarli <danieleds0@gmail.com>\n"
 "Language-Team: \n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-KeywordsList: _;gettext;gettext_noop;__\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;__;_ngettext:1,2\n"
 "X-Poedit-Basepath: /home/daniele/Progetti/www/klense/\n"
 "X-Poedit-Language: Italian\n"
 "X-Poedit-Country: ITALY\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SearchPath-0: src\n"
+
+#: src/public/includes/utils.php:349
+msgid "Page not found"
+msgstr "Pagina non trovata"
+
+#: src/public/includes/pages/image.edit.overlay.php:6
+msgid "Unknown error."
+msgstr "Errore sconosciuto."
+
+#: src/public/includes/pages/image.edit.overlay.php:13
+msgid "Image not found."
+msgstr "Immagine non trovata."
+
+#: src/public/includes/pages/image.edit.overlay.php:27
+msgid "The values are not valid."
+msgstr "I valori non sono validi"
+
+#: src/public/includes/pages/image.edit.overlay.php:35
+msgid "You are not the owner of this image."
+msgstr "Non sei il proprietario di questa immagine."
 
 #: src/public/includes/pages/image.upload.php:36
 #, php-format
 msgid "Error uploading %s"
 msgstr "Errore nel caricamento di %s"
 
-#: src/public/includes/pages/image.view.php:56
-#: src/public/includes/pages/image.view.php:63
+#: src/public/includes/pages/image.view.php:80
+#, php-format
+msgid "%d comment"
+msgid_plural "%d comments"
+msgstr[0] "%d commento"
+msgstr[1] "%d commenti"
+
+#: src/public/includes/classes/Image.php:473
+msgid "Make"
+msgstr "Marca"
+
+#: src/public/includes/classes/Image.php:474
+msgid "Model"
+msgstr "Modello"
+
+#: src/public/includes/classes/Image.php:475
+msgid "Date and time"
+msgstr "Data e ora"
+
+#: src/public/includes/classes/Image.php:476
+msgid "Software"
+msgstr "Software"
+
+#: src/public/includes/classes/Image.php:477
+msgid "Copyright"
+msgstr "Copyright"
+
+#: src/public/includes/classes/Image.php:481
+msgid "Horizontal"
+msgstr "Orizzontale"
+
+#: src/public/includes/classes/Image.php:482
+msgid "Mirror horizontal"
+msgstr "Orizzontale speculare"
+
+#: src/public/includes/classes/Image.php:483
+msgid "Rotate 180"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:484
+msgid "Mirror vertical"
+msgstr "Verticale speculare"
+
+#: src/public/includes/classes/Image.php:485
+msgid "Mirror horizontal and rotate 270 CW"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:486
+msgid "Rotate 90 CW"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:487
+msgid "Mirror horizontal and rotate 90 CW"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:488
+msgid "Rotate 270 CW"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:490
+msgid "Orientation"
+msgstr "Orientamento"
+
+#: src/public/includes/classes/Image.php:492
+msgid "X resolution"
+msgstr "Risoluzione X"
+
+#: src/public/includes/classes/Image.php:493
+msgid "Y resolution"
+msgstr "Risoluzione Y"
+
+#: src/public/includes/classes/Image.php:497
+msgid "None"
+msgstr "Nessuno"
+
+#: src/public/includes/classes/Image.php:498
+msgid "Inches"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:499
+msgid "Centimeters"
+msgstr "Centimetri"
+
+#: src/public/includes/classes/Image.php:501
+msgid "Resolution unit"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:503
+msgid "Aperture"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:504
+msgid "F number"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:505
+msgid "Exposure time"
+msgstr "Tempo di esposizione"
+
+#: src/public/includes/classes/Image.php:506
+msgid "ISO"
+msgstr "ISO"
+
+#: src/public/includes/classes/Image.php:510
+msgid "Unknown"
+msgstr "Sconosciuto"
+
+#: src/public/includes/classes/Image.php:511
+#: src/public/includes/classes/Image.php:512
+msgid "Fluorescent"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:513
+msgid "Tungsten (Incandescent)"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:514
+#: src/public/includes/classes/Image.php:566
+msgid "Flash"
+msgstr "Flash"
+
+#: src/public/includes/classes/Image.php:515
+msgid "Fine Weather"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:516
+msgid "Cloudy"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:517
+msgid "Shade"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:518
+msgid "Daylight Fluorescent"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:519
+msgid "Day White Fluorescent"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:520
+msgid "Cool White Fluorescent"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:521
+msgid "White Fluorescent"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:522
+msgid "Warm White Fluorescent"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:523
+msgid "Standard Light A"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:524
+msgid "Standard Light B"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:525
+msgid "Standard Light C"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:526
+msgid "D55"
+msgstr "D55"
+
+#: src/public/includes/classes/Image.php:527
+msgid "D65"
+msgstr "D65"
+
+#: src/public/includes/classes/Image.php:528
+msgid "D75"
+msgstr "D75"
+
+#: src/public/includes/classes/Image.php:529
+msgid "D50"
+msgstr "D50"
+
+#: src/public/includes/classes/Image.php:530
+msgid "ISO Studio Tungsten"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:531
+msgid "Other"
+msgstr "Altro"
+
+#: src/public/includes/classes/Image.php:533
+msgid "Light source"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:538
+msgid "No Flash"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:539
+msgid "Fired"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:540
+msgid "Fired, Return not detected"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:541
+msgid "Fired, Return detected"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:542
+msgid "On, Did not fire"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:543
+msgid "On, Fired"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:544
+msgid "On, Return not detected"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:545
+msgid "On, Return detected"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:546
+msgid "Off, Did not fire"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:547
+msgid "Off, Did not fire, Return not detected"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:548
+msgid "Auto, Did not fire"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:549
+msgid "Auto, Fired"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:550
+msgid "Auto, Fired, Return not detected"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:551
+msgid "Auto, Fired, Return detected"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:552
+msgid "No flash function"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:553
+msgid "Off, No flash function"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:554
+msgid "Fired, Red-eye reduction"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:555
+msgid "Fired, Red-eye reduction, Return not detected"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:556
+msgid "Fired, Red-eye reduction, Return detected"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:557
+msgid "On, Red-eye reduction"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:558
+msgid "On, Red-eye reduction, Return not detected"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:559
+msgid "On, Red-eye reduction, Return detected"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:560
+msgid "Off, Red-eye reduction"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:561
+msgid "Auto, Did not fire, Red-eye reduction"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:562
+msgid "Auto, Fired, Red-eye reduction"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:563
+msgid "Auto, Fired, Red-eye reduction, Return not detected"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:564
+msgid "Auto, Fired, Red-eye reduction, Return detected"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:571
+#: src/public/includes/classes/Image.php:580
+msgid "Auto"
+msgstr "Auto"
+
+#: src/public/includes/classes/Image.php:572
+#: src/public/includes/classes/Image.php:581
+msgid "Manual"
+msgstr "Manuale"
+
+#: src/public/includes/classes/Image.php:573
+msgid "Auto bracket"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:575
+msgid "Exposure mode"
+msgstr ""
+
+#: src/public/includes/classes/Image.php:583
+msgid "White balance"
+msgstr "Bilanciamento del bianco"
+
+#: src/public/includes/classes/Image.php:667
+#: src/public/includes/classes/Image.php:674
 msgid "Medium"
 msgstr "Media"
 
-#: src/public/includes/pages/image.view.php:70
+#: src/public/includes/classes/Image.php:681
 msgid "Large"
 msgstr "Grande"
 
-#: src/public/includes/pages/image.view.php:77
+#: src/public/includes/classes/Image.php:688
 msgid "Original"
 msgstr "Originale"
 

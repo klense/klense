@@ -34,6 +34,9 @@
 	$smarty->assign('user_url', 'user/' . htmles($owner->getPublicName()));
 	$smarty->assign('is_owner', (isset($_SESSION["uid"]) && $owner->getId() == $_SESSION["uid"]));
 
+
+	/* Exif */
+
 	$exif = $img->getUserFriendlyExif(false); // Exif not escaped
 	$exif_e = escape_array($exif); // Exif escaped
 	$myexif = array(); // Elaborated exif data
@@ -72,6 +75,10 @@
 	/* Edit overlay form */
 	$smarty->assign('edit_form', $smarty->fetch('image.edit.overlay.tpl'));
 
+	/* Comments */
+	$comment_number = 0;
+	$comment_num_str = sprintf(_ngettext("%d comment", "%d comments", $comment_number), $comment_number);
+	//echo $comment_num_str;
 
 	$smarty->display('image.view.tpl');
 
