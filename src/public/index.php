@@ -48,6 +48,8 @@
 	$smarty->assign('before_footer_ad', $cfg['before_footer_ad']);
 	$smarty->assign('analytics_code', $cfg['analytics_code']);
 
+	$smarty->assign('right_sidebar', true);
+
 
 	switch($GLOB['params'][0]) {
 		case 'logout':

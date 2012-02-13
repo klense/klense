@@ -25,8 +25,8 @@
 	<script type="text/javascript" src="content/js/modernizr/modernizr.js"></script>
 	<script type="text/javascript" src="content/js/pages/common.js"></script>
 
-	<link rel="stylesheet" type="text/css" href="content/style/style.css?v=20120212" />
-	<link rel="stylesheet" type="text/css" href="content/style/style.print.css?v=20120212" media="print" />
+	<link rel="stylesheet" type="text/css" href="content/style/style.css?v=20120213" />
+	<link rel="stylesheet" type="text/css" href="content/style/style.print.css?v=20120213" media="print" />
 	{block name=head}{/block}
 	{$analytics_code}
 </head>
@@ -78,12 +78,14 @@
 		</div>
 	{/block}
 	<div id="wrapper">
-		<div id="right_sidebar">
-			{block name=top_sidebar}{$sidebar_top_ad}{/block}
-			{block name=middle_sidebar}{/block}
-			{block name=bottom_sidebar}{/block}
-		</div>
-		<div id="main_content">
+		{if $right_sidebar}
+			<div id="right_sidebar">
+				{block name=top_sidebar}{$sidebar_top_ad}{/block}
+				{block name=middle_sidebar}{/block}
+				{block name=bottom_sidebar}{/block}
+			</div>
+		{/if}
+		<div id="main_content" class="{if $right_sidebar}with-sidebar{else}without-sidebar{/if}">
 			{block name=content}{/block}
 			{block name=footer}
 				<div id="footer">

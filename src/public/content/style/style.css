@@ -74,11 +74,12 @@ a:active { text-decoration: none; color:#FFBF00; }
 }
 
 #main_content {
-	width:670px;
 	min-height:500px; /* for modern browsers */
 	height:auto !important; /* for modern browsers */
 	height:500px; /* for IE5.x and IE6 */
 }
+#main_content.with-sidebar { width:670px; }
+#main_content.without-sidebar { width:100%; }
 
 #mainmenu {
 	margin-left: 190px;
