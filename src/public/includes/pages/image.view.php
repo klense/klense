@@ -16,11 +16,12 @@
 
 	$owner = new User($userid);
 
-	/*
-	$img->rebuildThumbnails();
-	$img->regenerateMetadata();
-	$img->save();
-	*/
+	// TODO Only for admins
+	if(isset($GLOB['params'][4]) && Session::isAuthenticated() && $GLOB['params'][4] == 'rebuild_thumbnails') {
+		$img->rebuildThumbnails();
+		$img->regenerateMetadata();
+		$img->save();
+	}
 
 	$smarty->assign('pageTitle', htmles($img->getDisplayName() . " | klense"));
 

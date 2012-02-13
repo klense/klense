@@ -4,7 +4,7 @@ $(function() {
 		runtimes : 'html5,html4',
 		url : 'upload_b',
 		max_file_size : '7mb',
-		chunk_size : '1mb',
+		chunk_size : '350kb',
 		unique_names : false,
 		
 		// Resize images on clientside if we can

@@ -8,11 +8,13 @@
 		die();
 	}
 
+	if(!isset($_REQUEST["name"])) die('No direct access');
+
 	// Settings
 	$targetDir = "content/uploads-temp";
 
 	$cleanupTargetDir = true; // Remove old files
-	$maxFileAge = 3600; // Temp file age in seconds
+	$maxFileAge = 2 * 3600; // Temp file age in seconds
 
 	// 5 minutes execution time
 	@set_time_limit(5 * 60);
@@ -111,9 +113,20 @@
 	// Check if file has been uploaded
 	if (!$chunks || $chunk == $chunks - 1) {
 
-		$finfo = finfo_open(FILEINFO_MIME_TYPE);
-		$mime = finfo_file($finfo, "$filePath.part");
-		finfo_close($finfo);
+		$mime = '';
+		if(function_exists("finfo_open")) {
+			$finfo = finfo_open(FILEINFO_MIME_TYPE);
+			$mime = finfo_file($finfo, "$filePath.part");
+			finfo_close($finfo);
+		} elseif(function_exists("mime_content_type")) {
+			$mime = mime_content_type("$filePath.part"); // Deprecated but required for php < 5.3
+		} else {
+			if(@imagecreatefromjpeg("$filePath.part")) {
+				$mime = "image/jpeg";
+			} elseif(@imagecreatefrompng("$filePath.part")) {
+				$mime = "image/png";
+			}
+		}
 
 		$file = array(
 					'name'     => base64_decode(substr($fileName, strpos($fileName, '-')+1)),
