@@ -36,27 +36,27 @@
 
 
 	/* Exif */
-
-	$exif = $img->getUserFriendlyExif(false); // Exif not escaped
-	$exif_e = escape_array($exif); // Exif escaped
-	$myexif = array(); // Elaborated exif data
-
-	if(isset($exif['IFD0/Make']) && isset($exif['IFD0/Model']))
-		$myexif['make_model'] = htmles($exif['IFD0/Make']['val'] . ' ' . $exif['IFD0/Model']['val']);
-	if(isset($exif['IFD0/DateTime'])) {
-		$dtime = new DateTime($exif['IFD0/DateTime']['val'], $owner->getTimezone());
-		// TODO Use preferred locale format when printing date/times
-		$myexif['shot_ownerdate'] = htmles($dtime->format('d/m/Y'));
-		$myexif['shot_ownertime'] = htmles($dtime->format('H:i'));
-		$dtime->setTimezone(new DateTimeZone(date_default_timezone_get()));
-		$myexif['shot_userdatetime_iso'] = htmles($dtime->format('c'));
-		$myexif['shot_userdatetime'] = htmles($dtime->format('d/m/Y H:i'));
-	}
-
-	$smarty->assign('exif_e', $exif_e);
-	$smarty->assign('myexif', $myexif);
-
 	$smarty->assign('hide_exif', $img->getHideExif());
+	if(!$img->getHideExif()) {
+		$exif = $img->getUserFriendlyExif(false); // Exif not escaped
+		$exif_e = escape_array($exif); // Exif escaped
+		$myexif = array(); // Elaborated exif data
+
+		if(isset($exif['IFD0/Make']) && isset($exif['IFD0/Model']))
+			$myexif['make_model'] = htmles($exif['IFD0/Make']['val'] . ' ' . $exif['IFD0/Model']['val']);
+		if(isset($exif['IFD0/DateTime'])) {
+			$dtime = new DateTime($exif['IFD0/DateTime']['val'], $owner->getTimezone());
+			// TODO Use preferred locale format when printing date/times
+			$myexif['shot_ownerdate'] = htmles($dtime->format('d/m/Y'));
+			$myexif['shot_ownertime'] = htmles($dtime->format('H:i'));
+			$dtime->setTimezone(new DateTimeZone(date_default_timezone_get()));
+			$myexif['shot_userdatetime_iso'] = htmles($dtime->format('c'));
+			$myexif['shot_userdatetime'] = htmles($dtime->format('d/m/Y H:i'));
+		}
+
+		$smarty->assign('exif_e', $exif_e);
+		$smarty->assign('myexif', $myexif);
+	}
 
 
 	/* Build "Other sizes" array */

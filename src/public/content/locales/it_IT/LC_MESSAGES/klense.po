@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: klense\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-13 12:06+0100\n"
-"PO-Revision-Date: 2012-02-13 12:07+0100\n"
+"POT-Creation-Date: 2012-02-13 12:37+0100\n"
+"PO-Revision-Date: 2012-02-13 12:38+0100\n"
 "Last-Translator: Daniele Di Sarli <danieleds0@gmail.com>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -17,6 +17,34 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SearchPath-0: src\n"
+
+#: src/public/index.php:47
+msgid "Home"
+msgstr "Home"
+
+#: src/public/index.php:48
+msgid "Upload"
+msgstr "Carica"
+
+#: src/public/index.php:49
+msgid "Login"
+msgstr "Accedi"
+
+#: src/public/index.php:50
+msgid "Register"
+msgstr "Registrati"
+
+#: src/public/index.php:51
+msgid "Browse"
+msgstr "Esplora"
+
+#: src/public/index.php:52
+msgid "Most used tags"
+msgstr "Tag più utilizzati"
+
+#: src/public/index.php:53
+msgid "Help"
+msgstr "Aiuto"
 
 #: src/public/includes/utils.php:349
 msgid "Page not found"
