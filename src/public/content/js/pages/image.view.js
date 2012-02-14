@@ -20,8 +20,16 @@ $(function() {
 		'showCloseButton' : false,
 		'hideOnContentClick' : true,
 		'titleShow' : false,
-		'type' : 'image'
+		'type' : 'image',
+		onStart : hideFlash,
+		onClosed : showFlash
 	});
+	function hideFlash() { // Hide flash to avoid overlapping
+		$('embed, object, iframe').css('visibility', 'hidden');
+	}
+	function showFlash() {
+		$('embed, object, iframe').css({ 'visibility' : 'visible' });
+	}
 	
 	$(window).resize(function() {
 		$.fancybox.reshow();
