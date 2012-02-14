@@ -81,7 +81,7 @@ a:active { text-decoration: none; color:#FFBF00; }
 #main_content.with-sidebar { width:670px; }
 #main_content.without-sidebar { width:100%; }
 
-#mainmenu {
+.horizontalcssmenu {
 	margin-left: 190px;
 	margin-top: -17px;
 }
