@@ -13,3 +13,10 @@ Modernizr.load({
 		if(!Modernizr.input.placeholder) $('input, textarea').placeholder();
 	}
 });
+
+function hideFlash() { // Hide flash to avoid overlapping
+$('embed, object, iframe').css('visibility', 'hidden');
+}
+function showFlash() {
+	$('embed, object, iframe').css({ 'visibility' : 'visible' });
+}

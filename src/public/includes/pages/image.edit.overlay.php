@@ -16,19 +16,37 @@
 
 	if($GLOB['user']->getId() == $img->getOwnerId()) {
 
-		try {
-			$img->setDisplayName($_POST['displayName']);
-			$img->setDescription($_POST['description']);
-			$img->setTags(explode(',', $_POST['tags']));
-			$img->setHideExif( (isset($_POST['hide_exif'])) ? true : false );
+		if($_POST['delete'] == "1") {
 
-			$img->save();
-		} catch (Exception $e) {
-			echo htmles(__("The values are not valid."));
-			exit();
+			// Delete
+			try {
+				Image::deleteFromId($img->getId());
+			} catch (Exception $e) {
+				echo htmles(__("Error deleting image."));
+				exit();
+			}
+
+			echo "2";
+
+		} else {
+		
+			// Edit
+
+			try {
+				$img->setDisplayName($_POST['displayName']);
+				$img->setDescription($_POST['description']);
+				$img->setTags(explode(',', $_POST['tags']));
+				$img->setHideExif( (isset($_POST['hide_exif'])) ? true : false );
+
+				$img->save();
+			} catch (Exception $e) {
+				echo htmles(__("The values are not valid."));
+				exit();
+			}
+
+			echo "1";
+
 		}
-
-		echo "1";
 
 	} else {
 

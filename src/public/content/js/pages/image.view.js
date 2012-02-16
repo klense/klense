@@ -24,12 +24,7 @@ $(function() {
 		onStart : hideFlash,
 		onClosed : showFlash
 	});
-	function hideFlash() { // Hide flash to avoid overlapping
-		$('embed, object, iframe').css('visibility', 'hidden');
-	}
-	function showFlash() {
-		$('embed, object, iframe').css({ 'visibility' : 'visible' });
-	}
+
 	
 	$(window).resize(function() {
 		$.fancybox.reshow();
@@ -40,6 +35,8 @@ $(function() {
 		'titleShow'		: false,
 		'onClosed'		: function() {
 			$("#edit_form .form_error").hide();
-		}
+		},
+		onStart : hideFlash,
+		onClosed : showFlash
 	});
 });
