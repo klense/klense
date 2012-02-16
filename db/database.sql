@@ -1,24 +1,7 @@
--- phpMyAdmin SQL Dump
--- version 3.4.5deb1
--- http://www.phpmyadmin.net
---
--- Host: localhost
--- Generato il: Feb 10, 2012 alle 13:21
--- Versione del server: 5.1.58
--- Versione PHP: 5.3.6-13ubuntu3.3
-
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
---
--- Database: `klense`
---
-
--- --------------------------------------------------------
-
---
--- Struttura della tabella `kl_images`
---
+CREATE DATABASE `klense` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `klense`;
 
 CREATE TABLE IF NOT EXISTS `kl_images` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -36,13 +19,16 @@ CREATE TABLE IF NOT EXISTS `kl_images` (
   PRIMARY KEY (`id`),
   KEY `upload_time` (`upload_time`),
   FULLTEXT KEY `tags` (`tags`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
 
--- --------------------------------------------------------
-
---
--- Struttura della tabella `kl_images_permissions`
---
+CREATE TABLE IF NOT EXISTS `kl_images_comments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `image_id` int(11) NOT NULL,
+  `content` varchar(1024) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `image` (`image_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `kl_images_permissions` (
   `image_id` int(11) NOT NULL,
@@ -55,12 +41,6 @@ CREATE TABLE IF NOT EXISTS `kl_images_permissions` (
   `comment_registered` tinyint(1) NOT NULL,
   UNIQUE KEY `image_id` (`image_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Struttura della tabella `kl_users`
---
 
 CREATE TABLE IF NOT EXISTS `kl_users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
