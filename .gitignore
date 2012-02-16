@@ -2,6 +2,7 @@
 .directory
 *.kate-swp
 src/public/config.override.php
+src/public/content/locales/*.mo
 src/public/content/locales/*/LC_MESSAGES/*.mo
 src/public/content/uploads/*
 !src/public/content/uploads/index.html
