@@ -627,6 +627,28 @@ class Image {
 		} else throw new Exception('Query error.', 10000002);
 	}
 
+	public function getComments()
+	{
+		global $cfg;
+
+		$query = "SELECT {$cfg['table_prefix']}_images_comments.*
+				FROM {$cfg['table_prefix']}_images_comments WHERE
+					user_id = " . $this->getOwnerId() . "
+					AND image_id = " . $this->getId() . "
+				ORDER BY datetime desc";
+
+		$result = mysql_query($query);
+
+		if ($result !== false) {
+			$ret = array();
+			while($row = mysql_fetch_assoc($result)) {
+				$id = (int)$row['id'];
+				$ret[$id] = new ImageComment(null, $row);
+			}
+			return $ret;
+		} else throw new Exception('Query error.', 10000002);
+	}
+
 	// Returns an array with the id of the last $num images uploaded
 	public static function getLastUploadedIds($num)
 	{

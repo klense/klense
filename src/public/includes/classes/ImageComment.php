@@ -8,39 +8,53 @@ class ImageComment {
 	private $_datetime = null;
 	private $_content = '';
 
-	public function __construct($id=0)
+	public function __construct($id=0, array $assocRowData=null)
 	{
-		$id = (int)$id;
-		$this->_id = $id;
+		if($assocRowData != null) {
 
-		if($this->_id > 0) {
-			// Carica tutti i valori nel caso in cui l'ID sia > 0
-			global $cfg;
-			
-			$query = "SELECT 
-						user_id,
-						image_id,
-						datetime,
-						content
-					FROM {$cfg['table_prefix']}_images_comments WHERE id = {$this->_id}";
-
-			$result = mysql_query($query);
-
-			if ($result !== false) {
-				if(mysql_num_rows($result) > 0) {
-					$row = mysql_fetch_assoc($result);
-
-					$this->_user_id = (int)$row['user_id'];
-					$this->_image_id = (int)$row['image_id'];
-					$this->_datetime = new DateTime($row['datetime'], new DateTimeZone('UTC'));
-					$this->_content = $row['content'];
-				} else throw new Exception('ID does not exist.', 1000001);
-			} else throw new Exception('Query error.', 10000002);
+			// Load data from the passed array
+			$this->loadFromAssocRow($assocRowData);
 
 		} else {
-			// Inizializza
-			$this->_datetime = new DateTime('now', new DateTimeZone('UTC'));
+
+			$id = (int)$id;
+			$this->_id = $id;
+
+			if($this->_id > 0) {
+				// Carica tutti i valori nel caso in cui l'ID sia > 0
+				global $cfg;
+				
+				$query = "SELECT 
+							id,
+							user_id,
+							image_id,
+							datetime,
+							content
+						FROM {$cfg['table_prefix']}_images_comments WHERE id = {$this->_id}";
+
+				$result = mysql_query($query);
+
+				if ($result !== false) {
+					if(mysql_num_rows($result) > 0) {
+						$row = mysql_fetch_assoc($result);
+						$this->loadFromAssocRow($row);
+					} else throw new Exception('ID does not exist.', 1000001);
+				} else throw new Exception('Query error.', 10000002);
+
+			} else {
+				// Inizializza
+				$this->_datetime = new DateTime('now', new DateTimeZone('UTC'));
+			}
+
 		}
+	}
+
+	private function loadFromAssocRow($row) {
+		$this->_id = (int)$row['id'];
+		$this->_user_id = (int)$row['user_id'];
+		$this->_image_id = (int)$row['image_id'];
+		$this->_datetime = new DateTime($row['datetime'], new DateTimeZone('UTC'));
+		$this->_content = $row['content'];
 	}
 	
 	function getId() { return $this->_id; }
@@ -81,27 +95,27 @@ class ImageComment {
 	*
 	* Restituisce l'id interessato dall'operazione, oppure "false" se l'operazione fallisce.
 	*/	
-	function save() {
+	function save() { 
 		global $cfg;
 
 		if($this->check_fields()) {
 
-			if($this->_id > 0) {
+			if($this->_id > 0) { 
 
 				// Esegue un UPDATE
 
 				$sql = "UPDATE {$cfg['table_prefix']}_images_comments SET 
-							user_id = " 			. (int)$this->_user_id . ",
-							image_id = " 			. (int)($this->_image_id . ",
-							datetime = '" 			. $this->_datetime->format('Y-m-d H:i:s') . "',
-							content = '" 			. mysql_real_escape_string($this->_content) . "'
+							user_id = " 	. (int)$this->_user_id . ",
+							image_id = "	. (int)$this->_image_id . ",
+							datetime = '" 	. $this->_datetime->format('Y-m-d H:i:s') . "',
+							content = '" 	. mysql_real_escape_string($this->_content) . "'
 						WHERE (id = {$this->_id})";
 
 				if(mysql_query($sql)) {
 					return $this->_id;
-				} else throw new Exception('Query error.', 10000002);
+				} else throw new Exception('Query error.', 10000002); 
 
-			} else {
+			} else { 
 
 				// Esegue un INSERT
 
@@ -130,14 +144,14 @@ class ImageComment {
 							$row = mysql_fetch_assoc($result);
 							$this->_id = (int)$row['id'];
 							return $this->_id;
-						} else return throw new Exception('Inserted id not found.', 10000002);;
+						} else throw new Exception('Inserted id not found.', 10000002);;
 					} else throw new Exception('Query error.', 10000002);
 
 				} else throw new Exception('Query error.', 10000002);
 
 			}
 
-		} else throw new Exception('Invalid values.');
+		} else throw new Exception('Invalid values.'); 
 	}
 
 	// Controlla i campi obbligatori alla ricerca di valori non impostati

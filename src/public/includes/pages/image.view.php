@@ -76,6 +76,7 @@
 	$smarty->assign('edit_form', $smarty->fetch('image.edit.overlay.tpl'));
 
 	/* Comments */
+	//var_dump($img->getComments());
 	$comment_number = 0;
 	$comment_num_str = sprintf(_ngettext("%d comment", "%d comments", $comment_number), $comment_number);
 	//echo $comment_num_str;
