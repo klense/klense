@@ -768,6 +768,16 @@ class Image {
 			$img = new Image($id);
 
 			if(unlink($img->getFilename())) {
+
+				// Unlink thumbnails too
+				$files = glob($img->getFilename() . "--*");
+				foreach($files as $file) {
+					if(is_file($file)) {
+						if(unlink($file))
+							continue;
+						else throw new Exception('Cannot delete thumbnail file.', 10100006);
+					}
+				}
 			
 				$query = "DELETE FROM {$cfg['table_prefix']}_images
 						WHERE (id = {$id})";
