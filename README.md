@@ -24,4 +24,9 @@ Getting started
         * When asked for the `index.php` directory:
             * If `index.php` will be accessible from `http://www.example.com/index.php`, insert `/`
             * If `index.php` will be accessible from `http://www.example.com/my/path/index.php`, insert `/my/path/`
-5. Run it! The entry point is `src/public/index.php`
+5. Set permissions
+    * klense needs write access to:
+        * `src/public/content/uploads/`
+        * `src/public/content/uploads-temp/`
+        * `src/public/includes/libs/smarty/templates_c/`
+6. Run it! The entry point is `src/public/index.php`
