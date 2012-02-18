@@ -21,9 +21,9 @@
 		$GLOB['base_url'] .= '/' . $tmp_paths[$i];
 	}
 
-	$smarty->assign('base_url', htmlspecialchars($GLOB['base_url'], ENT_QUOTES));
-	$smarty->assign('absolute_base_url', htmlspecialchars(currentFullBaseUrl(), ENT_QUOTES));
-	$smarty->assign('base_url_params', htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES));
+	$smarty->assign('base_url', htmles($GLOB['base_url']));
+	$smarty->assign('absolute_base_url', htmles(currentFullBaseUrl()));
+	$smarty->assign('base_url_params', htmles($_SERVER['REQUEST_URI']));
 
 	$timezone = 'UTC';
 

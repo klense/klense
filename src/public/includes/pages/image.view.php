@@ -47,8 +47,10 @@
 		if(isset($exif['IFD0/DateTime'])) {
 			$dtime = new DateTime($exif['IFD0/DateTime']['val'], $owner->getTimezone());
 			// TODO Use preferred locale format when printing date/times
+			// Use image owner timezone
 			$myexif['shot_ownerdate'] = htmles($dtime->format('d/m/Y'));
 			$myexif['shot_ownertime'] = htmles($dtime->format('H:i'));
+			// Use viewer timezone
 			$dtime->setTimezone(new DateTimeZone(date_default_timezone_get()));
 			$myexif['shot_userdatetime_iso'] = htmles($dtime->format('c'));
 			$myexif['shot_userdatetime'] = htmles($dtime->format('d/m/Y H:i'));
@@ -76,10 +78,26 @@
 	$smarty->assign('edit_form', $smarty->fetch('image.edit.overlay.tpl'));
 
 	/* Comments */
-	//var_dump($img->getComments());
-	$comment_number = 0;
+	$comments = $img->getComments();
+	$plaincomments = array();
+	foreach($comments as $comm) {
+		$dtime = $comm->getDateTime(new DateTimeZone(date_default_timezone_get()));
+		$comm_user = $comm->getUser();
+
+		$plaincomments[] = array(
+								'id' => $comm->getId(),
+								'author_url' => 'user/' . htmles($comm_user->getId()),
+								'author_name' => $comm_user->getPublicName(),
+								'datetime' => htmles($dtime->format('d/m/Y H:i')),
+								'datetime_iso' => htmles($dtime->format('c')),
+								'content' => htmles($comm->getContent())
+							);
+	}
+	$comment_number = count($plaincomments);
 	$comment_num_str = sprintf(_ngettext("%d comment", "%d comments", $comment_number), $comment_number);
-	//echo $comment_num_str;
+	
+	$smarty->assign('comments', $plaincomments);
+	$smarty->assign('comments_count_str', $comment_num_str);
 
 	$smarty->display('image.view.tpl');
 

@@ -182,6 +182,11 @@ class ImageComment {
 		return true;
 	}
 
+	public function getUser()
+	{
+		return new User($this->getUserId());
+	}
+
 	/*
 	* Elimina un commento esistente.
 	*

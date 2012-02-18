@@ -7,18 +7,34 @@
 	<script type="text/javascript" src="content/js/pages/image.view.js"></script>
 {/block}
 {block name=content}
-	<div class="image_container">
-		<a class="fancybox_img" href="{$maxSize}"><img src="{$image_filename}" alt="{$image_displayName}" /></a>
-	</div>
-	<div class="image_meta">
-		<span class="image_title">{$image_displayName}</span>
-		{if $is_owner}<span class="image_editlink"><a href="#edit_form" id="image_edit_link">modifica</a></span>{/if}
-		<div class="image_description">{$image_description}</div>
-	</div>
-	<div style="margin-top: 50px;">
-		<div style="font-size: 1.3em;">Commenti</div>
-		<textarea style="width: 500px; height: 80px;" maxlength="1000"></textarea>
-	</div>
+	<section>
+		<article>
+			<section class="image_container">
+				<a class="fancybox_img" href="{$maxSize}"><img src="{$image_filename}" alt="{$image_displayName}" /></a>
+			</section>
+			<section class="image_meta">
+				<span class="image_title">{$image_displayName}</span>
+				{if $is_owner}<span class="image_editlink"><a href="#edit_form" id="image_edit_link">modifica</a></span>{/if}
+				<div class="image_description">{$image_description}</div>
+			</section>
+		</article>
+		<section id="image_comments">
+			<div>
+				<div style="font-size: 1.3em;">Aggiungi un commento</div>
+				<textarea style="width: 500px; height: 80px;" maxlength="1000"></textarea>
+			</div>
+			{foreach from=$comments item=comment}	
+				<article>
+					<header>
+						<a id="comment-{$comment.id}"></a>
+						<a href="{$comment.author_url}"><img src="content/style/images/generic_avatar.png" class="avatar small" /></a>
+						<a href="{$comment.author_url}">{$comment.author_name}</a> - <a href="{$base_url_params}#comment-{$comment.id}"><time pubdate datetime="{$comment.datetime_iso}">{$comment.datetime}</time></a>
+					</header>
+					<div>{$comment.content}</div>
+				</article>
+			{/foreach}
+		</section>
+	</section>
 	{if $is_owner}
 		{$edit_form}
 	{/if}
