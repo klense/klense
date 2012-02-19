@@ -1,7 +1,5 @@
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-CREATE DATABASE `klense` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `klense`;
 
 CREATE TABLE IF NOT EXISTS `kl_images` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -25,10 +23,11 @@ CREATE TABLE IF NOT EXISTS `kl_images_comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `image_id` int(11) NOT NULL,
+  `datetime` datetime NOT NULL,
   `content` varchar(1024) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `image` (`image_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 CREATE TABLE IF NOT EXISTS `kl_images_permissions` (
   `image_id` int(11) NOT NULL,
