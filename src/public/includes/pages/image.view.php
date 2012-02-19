@@ -124,7 +124,7 @@
 			$comm->setDateTime(new DateTime('now'));
 			$comm->save();
 		} catch (Exception $e) {
-			return "_error" . $e->getMessage();
+			return "_error";
 		}
 
 		$dtime = $comm->getDateTime(new DateTimeZone(date_default_timezone_get()));

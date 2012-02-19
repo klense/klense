@@ -145,7 +145,7 @@ class ImageComment {
 							$this->_id = (int)$row['id'];
 							return $this->_id;
 						} else throw new Exception('Inserted id not found.', 10000002);;
-					} else throw new Exception('Query error.'.$query, 10000002);
+					} else throw new Exception('Query error.', 10000002);
 
 				} else throw new Exception('Query error.', 10000002);
 
