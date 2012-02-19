@@ -3,6 +3,7 @@
 	<script type="text/javascript" src="content/js/jquery.fancybox/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
 	<script type="text/javascript" src="content/js/jquery.fancybox/fancybox/jquery.fancybox-1.3.4-reshow.js"></script>
 	<link rel="stylesheet" type="text/css" href="content/js/jquery.fancybox/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+	{$phplivex_init}
 
 	<script type="text/javascript" src="content/js/pages/image.view.js"></script>
 {/block}
@@ -19,24 +20,21 @@
 			</section>
 		</article>
 		<section id="image_comments">
-			<div>
-				<div style="font-size: 1.3em;">Aggiungi un commento</div>
-				<textarea style="width: 500px; height: 80px;" maxlength="1000"></textarea>
-			</div>
+			{if $authenticated}
+				<div>
+					<div style="font-size: 1.3em;" id="msg">Aggiungi un commento</div>
+					<textarea maxlength="1000" id="txtAddComment"></textarea>
+					<button class="orange" type="button" id="btnAddComment">Invia</button>
+				</div>
+			{/if}
+			<div id="comment_placeholder"></div>
 			{foreach from=$comments item=comment}	
-				<article>
-					<header>
-						<a id="comment-{$comment.id}"></a>
-						<a href="{$comment.author_url}"><img src="content/style/images/generic_avatar.png" class="avatar small" /></a>
-						<a href="{$comment.author_url}">{$comment.author_name}</a> - <a href="{$base_url_params}#comment-{$comment.id}"><time pubdate datetime="{$comment.datetime_iso}">{$comment.datetime}</time></a>
-					</header>
-					<div>{$comment.content}</div>
-				</article>
+				{include file="image.view.comment.tpl"}
 			{/foreach}
 		</section>
 	</section>
 	{if $is_owner}
-		{$edit_form}
+		{include file="image.edit.overlay.tpl"}
 	{/if}
 {/block}
 {block name=middle_sidebar}

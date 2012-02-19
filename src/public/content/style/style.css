@@ -112,6 +112,15 @@ a:active { text-decoration: none; color:#FFBF00; }
 	margin: 50px 0;
 }
 
+#image_comments #txtAddComment {
+	width: 500px;
+	height: 80px;	
+}
+
+#image_comments #btnAddComment {
+	vertical-align: bottom;
+}
+
 #image_comments article {
 	margin: 30px 0 30px 10px;
 	width: 500px;

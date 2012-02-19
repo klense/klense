@@ -132,9 +132,9 @@ class ImageComment {
 
 					// Get last inserted id
 					$query = "SELECT id FROM {$cfg['table_prefix']}_images_comments WHERE 
-								user_id = " 	. (int)$this->_user_id . ",
-								image_id = " 	. (int)$this->_image_id . ",
-								datetime = '" 	. $this->_datetime->format('Y-m-d H:i:s') . "'
+								user_id = " 		. (int)$this->_user_id . "
+								AND image_id = " 	. (int)$this->_image_id . "
+								AND datetime = '" 	. $this->_datetime->format('Y-m-d H:i:s') . "'
 							";
 
 					$result = mysql_query($query);
@@ -145,7 +145,7 @@ class ImageComment {
 							$this->_id = (int)$row['id'];
 							return $this->_id;
 						} else throw new Exception('Inserted id not found.', 10000002);;
-					} else throw new Exception('Query error.', 10000002);
+					} else throw new Exception('Query error.'.$query, 10000002);
 
 				} else throw new Exception('Query error.', 10000002);
 
@@ -157,7 +157,7 @@ class ImageComment {
 	// Controlla i campi obbligatori alla ricerca di valori non impostati
 	private function check_fields()
 	{
-		$this->setUserId($this->_image_id);
+		$this->setUserId($this->_user_id);
 		$this->setImageId($this->_image_id);
 		$this->setContent($this->_content);
 

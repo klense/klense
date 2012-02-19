@@ -39,4 +39,19 @@ $(function() {
 		onStart : hideFlash,
 		onClosed : showFlash
 	});
+	
+	$("#btnAddComment").click(function(){
+		if($("#txtAddComment").val() != "") {
+			addComment($("#txtAddComment").val(), {
+				'target':null,
+				'preloader':null,
+				'onUpdate': function(response, root) { 
+					if(response != "_error") {
+						$("#txtAddComment").val("");
+						$(response).hide().insertAfter("#comment_placeholder").show(1000);
+					}
+				}
+			});
+		}
+	});
 });
