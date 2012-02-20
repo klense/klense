@@ -33,7 +33,7 @@
 					$img->save();
 				} catch (Exception $e) {
 					if($upload_errors != '') $upload_errors .= '<br />';
-					$upload_errors .= htmlspecialchars(__("Error uploading %s", $file['name']), ENT_QUOTES);
+					$upload_errors .= htmles(__("Error uploading %s", $file['name']));
 				}
 			}
 

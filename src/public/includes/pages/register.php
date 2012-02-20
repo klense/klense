@@ -43,24 +43,24 @@
 
 					if(sendConfirmMail($user)) {
 
-						$smarty->assign('email', htmlspecialchars($user->getEmail(), ENT_QUOTES));
+						$smarty->assign('email', htmles($user->getEmail()));
 
 						$smarty->display('register.mailsent.tpl');
 
 					} else {
 						// Elimina utente e segnala il problema
 						$user->delete();
-						$smarty->assign('error', htmlspecialchars("Non è stato possibile inviare la email di conferma. Ripetere la registrazione.", ENT_QUOTES));
+						$smarty->assign('error', htmles("Non è stato possibile inviare la email di conferma. Ripetere la registrazione."));
 					}
 				} catch (Exception $e) {
-					$smarty->assign('error', htmlspecialchars($e->getMessage(), ENT_QUOTES));
+					$smarty->assign('error', htmles($e->getMessage()));
 				}
 			} else {
-				$smarty->assign('error', htmlspecialchars("Le password non corrispondono.", ENT_QUOTES));
+				$smarty->assign('error', htmles("Le password non corrispondono."));
 			}
 
 		} else {
-			$smarty->assign('error', htmlspecialchars("Verification code is wrong.", ENT_QUOTES));
+			$smarty->assign('error', htmles("Verification code is wrong."));
 			$recaptcha_error = $resp->error;
 		}
 

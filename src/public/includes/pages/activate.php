@@ -15,7 +15,7 @@
 
 				// OK!
 				$smarty->assign('error', '');
-				$smarty->assign('username', htmlspecialchars($user->getUsername(), ENT_QUOTES));
+				$smarty->assign('username', htmles($user->getUsername()));
 
 			}
 		} catch (Exception $e) {

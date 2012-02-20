@@ -144,7 +144,7 @@ OUTPUT;
 						rename($filename, $filename_new);
 						$filename = $filename_new;
 
-						$smarty->assign('greenMessage', htmlspecialchars("Il profilo è stato aggiornato", ENT_QUOTES));
+						$smarty->assign('greenMessage', htmles("Il profilo è stato aggiornato"));
 					}
 				}
 
@@ -152,10 +152,10 @@ OUTPUT;
 				{
 					require_once "$filename";
 
-					$smarty->assign('profile__email', htmlspecialchars($custm_mailid, ENT_QUOTES));
-					$smarty->assign('profile__name', htmlspecialchars($cfg['customers'][$custm_mailid]['NAME'], ENT_QUOTES));
-					$smarty->assign('profile__success_string', htmlspecialchars($cfg['customers'][$custm_mailid]['SUCCESS_STRING'], ENT_QUOTES));
-					$smarty->assign('profile__fail_string', htmlspecialchars($cfg['customers'][$custm_mailid]['FAIL_STRING'], ENT_QUOTES));
+					$smarty->assign('profile__email', htmles($custm_mailid));
+					$smarty->assign('profile__name', htmles($cfg['customers'][$custm_mailid]['NAME']));
+					$smarty->assign('profile__success_string', htmles($cfg['customers'][$custm_mailid]['SUCCESS_STRING']));
+					$smarty->assign('profile__fail_string', htmles($cfg['customers'][$custm_mailid]['FAIL_STRING']));
 					$smarty->assign('profile__enabled', $enabled);
 
 					$backup_entries = array();
