@@ -124,7 +124,6 @@ a:active { text-decoration: none; color:#FFBF00; }
 #image_comments article {
 	margin: 30px 0 30px 10px;
 	width: 500px;
-	clear: both;
 }
 
 #image_comments article .avatar {
@@ -329,6 +328,5 @@ button.orange {
 	text-align: center;
 	font-size: 0.9em;
 	clear:both;
-	background-color:#F2F2F2;
 	height:100px;
 }
