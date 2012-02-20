@@ -6,6 +6,7 @@
 	Session::refreshSession();
 	$smarty->assign('authenticated', Session::isAuthenticated());
 
+	/* Parameters START*/
 	$url = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 	$urlInfo = parse_url($url);
 	$tmp_paths = explode('/',mb_substr($urlInfo['path'],1));
@@ -14,6 +15,7 @@
 	{
 		$GLOB['params'][$i - $cfg['path_start']] = $tmp_paths[$i];
 	}
+	/* Parameters END */
 
 	$GLOB['base_url'] = '';
 	for($i = 0; $i < $cfg['path_start']; $i++)
