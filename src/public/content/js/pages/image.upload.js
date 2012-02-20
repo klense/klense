@@ -25,7 +25,7 @@ $(function() {
 	var uploader = $("#uploader").pluploadQueue(); 
 	uploader.bind("FileUploaded", function(up, file, res) {
 		if(this.total.queued == 0) {
-			alert("Full!");
+			window.location.replace("browse"); // TODO Go to compact edit page
 		}
 	});
 	
