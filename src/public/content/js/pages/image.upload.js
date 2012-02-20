@@ -20,7 +20,14 @@ $(function() {
 		
 		// Silverlight settings
 		//silverlight_xap_url : '/plupload/js/plupload.silverlight.xap'
-		});
+	});
+	// Event fired when queue is full uploaded
+	var uploader = $("#uploader").pluploadQueue(); 
+	uploader.bind("FileUploaded", function(up, file, res) {
+		if(this.total.queued == 0) {
+			alert("Full!");
+		}
+	});
 	
 	// Client side form validation
 	$('form').submit(function(e) {
