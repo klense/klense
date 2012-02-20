@@ -1,6 +1,11 @@
+# Temp files
 *~
 .directory
 *.kate-swp
+*.swp
+.DS_Store
+
+# klense build files
 src/public/config.override.php
 src/public/content/locales/*.mo
 src/public/content/locales/*/LC_MESSAGES/*.mo
