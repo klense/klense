@@ -14,7 +14,7 @@
 	if($usr->getUsername() != $GLOB['params'][2]) pageNotFound();
 
 	$ajax = new PHPLiveX(array());
-	$phplivex_init = $ajax->Run($GLOB['base_url'] . '/content/js/phplivex/phplivex.js', array(), true);
+	$phplivex_init = '';//$ajax->Run($GLOB['base_url'] . '/content/js/phplivex/phplivex.js', array(), true);
 
 	// Prevent loading unnecessary stuff if the request is not from phplivex
 	if(PHPLiveX::isAjaxRequest() == false)
@@ -24,7 +24,12 @@
 
 		$smarty->assign('pageTitle', "klense");
 
-		//$smarty->display('image.view.tpl');
+		$smarty->assign('user_publicname', htmles($usr->getPublicName()));
+		if($usr->getPublicName() != $usr->getUsername()) {
+			$smarty->assign('user_username', htmles($usr->getUsername()));
+		}
+
+		$smarty->display('user.tpl');
 
 	}
 
