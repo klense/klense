@@ -96,7 +96,7 @@
 			break;
 		case 'user':
 			if(isset($GLOB['params'][1])) {
-				//TODO
+				require 'includes/pages/user.php';
 			} else pageNotFound();
 			break;
 		default:
