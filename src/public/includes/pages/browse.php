@@ -20,7 +20,7 @@
 								,"displayName" => htmles($img->getDisplayName())
 								,"id" => $img->getId()
 								,"user_publicname" => htmles($usr->getPublicName())
-								,"user_url" => 'user/' . htmles($usr->getPublicName())
+								,"user_url" => 'user/' . $usr->getId() . '/' . htmles($usr->getUsername())
 								,"imgurl" => "image/view/" . htmles($usr->getUsername()) . "/" . $img->getId()
 								);
 	}
