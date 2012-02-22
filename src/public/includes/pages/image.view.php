@@ -40,7 +40,7 @@
 		$smarty->assign('image_description', htmlEscapeAndLinkUrls($img->getDescription()));
 
 		$smarty->assign('user_publicname', htmles($owner->getPublicName()));
-		$smarty->assign('user_url', 'user/' . htmles($owner->getPublicName()));
+		$smarty->assign('user_url', 'user/' . $owner->getId() . '/' . htmles($owner->getUsername()));
 		$smarty->assign('is_owner', (isset($_SESSION["uid"]) && $owner->getId() == $_SESSION["uid"]));
 
 
@@ -92,7 +92,7 @@
 
 			$plaincomments[] = array(
 									'id' => $comm->getId(),
-									'author_url' => 'user/' . htmles($comm_user->getId()),
+									'author_url' => 'user/' . $comm_user->getId() . '/' . $comm_user->getUsername(),
 									'author_name' => $comm_user->getPublicName(),
 									'datetime' => htmles($dtime->format('d/m/Y H:i')),
 									'datetime_iso' => htmles($dtime->format('c')),
@@ -132,7 +132,7 @@
 
 		$comment = array(
 								'id' => $comm->getId(),
-								'author_url' => 'user/' . htmles($comm_user->getId()),
+								'author_url' => 'user/' . $comm_user->getId() . '/' . $comm_user->getUsername(),
 								'author_name' => $comm_user->getPublicName(),
 								'datetime' => htmles($dtime->format('d/m/Y H:i')),
 								'datetime_iso' => htmles($dtime->format('c')),
