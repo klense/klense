@@ -16,12 +16,12 @@
 	foreach($imgs as $id) {
 		$img = new Image($id);
 		$usr = $img->getOwner();
-		$exit_images[] = array(  "filename" => htmlspecialchars($img->getSafeFilename("wh_size2"), ENT_QUOTES)
-								,"displayName" => htmlspecialchars($img->getDisplayName(), ENT_QUOTES)
+		$exit_images[] = array(  "filename" => htmles($img->getSafeFilename("wh_size2"))
+								,"displayName" => htmles($img->getDisplayName())
 								,"id" => $img->getId()
-								,"user_publicname" => htmlspecialchars($usr->getPublicName(), ENT_QUOTES)
-								,"user_url" => 'user/' . htmlspecialchars($usr->getPublicName(), ENT_QUOTES)
-								,"imgurl" => "image/view/" . htmlspecialchars($usr->getUsername(), ENT_QUOTES) . "/" . $img->getId()
+								,"user_publicname" => htmles($usr->getPublicName())
+								,"user_url" => 'user/' . $usr->getId() . '/' . htmles($usr->getUsername())
+								,"imgurl" => "image/view/" . htmles($usr->getUsername()) . "/" . $img->getId()
 								);
 	}
 
