@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `kl_images` (
   PRIMARY KEY (`id`),
   KEY `upload_time` (`upload_time`),
   FULLTEXT KEY `tags` (`tags`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
 
 CREATE TABLE IF NOT EXISTS `kl_images_comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -39,6 +39,13 @@ CREATE TABLE IF NOT EXISTS `kl_images_permissions` (
   `comment_friends` tinyint(1) NOT NULL,
   `comment_registered` tinyint(1) NOT NULL,
   UNIQUE KEY `image_id` (`image_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `kl_images_views` (
+  `image_id` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `views` int(11) NOT NULL,
+  PRIMARY KEY (`image_id`,`date`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `kl_users` (
