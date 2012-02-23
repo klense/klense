@@ -62,7 +62,6 @@
 				// This notice must stay intact for usage
 				// Visit JavaScript Kit at http://www.javascriptkit.com/ for this script and 100s more
 				</script>
-				<!--<br style="clear: left;" />-->
 			</nav>
 			<div id="userinfo">
 				<span>Beta version</span>
