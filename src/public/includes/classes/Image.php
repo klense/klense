@@ -30,7 +30,7 @@ class Image {
 			// Carica tutti i valori nel caso in cui l'ID sia > 0
 			global $cfg;
 			
-			$query = "SELECT 
+			$query = "SELECT
 						display_name,
 						file_name,
 						owner_id,
@@ -92,7 +92,7 @@ class Image {
 	function getOwnerId() { return $this->_owner_id; }
 	function setOwnerId($value) { $this->_owner_id = (int)$value; }
 
-	function getOwner() { return new User($this->_owner_id); }	
+	function getOwner() { return new User($this->_owner_id); }
 
 	function getExif() { return $this->_exif; }
 	function setExif(array $value) { $this->_exif = $value; }
@@ -417,25 +417,6 @@ class Image {
 			}
 
 		}
-/*
-
-		if($originalHeight > 768) {
-			$image->resizeToHeight(768);
-			$image->save($filename . '--' . 'h_768', $image->getImageType());
-		}
-		if($originalHeight > 480) {
-			$image->resizeToHeight(480);
-			$image->save($filename . '--' . 'h_480', $image->getImageType());
-		}
-		if($originalHeight > 360) {
-			$image->resizeToHeight(360);
-			$image->save($filename . '--' . 'h_360', $image->getImageType());
-		}
-		if($originalHeight > 180) {
-			$image->resizeToHeight(180);
-			$image->save($filename . '--' . 'h_180', $image->getImageType());
-		}
-*/
 		
 		return true;
 	}
