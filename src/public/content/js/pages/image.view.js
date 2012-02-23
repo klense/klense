@@ -54,4 +54,16 @@ $(function() {
 			});
 		}
 	});
+	
+	$(".imageviews_sparkline").sparkline('html', {
+											type: 'line',
+											barColor: 'red',
+											lineColor: '#F29E3D',
+											fillColor: '#FFDFBA',
+											width: '100%',
+											height: '20px',
+											minSpotColor: false,
+											maxSpotColor: false,
+											spotColor: false
+	});
 });

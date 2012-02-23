@@ -3,6 +3,9 @@
 	<script type="text/javascript" src="content/js/jquery.fancybox/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
 	<script type="text/javascript" src="content/js/jquery.fancybox/fancybox/jquery.fancybox-1.3.4-reshow.js"></script>
 	<link rel="stylesheet" type="text/css" href="content/js/jquery.fancybox/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+
+    <script type="text/javascript" src="content/js/jquery.sparkline/jquery.sparkline.min.js"></script>
+
 	{$phplivex_init}
 
 	<script type="text/javascript" src="content/js/pages/image.view.js"></script>
@@ -40,6 +43,9 @@
 {block name=middle_sidebar}
 	<div class="image_sidebar_sections">
 		<div class="image_owner">Di <a href="{$user_url}">{$user_publicname}</a></div>
+		{if $is_owner}
+			<a href="#"><div class="imageviews_sparkline">{$image_views_sparklines}</div></a>
+		{/if}
 		{if $hide_exif == false}
 			{if isset($myexif.make_model)}
 				<div>

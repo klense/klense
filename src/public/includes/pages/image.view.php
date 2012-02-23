@@ -41,7 +41,9 @@
 
 		$smarty->assign('user_publicname', htmles($owner->getPublicName()));
 		$smarty->assign('user_url', 'user/' . $owner->getId() . '/' . htmles($owner->getUsername()));
-		$smarty->assign('is_owner', (isset($_SESSION["uid"]) && $owner->getId() == $_SESSION["uid"]));
+
+		$is_owner = (isset($_SESSION["uid"]) && $owner->getId() == $_SESSION["uid"]);
+		$smarty->assign('is_owner', $is_owner);
 
 
 		/* Exif */
@@ -104,6 +106,17 @@
 		
 		$smarty->assign('comments', $plaincomments);
 		$smarty->assign('comments_count_str', $comment_num_str);
+
+		if($is_owner) {
+			$smarty->assign('image_views_sparklines', htmles(PageView::getImageViews(
+																	new DateTime('-30 days', new DateTimeZone('UTC')),
+																	new DateTime('now', new DateTimeZone('UTC')),
+																	$img->getId(),
+																	PageView::OutputMode_SimpleYXComma
+																)));
+		} else {
+			PageView::addImageView($img->getId());
+		}
 
 		$smarty->display('image.view.tpl');
 
