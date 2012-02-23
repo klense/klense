@@ -64,6 +64,7 @@ $(function() {
 											height: '20px',
 											minSpotColor: false,
 											maxSpotColor: false,
-											spotColor: false
+											spotColor: false,
+											chartRangeMin: 0
 	});
 });

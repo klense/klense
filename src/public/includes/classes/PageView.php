@@ -42,9 +42,19 @@ class PageView {
 
 			if($output_mode == self::OutputMode_SimpleYXComma) {
 				$ret = '';
+				$incr_timestamp = (int)$from_date->format('U');
 
 				while($row = mysql_fetch_assoc($result)) {
-					$ret .= strtotime($row['date']) . ':' . $row['views'] . ',';
+					// Fill gaps
+					$db_timestamp = strtotime($row['date']);
+
+					while($incr_timestamp < $db_timestamp)
+					{
+						$ret .= $incr_timestamp . ':0,';
+						$incr_timestamp += 86400;
+					}
+
+					$ret .= $db_timestamp . ':' . $row['views'] . ',';
 				}
 	
 				$ret = rtrim($ret, ',');
