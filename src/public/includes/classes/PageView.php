@@ -41,20 +41,33 @@ class PageView {
 		if ($result !== false) {
 
 			if($output_mode == self::OutputMode_SimpleYXComma) {
-				$ret = '';
-				$incr_timestamp = (int)$from_date->format('U');
+				$data = array();
 
 				while($row = mysql_fetch_assoc($result)) {
-					// Fill gaps
 					$db_timestamp = strtotime($row['date']);
+					$data[$db_timestamp] = $row['views'];
 
+					// Fill gaps
+					/*
 					while($incr_timestamp < $db_timestamp)
 					{
 						$ret .= $incr_timestamp . ':0,';
 						$incr_timestamp += 86400;
 					}
 
-					$ret .= $db_timestamp . ':' . $row['views'] . ',';
+					$ret .= $db_timestamp . ':' . $row['views'] . ',';*/
+				}
+
+				// Fill gaps
+				$ret = '';
+				$start_timestamp = strtotime($from_date->format('Y-m-d'));
+				$end_timestamp = strtotime($to_date->format('Y-m-d'));
+				for($i = $start_timestamp; $i <= $end_timestamp; $i += 86400) {
+					if(isset($data[$i])) {
+						$ret .= $i . ':' . $data[$i] . ',';
+					} else {
+						$ret .= $i . ':0,';
+					}
 				}
 	
 				$ret = rtrim($ret, ',');
