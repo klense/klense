@@ -46,16 +46,6 @@ class PageView {
 				while($row = mysql_fetch_assoc($result)) {
 					$db_timestamp = strtotime($row['date']);
 					$data[$db_timestamp] = $row['views'];
-
-					// Fill gaps
-					/*
-					while($incr_timestamp < $db_timestamp)
-					{
-						$ret .= $incr_timestamp . ':0,';
-						$incr_timestamp += 86400;
-					}
-
-					$ret .= $db_timestamp . ':' . $row['views'] . ',';*/
 				}
 
 				// Fill gaps
