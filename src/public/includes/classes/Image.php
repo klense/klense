@@ -353,7 +353,7 @@ class Image {
 
 		$sizes = array(	array(	'width'  => 64,
 								'height' => 64,
-								'name'   => 'sqr_64', // TODO: Crop image to 64x64
+								'name'   => 'sqr_64',
 								'smaller'=> null,
 								'crop'   => true
 							),
