@@ -351,30 +351,41 @@ class Image {
 		$SMALLER_FORCE = 2;
 		$SMALLER_DUPLICATE = 3;
 
-		$sizes = array(	array(	'width'  => 660,
+		$sizes = array(	array(	'width'  => 64,
+								'height' => 64,
+								'name'   => 'sqr_64', // TODO: Crop image to 64x64
+								'smaller'=> null,
+								'crop'   => true
+							),
+						array(	'width'  => 660,
 								'height' => 470,
 								'name'   => 'wh_size4',
-								'smaller'=> $SMALLER_DUPLICATE
+								'smaller'=> $SMALLER_DUPLICATE,
+								'crop'   => false
 							),
 						array(	'width'  => 200,
 								'height' => 160,
 								'name'   => 'wh_size2',
-								'smaller'=> $SMALLER_DUPLICATE
+								'smaller'=> $SMALLER_DUPLICATE,
+								'crop'   => false
 							),
 						array(	'width'  => 0,
 								'height' => 500,
 								'name'   => 'h_500',
-								'smaller'=> $SMALLER_IGNORE
+								'smaller'=> $SMALLER_IGNORE,
+								'crop'   => false
 							),
 						array(	'width'  => 0,
 								'height' => 768,
 								'name'   => 'h_768',
-								'smaller'=> $SMALLER_IGNORE
+								'smaller'=> $SMALLER_IGNORE,
+								'crop'   => false
 							),
 						array(	'width'  => 0,
 								'height' => 1024,
 								'name'   => 'h_1024',
-								'smaller'=> $SMALLER_IGNORE
+								'smaller'=> $SMALLER_IGNORE,
+								'crop'   => false
 							)
 						);
 
@@ -382,38 +393,47 @@ class Image {
 		foreach($sizes as $size) {
 			$image->load($filename);
 
-			$resizeWidth = false;
-			if($originalWidth > 0 && $originalHeight > 0) {
-				$resizeWidth = ($originalWidth >= $originalHeight);
-			}
-			if($size['width'] == 0) $resizeWidth = false;
-			if($size['height'] == 0) $resizeWidth = true;
+			if($size['crop'] == true) { // Crop
+
+				$image->resizeCrop($size['width'], $size['height']);
+				$image->save($filename . '--' . $size['name'], $image->getImageType());
+
+			} else { // Don't crop
+
+				$resizeWidth = false;
+				if($originalWidth > 0 && $originalHeight > 0) {
+					$resizeWidth = ($originalWidth >= $originalHeight);
+				}
+				if($size['width'] == 0) $resizeWidth = false;
+				if($size['height'] == 0) $resizeWidth = true;
 
 
-			if($resizeWidth) {
-				if($originalWidth > $size['width']) {
-					$image->resizeToWidth($size['width']);
-					$image->save($filename . '--' . $size['name'], $image->getImageType());
-				} elseif($originalWidth == $size['width']) {
-					$image->save($filename . '--' . $size['name'], $image->getImageType());
-				} elseif($size['smaller'] == $SMALLER_DUPLICATE) {
-					$image->save($filename . '--' . $size['name'], $image->getImageType());
-				} elseif($size['smaller'] == $SMALLER_FORCE) {
-					$image->resizeToWidth($size['width']);
-					$image->save($filename . '--' . $size['name'], $image->getImageType());
+				if($resizeWidth) {
+					if($originalWidth > $size['width']) {
+						$image->resizeToWidth($size['width']);
+						$image->save($filename . '--' . $size['name'], $image->getImageType());
+					} elseif($originalWidth == $size['width']) {
+						$image->save($filename . '--' . $size['name'], $image->getImageType());
+					} elseif($size['smaller'] == $SMALLER_DUPLICATE) {
+						$image->save($filename . '--' . $size['name'], $image->getImageType());
+					} elseif($size['smaller'] == $SMALLER_FORCE) {
+						$image->resizeToWidth($size['width']);
+						$image->save($filename . '--' . $size['name'], $image->getImageType());
+					}
+				} else {
+					if($originalHeight > $size['height']) {
+						$image->resizeToHeight($size['height']);
+						$image->save($filename . '--' . $size['name'], $image->getImageType());
+					} elseif($originalHeight == $size['height']) {
+						$image->save($filename . '--' . $size['name'], $image->getImageType());
+					} elseif($size['smaller'] == $SMALLER_DUPLICATE) {
+						$image->save($filename . '--' . $size['name'], $image->getImageType());
+					} elseif($size['smaller'] == $SMALLER_FORCE) {
+						$image->resizeToHeight($size['height']);
+						$image->save($filename . '--' . $size['name'], $image->getImageType());
+					}
 				}
-			} else {
-				if($originalHeight > $size['height']) {
-					$image->resizeToHeight($size['height']);
-					$image->save($filename . '--' . $size['name'], $image->getImageType());
-				} elseif($originalHeight == $size['height']) {
-					$image->save($filename . '--' . $size['name'], $image->getImageType());
-				} elseif($size['smaller'] == $SMALLER_DUPLICATE) {
-					$image->save($filename . '--' . $size['name'], $image->getImageType());
-				} elseif($size['smaller'] == $SMALLER_FORCE) {
-					$image->resizeToHeight($size['height']);
-					$image->save($filename . '--' . $size['name'], $image->getImageType());
-				}
+
 			}
 
 		}
