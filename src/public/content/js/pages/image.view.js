@@ -12,15 +12,15 @@ $(function() {
 	});
 	
 	$(".fancybox_img").fancybox({
-		'overlayShow'	: true,
-		'overlayOpacity': 0.9,
-		'overlayColor' : '#000',
-		'padding' : 0,
-		'centerOnScroll' : true,
-		'showCloseButton' : false,
-		'hideOnContentClick' : true,
-		'titleShow' : false,
-		'type' : 'image',
+		overlayShow	: true,
+		overlayOpacity: 0.9,
+		overlayColor : '#000',
+		padding : 0,
+		centerOnScroll : true,
+		showCloseButton : false,
+		hideOnContentClick : true,
+		titleShow : false,
+		type : 'image',
 		onStart : hideFlash,
 		onClosed : showFlash
 	});
@@ -31,13 +31,13 @@ $(function() {
 	});
 	
 	$("#image_edit_link").fancybox({
-		'scrolling'		: 'no',
-		'titleShow'		: false,
-		'onClosed'		: function() {
+		scrolling		: 'no',
+		titleShow		: false,
+		onClosed		: function() {
+			showFlash();
 			$("#edit_form .form_error").hide();
 		},
-		onStart : hideFlash,
-		onClosed : showFlash
+		onStart : hideFlash
 	});
 	
 	$("#btnAddComment").click(function(){
