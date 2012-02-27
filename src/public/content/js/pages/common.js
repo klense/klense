@@ -15,7 +15,7 @@ Modernizr.load({
 });
 
 function hideFlash() { // Hide flash to avoid overlapping
-$('embed, object, iframe').css('visibility', 'hidden');
+	$('embed, object, iframe').css('visibility', 'hidden');
 }
 function showFlash() {
 	$('embed, object, iframe').css({ 'visibility' : 'visible' });

@@ -29,6 +29,23 @@
 			$smarty->assign('user_username', htmles($usr->getUsername()));
 		}
 
+		$imgs = Image::getLastUploadedIds(-1, $usr->getId());
+		$exit_images = array();
+		foreach($imgs as $id) {
+			$img = new Image($id);
+
+			/* Build "Other sizes" array */
+			$otherSizes = $img->getAllSizes();
+			$maxSize = (isset($otherSizes['h_768'])) ? $otherSizes['h_768'] : $otherSizes['original'];
+
+			$exit_images[] = array(  "filename" => htmles($img->getSafeFilename("sqr_64"))
+									,"maxSize" => htmles($maxSize['link'])
+									,"displayName" => htmles($img->getDisplayName())
+									);
+		}
+
+		$smarty->assign('thumbnails', $exit_images);
+
 		$smarty->display('user.tpl');
 
 	}

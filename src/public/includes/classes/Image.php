@@ -651,16 +651,23 @@ class Image {
 	}
 
 	// Returns an array with the id of the last $num images uploaded
-	public static function getLastUploadedIds($num)
+	public static function getLastUploadedIds($num, $ownerid)
 	{
 		global $cfg;
 		$num = (int)$num;
 
+		$limit = '';
+		if($num > -1) $limit = "LIMIT $num";
+
+		$where = '';
+		if($ownerid > -1) $where = "WHERE owner_id = $ownerid";
+
 		$query = "SELECT 
 					id
 				FROM {$cfg['table_prefix']}_images
+				$where
 				ORDER BY upload_time DESC
-				LIMIT $num";
+				$limit";
 
 		$result = mysql_query($query);
 

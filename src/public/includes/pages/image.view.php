@@ -78,7 +78,7 @@
 		$maxSize = (isset($otherSizes['h_768'])) ? $otherSizes['h_768'] : $otherSizes['original'];
 
 		$smarty->assign('otherSizes', $otherSizes);
-		$smarty->assign('maxSize', $maxSize['link']);
+		$smarty->assign('maxSize', htmles($maxSize['link']));
 
 
 		/* Tags */

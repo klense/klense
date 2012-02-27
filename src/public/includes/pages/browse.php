@@ -11,7 +11,7 @@
 	$smarty->assign('pageTitle', "klense");
 
 
-	$imgs = Image::getLastUploadedIds(9);
+	$imgs = Image::getLastUploadedIds(9, -1);
 	$exit_images = array();
 	foreach($imgs as $id) {
 		$img = new Image($id);
