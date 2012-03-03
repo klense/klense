@@ -284,7 +284,6 @@ class Image {
 	{
 		global $cfg;
 
-
 		// Make directories
 		$i = 0;
 		$incremental_name = '';
@@ -297,7 +296,6 @@ class Image {
 		$incremental_path .= "/$username";
 		@mkdir($incremental_path, 0777, true);
 
-
 		// Find unique name
 		do {
 			$out_server_filename = uniqid('i_');
@@ -306,10 +304,11 @@ class Image {
 		$end_filename = $incremental_path . '/' . $out_server_filename;
 
 		// Move uploaded file
-		if($standard_uploader)
+		if($standard_uploader) {
 			$moved = move_uploaded_file($file['tmp_name'], $end_filename);
-		else
+		} else {
 			$moved = rename($file['tmp_name'], $end_filename);
+		}
 
 		if($moved) {
 
@@ -317,12 +316,15 @@ class Image {
 			if(self::buildThumbnails($end_filename)) {
 				return $end_filename;
 			} else {
+				// Remove original image and all thumbnails
+				unlink($end_filename);
 				$files = glob($end_filename . "--*");
 				foreach($files as $file) {
 					if(is_file($file)) {
 						unlink($file);
 					}
 				}
+				return false;
 			}
 		}
 
@@ -339,10 +341,9 @@ class Image {
 			}
 		}
 
-
 		$image = new ImageManipulator();
 
-		$image->load($filename);
+		if(!$image->load($filename)) return false;
 
 		$originalWidth = $image->getWidth();
 		$originalHeight = $image->getHeight();
@@ -389,17 +390,14 @@ class Image {
 							)
 						);
 
-
 		foreach($sizes as $size) {
-			$image->load($filename);
+
+			if(!$image->load($filename)) return false;
 
 			if($size['crop'] == true) { // Crop
-
 				$image->resizeCrop($size['width'], $size['height']);
 				$image->save($filename . '--' . $size['name'], $image->getImageType());
-
 			} else { // Don't crop
-
 				$resizeWidth = false;
 				if($originalWidth > 0 && $originalHeight > 0) {
 					$resizeWidth = ($originalWidth >= $originalHeight);
@@ -433,11 +431,9 @@ class Image {
 						$image->save($filename . '--' . $size['name'], $image->getImageType());
 					}
 				}
-
 			}
 
 		}
-		
 		return true;
 	}
 

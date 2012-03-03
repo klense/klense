@@ -20,7 +20,7 @@
 				<div>
 					<div>Tag (separare con una virgola)</div>
 					<div><input type="text" name="tags" value="{$tags_str}" maxlength="128" /></div>
-				</div>Modifica
+				</div>
 				<div>
 					<label>Nascondi dati EXIF <input type="checkbox" name="hide_exif" value="on" {if $hide_exif}checked{/if} /></label>
 				</div>

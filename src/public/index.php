@@ -1,4 +1,5 @@
 <?php
+	$start_execution_time = microtime(true); 
 	require_once("includes/global.php");
 
 	header('Content-Type: text/html;charset=UTF-8');

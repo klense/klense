@@ -9,6 +9,7 @@ class ImageManipulator {
 
 	function load($filename)
 	{
+		imagedestroy($this->image);
 		$image_info = getimagesize($filename);
 		$this->image_type = $image_info[2];
 		if( $this->image_type == IMAGETYPE_JPEG ) {
@@ -17,7 +18,15 @@ class ImageManipulator {
 			$this->image = imagecreatefromgif($filename);
 		} elseif( $this->image_type == IMAGETYPE_PNG ) {
 			$this->image = imagecreatefrompng($filename);
+		} else {
+			return false;
 		}
+
+		return true;
+	}
+
+	function __destruct() {
+		imagedestroy($this->image);
 	}
 
 	function save($filename, $image_type=IMAGETYPE_JPEG, $compression=90, $permissions=null)
