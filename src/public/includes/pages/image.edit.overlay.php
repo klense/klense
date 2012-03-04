@@ -8,7 +8,7 @@
 	}
 
 	try {
-		$img = new Image($GLOB['db'], $GLOB['params'][2]);
+		$img = new Image(new ImageDao($GLOB['dao']), $GLOB['params'][2]);
 	} catch (Exception $e) {
 		echo htmles(__("Image not found."));
 		exit();
@@ -20,7 +20,7 @@
 
 			// Delete
 			try {
-				Image::deleteFromId($img->getId(), $GLOB['db']);
+				Image::deleteFromId($img->getId(), new ImageDao($GLOB['dao']));
 			} catch (Exception $e) {
 				echo htmles(__("Error deleting image."));
 				exit();

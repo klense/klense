@@ -1,7 +1,5 @@
 <?php
 
-require_once("includes/interfaces/DatabaseInterface.php");
-
 class User {
 
 	const Sex_Undefined = -1;
@@ -22,11 +20,11 @@ class User {
 	private $_sex = -1;
 	private $_timezone = null;
 
-	private $db;
+	private $mdao;
 
-	public function __construct(DatabaseInterface $db, $id=0)
+	public function __construct(UserDao $mdao, $id=0)
 	{
-		$this->db = $db;
+		$this->mdao = $mdao;
 		$id = (int)$id;
 		$this->_id = $id;
 
@@ -118,7 +116,7 @@ class User {
 	
 	function getRegistrationTime(DateTimeZone $timezone)
 	{
-		$d = $this->_registrationTime;
+		$d = clone $this->_registrationTime;
 		$d->setTimezone($timezone);
 		return $d;
 	}
@@ -149,7 +147,7 @@ class User {
 	}
 
 	function getBirthDate(DateTimeZone $timezone) {
-		$d = $this->_birthDate;
+		$d = clone $this->_birthDate;
 		$d->setTimezone($timezone);
 		return $d;
 	}

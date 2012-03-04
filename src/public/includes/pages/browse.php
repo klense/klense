@@ -11,10 +11,11 @@
 	$smarty->assign('pageTitle', "klense");
 
 
-	$imgs = Image::getLastUploadedIds(9, -1, $GLOB['db']);
+	$imgs = Image::getLastUploadedIds(9, -1, new ImageDao($GLOB['dao']));
 	$exit_images = array();
+	$img_dao = new ImageDao($GLOB['dao']);
 	foreach($imgs as $id) {
-		$img = new Image($GLOB['db'], $id);
+		$img = new Image($img_dao, $id);
 		$usr = $img->getOwner();
 		$exit_images[] = array(  "filename" => htmles($img->getSafeFilename("wh_size2"))
 								,"displayName" => htmles($img->getDisplayName())

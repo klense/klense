@@ -25,11 +25,10 @@ $GLOB['supported_mimes'] = array('image/jpeg', 'image/png');
 ini_set('upload_max_filesize', $cfg['max_upload_size']);
 
 // DB connection initialization
-require_once("includes/classes/Database/MySQL.php");
-$GLOB['db'] = new Database_MySQL();
-$GLOB['db']->setTablePrefix($cfg['table_prefix']);
-$GLOB['db']->connect($cfg['dbhost'], $cfg['dbuser'], $cfg['dbpass']);
-$GLOB['db']->selectDb($cfg['dbname']);
+require_once("includes/classes/Dao.php");
+$GLOB['dao'] = new Dao($cfg['table_prefix']);
+mysql_connect($cfg['dbhost'], $cfg['dbuser'], $cfg['dbpass']);
+mysql_select_db($cfg['dbname']);
 
 // Include utilities file
 require_once("includes/utils.php");

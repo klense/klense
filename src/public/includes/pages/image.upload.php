@@ -24,13 +24,14 @@
 			$files = rearrange_files_array($_FILES['file_upload']);
 			
 			$upload_errors = '';
-
+			$img_dao = new ImageDao($GLOB['dao']);
 			foreach($files as $k=>$file) {
 				try {
-					$img = new Image($GLOB['db'], 0, $file);
+					$img = new Image($img_dao, 0, $file);
 					$img->setDisplayName($file['name']);
 					$img->setOwnerId($GLOB['user']->getId());
 					$img->save();
+					unset($img);
 				} catch (Exception $e) {
 					if($upload_errors != '') $upload_errors .= '<br />';
 					$upload_errors .= htmles(__("Error uploading %s", $file['name']));

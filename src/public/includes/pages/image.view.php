@@ -7,11 +7,11 @@
 	if(!(isset($GLOB['params'][2]) && isset($GLOB['params'][3]))) pageNotFound();
 	if($GLOB['params'][3] <= 0) pageNotFound();
 	try {
-		$img = new Image($GLOB['db'], $GLOB['params'][3]);
+		$img = new Image(new ImageDao($GLOB['dao']), $GLOB['params'][3]);
 	} catch (Exception $e) {
 		pageNotFound();
 	}
-	$userid = User::getUserIdFromUsername($GLOB['params'][2], $GLOB['db']);
+	$userid = User::getUserIdFromUsername($GLOB['params'][2], new UserDao($GLOB['dao']));
 	if(!($userid > 0 && $img->getOwnerId() == $userid)) pageNotFound();
 
 	$ajax = new PHPLiveX(array("addComment"));
@@ -23,7 +23,7 @@
 
 		$smarty->assign('phplivex_init', $phplivex_init);
 
-		$owner = new User($GLOB['db'], $userid);
+		$owner = new User(new UserDao($GLOB['dao']), $userid);
 
 		// TODO Only for admins
 		if(isset($GLOB['params'][4]) && Session::isAuthenticated() && $GLOB['params'][4] == 'rebuild_thumbnails') {
@@ -113,10 +113,10 @@
 																	new DateTime('now', new DateTimeZone('UTC')),
 																	$img->getId(),
 																	PageView::OutputMode_SimpleYXComma,
-																	$GLOB['db']
+																	new PageViewDao($GLOB['dao'])
 																)));
 		} else {
-			PageView::addImageView($img->getId(), $GLOB['db']);
+			PageView::addImageView($img->getId(), new PageViewDao($GLOB['dao']));
 		}
 
 		$smarty->display('image.view.tpl');
@@ -131,7 +131,8 @@
 		global $img, $smarty, $GLOB;
 	
 		try {
-			$comm = new ImageComment($GLOB['db']);
+			$comm_dao = new ImageCommentDao($cfg['table_prefix']);
+			$comm = new ImageComment($dao);
 			$comm->setContent($content);
 			$comm->setUserId($GLOB['user']->getId());
 			$comm->setImageId($img->getId());

@@ -7,7 +7,7 @@
 	if(!isset($GLOB['params'][2])) pageNotFound();
 	if($GLOB['params'][1] <= 0) pageNotFound();
 	try {
-		$usr = new User($GLOB['db'], $GLOB['params'][1]);
+		$usr = new User(new UserDao($GLOB['dao']), $GLOB['params'][1]);
 	} catch (Exception $e) {
 		pageNotFound();
 	}
@@ -31,8 +31,9 @@
 
 		$imgs = Image::getLastUploadedIds(-1, $usr->getId(), $GLOB['id']);
 		$exit_images = array();
+		$img_dao = new ImageDao($GLOB['dao'])
 		foreach($imgs as $id) {
-			$img = new Image($GLOB['db'], $id);
+			$img = new Image($img_dao, $id);
 
 			/* Build "Other sizes" array */
 			$otherSizes = $img->getAllSizes();
@@ -42,6 +43,7 @@
 									,"maxSize" => htmles($maxSize['link'])
 									,"displayName" => htmles($img->getDisplayName())
 									);
+			unset($img);
 		}
 
 		$smarty->assign('thumbnails', $exit_images);

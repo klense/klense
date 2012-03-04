@@ -7,7 +7,7 @@
 
 	if(isset($GLOB['params'][1]) && isset($GLOB['params'][2])) {
 		try {
-			$user = new User($GLOB['db'], $GLOB['params'][1]);
+			$user = new User(new UserDao($GLOB['dao']), $GLOB['params'][1]);
 			if($user->getActivated() == false && $user->getActivationCode() == $GLOB['params'][2]) {
 				
 				$user->setActivated(true);

@@ -28,7 +28,7 @@
 
 			if($_POST['password'] == $_POST['password_c']) {
 				try {
-					$user = new User($GLOB['db']);
+					$user = new User(new UserDao($GLOB['dao']));
 					$user->setUsername($_POST['username']);
 					$user->setEmail($_POST['email']);
 					$user->setPassword($_POST['password']);
@@ -70,7 +70,7 @@
 	$smarty->assign('timezones', $timezones);
 
 /*
-	$user = new User($GLOB['db'], 1);
+	$user = new User(new UserDao($GLOB['dao']), 1);
 	echo $user->getBirthDate()->format('Y-m-d H:i:s');
 
 

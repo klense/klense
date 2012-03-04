@@ -30,7 +30,7 @@
 
 	$timezone = 'UTC';
 
-	$GLOB['user'] = Session::getAuthenticatedUser($GLOB['db']); // If authenticated, $GLOB['user'] is an instance of the authenticated user.
+	$GLOB['user'] = Session::getAuthenticatedUser(new UserDao($GLOB['dao'])); // If authenticated, $GLOB['user'] is an instance of the authenticated user.
 	if(Session::isAuthenticated()) {
 		$smarty->assign('user', array('username' => htmles($GLOB['user']->getUsername())));
 

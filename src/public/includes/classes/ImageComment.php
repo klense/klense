@@ -1,5 +1,7 @@
 <?php
 
+require_once("includes/classes/ImageCommentDao.php");
+
 class ImageComment {
 
 	private $_id = 0;
@@ -8,11 +10,11 @@ class ImageComment {
 	private $_datetime = null;
 	private $_content = '';
 
-	private $db;
+	private $mdao;
 
-	public function __construct(DatabaseInterface $db, $id=0, array $assocRowData=null)
+	public function __construct(ImageCommentDao $mdao, $id=0, array $assocRowData=null)
 	{
-		$this->db = $db;
+		$this->mdao = $mdao;
 		if($assocRowData != null) {
 
 			// Load data from the passed array
@@ -24,23 +26,11 @@ class ImageComment {
 			$this->_id = $id;
 
 			if($this->_id > 0) {
-				// Carica tutti i valori nel caso in cui l'ID sia > 0
-				$query = "SELECT 
-							id,
-							user_id,
-							image_id,
-							datetime,
-							content
-						FROM " . $this->db->getPrefixedTable('images_comments') . " WHERE id = {$this->_id}";
 
-				$result = $this->db->query($query);
-
-				if ($result !== false) {
-					if($this->db->numRows($result) > 0) {
-						$row = $this->db->fetchAssoc($result);
-						$this->loadFromAssocRow($row);
-					} else throw new Exception('ID does not exist.', 1000001);
-				} else throw new Exception('Query error.', 10000002);
+				$comment = $this->mdao->getImageCommentFromId($this->_id);
+				if($comment !== false) {
+					$this->loadFromAssocRow($comment);
+				} else throw new Exception('ID does not exist.', 1000001);
 
 			} else {
 				// Inizializza
@@ -72,7 +62,7 @@ class ImageComment {
 
 	function getDateTime(DateTimeZone $timezone)
 	{
-		$d = $this->_datetime;
+		$d = clone $this->_datetime;
 		$d->setTimezone($timezone);
 		return $d;
 	}
@@ -104,51 +94,27 @@ class ImageComment {
 
 				// Esegue un UPDATE
 
-				$sql = "UPDATE " . $this->db->getPrefixedTable('images_comments') . " SET 
-							user_id = " 	. (int)$this->_user_id . ",
-							image_id = "	. (int)$this->_image_id . ",
-							datetime = '" 	. $this->_datetime->format('Y-m-d H:i:s') . "',
-							content = '" 	. $this->db->escapeString($this->_content) . "'
-						WHERE (id = {$this->_id})";
+				$res = $this->mdao->updateImageCommentFromId($this->_id,
+															$this->_user_id,
+															$this->_image_id,
+															$this->_datetime,
+															$this->_content
+														);
 
-				if($this->db->query($sql)) {
+				if($res) {
 					return $this->_id;
-				} else throw new Exception('Query error.', 10000002); 
+				}
 
-			} else { 
+			} else {
 
 				// Esegue un INSERT
 
-				$sql = "INSERT INTO " . $this->db->getPrefixedTable('images_comments') . "
-						(user_id, image_id, datetime, content)
-						VALUES (
-							 " . (int)$this->_user_id . ",
-							 " . (int)$this->_image_id . ",
-							'" . $this->_datetime->format('Y-m-d H:i:s') . "',
-							'" . $this->db->escapeString($this->_content) . "'
-						)";
-
-				if($this->db->query($sql)) {
-
-					// Get last inserted id
-					$query = "SELECT id FROM " . $this->db->getPrefixedTable('images_comments') . " WHERE 
-								user_id = " 		. (int)$this->_user_id . "
-								AND image_id = " 	. (int)$this->_image_id . "
-								AND datetime = '" 	. $this->_datetime->format('Y-m-d H:i:s') . "'
-							";
-
-					$result = $this->db->query($query);
-
-					if ($result !== false) {
-						if($this->db->numRows($result) > 0) {
-							$row = $this->db->fetchAssoc($result);
-							$this->_id = (int)$row['id'];
-							return $this->_id;
-						} else throw new Exception('Inserted id not found.', 10000002);;
-					} else throw new Exception('Query error.', 10000002);
-
-				} else throw new Exception('Query error.', 10000002);
-
+				$this->_id = $this->mdao->insertImageComment(	$this->_user_id,
+																$this->_image_id,
+																$this->_datetime,
+																$this->_content
+															);
+				return $this->_id;
 			}
 
 		} else throw new Exception('Invalid values.'); 
@@ -184,7 +150,7 @@ class ImageComment {
 
 	public function getUser()
 	{
-		return new User($this->db, $this->getUserId());
+		return new User(new UserDao($this->mdao->getDao()), $this->getUserId());
 	}
 
 	/*
@@ -197,13 +163,9 @@ class ImageComment {
 		// Elimina il commento
 		if($this->_id > 0) {
 
-			$query = "DELETE FROM " . $this->db->getPrefixedTable('images_comments') . "
-					WHERE (id = {$this->_id})";
-			if($this->db->query($query)) {
-				$this->_id = 0;
+			if($this->mdao->deleteImageCommentFromId($this->_id)) {
 				return true;
 			}
-			throw new Exception('Query error.', 10000002);
 
 		} else {
 			throw new Exception('Cannot delete a new comment.', 10000005);

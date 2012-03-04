@@ -136,7 +136,7 @@
 					'size'     => filesize("$filePath.part")
                 );
 		try {
-			$img = new Image($GLOB['db'], 0, $file, false);
+			$img = new Image(new ImageDao($GLOB['dao']), 0, $file, false);
 			$img->setDisplayName($file['name']);
 			$img->setOwnerId($GLOB['user']->getId());
 			$img->save();

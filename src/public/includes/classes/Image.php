@@ -2,6 +2,7 @@
 
 require_once("includes/classes/User.php");
 require_once("includes/classes/ImageManipulator.php");
+require_once("includes/classes/ImageDao.php");
 
 class Image {
 
@@ -19,38 +20,20 @@ class Image {
 	private $_hide_exif = false;
 	private $_description = '';
 
-	private $db;
+	private $mdao;
 
 	private $standard_uploader = true;
 
-	public function __construct(DatabaseInterface $db, $id=0, array $file=null, $standard_uploader=true)
+	public function __construct(ImageDao $mdao, $id=0, array $file=null, $standard_uploader=true)
 	{
-		$this->db = $db;
+		$this->mdao = $mdao;
 		$id = (int)$id;
 		$this->_id = $id;
 
 		if($this->_id > 0) {
 			// Carica tutti i valori nel caso in cui l'ID sia > 0
-			$query = "SELECT
-						display_name,
-						file_name,
-						owner_id,
-						exif,
-						upload_time,
-						tags,
-						width,
-						height,
-						mime,
-						hide_exif,
-						description
-					FROM " . $this->db->getTablePrefix() . "_images WHERE id = {$this->_id}";
-
-			$result = $this->db->query($query);
-
-			if ($result !== false) {
-				if($this->db->numRows($result) > 0) {
-					$row = $this->db->fetchAssoc($result);
-
+			$row = $this->mdao->getImageFromId($this->_id);
+			if($row !== false) {
 					$this->_display_name = $row['display_name'];
 					$this->_file_name = $row['file_name'];
 					$this->_owner_id = (int)$row['owner_id'];
@@ -63,8 +46,7 @@ class Image {
 					$this->_mime = $row['mime'];
 					$this->_hide_exif = (bool)$row['hide_exif'];
 					$this->_description = $row['description'];
-				} else throw new Exception('ID does not exist.', 1010001);
-			} else throw new Exception('Query error.', 10100002);
+			} else throw new Exception('ID does not exist.', 1000001);
 
 		} else {
 			// Inizializza
@@ -93,14 +75,14 @@ class Image {
 	function getOwnerId() { return $this->_owner_id; }
 	function setOwnerId($value) { $this->_owner_id = (int)$value; }
 
-	function getOwner() { return new User($this->db, $this->_owner_id); }
+	function getOwner() { return new User(new UserDao($this->mdao->getDao()), $this->_owner_id); }
 
 	function getExif() { return $this->_exif; }
 	function setExif(array $value) { $this->_exif = $value; }
 
 	function getUploadTime(DateTimeZone $timezone)
 	{
-		$d = $this->_upload_time;
+		$d = clone $this->_upload_time;
 		$d->setTimezone($timezone);
 		return $d;
 	}
@@ -167,22 +149,22 @@ class Image {
 
 				// Esegue un UPDATE
 
-				$sql = "UPDATE " . $this->db->getTablePrefix() . "_images SET 
-							display_name = '" 		. $this->db->escapeString($this->_display_name) . "',
-							owner_id = " 			. (int)$this->_owner_id . ",
-							exif = '"				. $this->db->escapeString(serialize($this->_exif)) . "',
-							upload_time = '"		. $this->_upload_time->format('Y-m-d H:i:s') . "',
-							tags = '"				. $this->db->escapeString(implode(' ', $this->_tags)) . "',
-							width = " 				. (int)$this->_width . ",
-							height = " 				. (int)$this->_height . ",
-							mime = '"				. $this->db->escapeString($this->_mime) . "',
-							hide_exif = "			. (int)$this->_hide_exif . ",
-							description = '"		. $this->db->escapeString($this->_description) . "'
-						WHERE (id = {$this->_id})";
+				$res = $this->mdao->updateImageFromId($this->_id,
+														$this->_display_name,
+														$this->_owner_id,
+														serialize($this->_exif),
+														$this->_upload_time,
+														implode(' ', $this->_tags),
+														$this->_width,
+														$this->_height,
+														$this->_mime,
+														$this->_hide_exif,
+														$this->_description
+													);
 
-				if($this->db->query($sql)) {
+				if($res) {
 					return $this->_id;
-				} else throw new Exception('Query error.', 10100002);
+				}
 
 			} else {
 
@@ -190,29 +172,23 @@ class Image {
 				$user = $this->getOwner();
 				$filename = $this->store($this->__file, $user->getUsername(), $this->standard_uploader);
 				if($filename !== false) {
+
 					$this->_file_name = $filename;
+
+					$this->_id = $this->mdao->insertImage($this->_display_name,
+															$this->_file_name,
+															$this->_owner_id,
+															serialize($this->_exif),
+															$this->_upload_time,
+															implode(' ', $this->_tags),
+															$this->_width,
+															$this->_height,
+															$this->_mime,
+															$this->_hide_exif,
+															$this->_description
+														);
+					return $this->_id;
 					
-					$sql = "INSERT INTO " . $this->db->getTablePrefix() . "_images
-							(display_name, file_name, owner_id, exif, upload_time, tags, width, height, mime, hide_exif, description)
-							VALUES (
-								'" . $this->db->escapeString($this->_display_name) . "',
-								'" . $this->db->escapeString($this->_file_name) . "',
-								 " . (int)$this->_owner_id . ",
-								'" . $this->db->escapeString(serialize($this->_exif)) . "',
-								'" . $this->_upload_time->format('Y-m-d H:i:s') . "',
-								'" . $this->db->escapeString(implode(' ', $this->_tags)) . "',
-								 " . (int)$this->_width . ",
-								 " . (int)$this->_height . ",
-								'" . $this->db->escapeString($this->_mime) . "',
-								 " . (int)$this->_hide_exif . ",
-								'" . $this->db->escapeString($this->_description) . "'
-							)";
-
-					if($this->db->query($sql)) {
-						$this->_id = $this->getImageIdFromFilename($this->_file_name);
-						return $this->_id;
-					} else throw new Exception('Query error.', 10100002);
-
 				} else throw new Exception('Error storing the file.', 10100006);
 
 			}
@@ -606,69 +582,31 @@ class Image {
 		return false;
 	}
 
-	private function getImageIdFromFilename($filename)
-	{
-		$query = "SELECT 
-					id
-				FROM " . $this->db->getTablePrefix() . "_images WHERE file_name = '" . $this->db->escapeString($filename) . "'";
-
-		$result = $this->db->query($query);
-
-		if ($result !== false) {
-			if($this->db->numRows($result) > 0) {
-				$row = $this->db->fetchAssoc($result);
-				return (int)$row['id'];
-			} else return -1;
-		} else throw new Exception('Query error.', 10000002);
-	}
-
 	public function getComments()
 	{
-		$query = "SELECT " . $this->db->getTablePrefix() . "_images_comments.*
-				FROM " . $this->db->getTablePrefix() . "_images_comments WHERE
-					user_id = " . $this->getOwnerId() . "
-					AND image_id = " . $this->getId() . "
-				ORDER BY datetime desc";
 
-		$result = $this->db->query($query);
-
-		if ($result !== false) {
+		$comments = $this->mdao->getImageCommentsFromImageId($this->_id);
+		if(!empty($comments)) {
+			$imgdao = new ImageCommentDao($this->mdao->getDao());
 			$ret = array();
-			while($row = $this->db->fetchAssoc($result)) {
-				$id = (int)$row['id'];
-				$ret[$id] = new ImageComment($this->db, null, $row);
+			foreach($comments as $comm) {
+				$id = (int)$comm['id'];
+				$ret[$id] = new ImageComment($imgdao, null, $comm);
 			}
 			return $ret;
-		} else throw new Exception('Query error.', 10000002);
+		} else throw new Exception('ID does not exist.', 1000001);
+
 	}
 
 	// Returns an array with the id of the last $num images uploaded
-	public static function getLastUploadedIds($num, $ownerid, DatabaseInterface $db)
+	public static function getLastUploadedIds($num, $ownerid, ImageCommentDao $mdao)
 	{
-		$num = (int)$num;
-
-		$limit = '';
-		if($num > -1) $limit = "LIMIT $num";
-
-		$where = '';
-		if($ownerid > -1) $where = "WHERE owner_id = $ownerid";
-
-		$query = "SELECT 
-					id
-				FROM " . $db->getTablePrefix() . "_images
-				$where
-				ORDER BY upload_time DESC
-				$limit";
-
-		$result = $db->query($query);
-
-		if ($result !== false) {
-			$ret = array();
-			while($row = $db->fetchAssoc($result)) {
-				$ret[] = (int)$row['id'];
-			}
-			return $ret;
-		} else throw new Exception('Query error.', 10000002);
+		$ids = $mdao->getLastUploadedIds($num, $owner_id);
+		$ret = array();
+		foreach($ids as $row) {
+			$ret[] = (int)$row['id'];
+		}
+		return $ret;
 	}
 
 	// For external use
@@ -758,11 +696,11 @@ class Image {
 	*
 	* Restituisce "true" se l'elemento viene eliminato, oppure "false" se l'operazione fallisce.
 	*/
-	public static function deleteFromId($id, DatabaseInterface $db)
+	public static function deleteFromId($id, ImageCommentDao $mdao)
 	{
 		if($id > 0) {
 
-			$img = new Image($db, $id);
+			$img = new Image($mdao, $id);
 
 			if(unlink($img->getFilename())) {
 
@@ -776,12 +714,9 @@ class Image {
 					}
 				}
 			
-				$query = "DELETE FROM " . $db->getPrefixedTable('images') . "
-						WHERE (id = {$id})";
-				if($db->query($query)) {
-					// Rimuovere tutte le altre associazioni TODO
+				if($mdao->deleteImageFromId($id)) {
 					return true;
-				} else throw new Exception('Query error.', 10100002);
+				}
 
 			} else throw new Exception('Cannot delete file.', 10100006);
 

@@ -12,17 +12,17 @@
 	}
 
 	try {
-		$img = new Image($GLOB['db'], $GLOB['params'][2]);
+		$img = new Image(new ImageDao($GLOB['dao']), $GLOB['params'][2]);
 	} catch (Exception $e) {
 		pageNotFound();
 	}
 
 	// TODO Controlla permessi!
 
-	//$userid = User::getUserIdFromUsername($GLOB['params'][2], $GLOB['db']);
+	//$userid = User::getUserIdFromUsername($GLOB['params'][2], new UserDao($GLOB['dao']));
 	//if(!($userid > 0 && $img->getOwnerId() == $userid)) pageNotFound();
 
-	//$user = new User($GLOB['db'], $userid);
+	//$user = new User(new UserDao($GLOB['dao']), $userid);
 
 	$fullPath = $img->getFilename();
 	if($suffix != '') $fullPath .= '--' . $suffix;
