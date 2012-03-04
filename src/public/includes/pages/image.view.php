@@ -112,10 +112,11 @@
 																	new DateTime('-30 days', new DateTimeZone('UTC')),
 																	new DateTime('now', new DateTimeZone('UTC')),
 																	$img->getId(),
-																	PageView::OutputMode_SimpleYXComma
+																	PageView::OutputMode_SimpleYXComma,
+																	$GLOB['db']
 																)));
 		} else {
-			PageView::addImageView($img->getId());
+			PageView::addImageView($img->getId(), $GLOB['db']);
 		}
 
 		$smarty->display('image.view.tpl');

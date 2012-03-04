@@ -140,6 +140,7 @@
 			$img->setDisplayName($file['name']);
 			$img->setOwnerId($GLOB['user']->getId());
 			$img->save();
+			unset($img); // free up memory
 		} catch (Exception $e) {
 			@unlink("{$filePath}.part");
 			die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Error processing image: '.$e->getMessage().'."}, "id" : "id"}');

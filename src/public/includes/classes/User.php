@@ -1,5 +1,7 @@
 <?php
 
+require_once("includes/interfaces/DatabaseInterface.php");
+
 class User {
 
 	const Sex_Undefined = -1;

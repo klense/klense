@@ -1,17 +1,17 @@
 <?php
 
+require_once("includes/interfaces/DatabaseInterface.php");
+
 class PageView {
 
 	const OutputMode_SimpleYXComma = 1;
 
-	public static function addImageView($image_id)
+	public static function addImageView($image_id, DatabaseInterface $db)
 	{
-		global $cfg;
-
 		$image_id = (int)$image_id;
 		$now = new DateTime('now', new DateTimeZone('UTC'));
 
-		$sql = "INSERT INTO {$cfg['table_prefix']}_images_views
+		$sql = "INSERT INTO " . $db->getTablePrefix() . "_images_views
 				(image_id, date, views)
 				VALUES (
 					 " . $image_id . ",
@@ -19,31 +19,31 @@ class PageView {
 					 " . "1" . "
 				) ON DUPLICATE KEY UPDATE views=views+1";
 
-		if(mysql_query($sql)) {
+		if($db->query($sql)) {
 			return true;
 		} else throw new Exception('Query error.'.$sql, 10100002);
 	}
 
-	public static function getImageViews($from_date, $to_date, $image_id, $output_mode)
+	public static function getImageViews($from_date, $to_date, $image_id, $output_mode, DatabaseInterface $db)
 	{
 		global $cfg;
 
 		$image_id = (int)$image_id;
 
 		$query = "SELECT image_id, date, views
-					FROM {$cfg['table_prefix']}_images_views WHERE
+					FROM " . $db->getTablePrefix() . "_images_views WHERE
 					image_id = $image_id
 					AND date BETWEEN '" . $from_date->format('Y-m-d') . "' AND '" . $to_date->format('Y-m-d') . "'
 					ORDER BY date ASC";
 
-		$result = mysql_query($query);
+		$result = $db->query($query);
 
 		if ($result !== false) {
 
 			if($output_mode == self::OutputMode_SimpleYXComma) {
 				$data = array();
 
-				while($row = mysql_fetch_assoc($result)) {
+				while($row = $db->fetch_assoc($result)) {
 					$db_timestamp = strtotime($row['date']);
 					$data[$db_timestamp] = $row['views'];
 				}
