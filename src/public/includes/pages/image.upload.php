@@ -27,7 +27,7 @@
 
 			foreach($files as $k=>$file) {
 				try {
-					$img = new Image(0, $file);
+					$img = new Image($GLOB['db'], 0, $file);
 					$img->setDisplayName($file['name']);
 					$img->setOwnerId($GLOB['user']->getId());
 					$img->save();

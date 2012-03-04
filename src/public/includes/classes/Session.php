@@ -1,6 +1,6 @@
 <?php
 
-require_once("includes/classes/User.php");
+require_once("includes/interfaces/DatabaseInterface.php");
 
 class Session
 {
@@ -56,10 +56,10 @@ class Session
 		Session::refreshSession();
 	}
 
-	public static function getAuthenticatedUser()
+	public static function getAuthenticatedUser(DatabaseInterface $db)
 	{
 		if(isset($_SESSION["uid"]))
-			return new User($_SESSION["uid"]);
+			return new User($db, $_SESSION["uid"]);
 		else
 			return false;
 	}

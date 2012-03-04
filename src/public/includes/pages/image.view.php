@@ -7,7 +7,7 @@
 	if(!(isset($GLOB['params'][2]) && isset($GLOB['params'][3]))) pageNotFound();
 	if($GLOB['params'][3] <= 0) pageNotFound();
 	try {
-		$img = new Image($GLOB['params'][3]);
+		$img = new Image($GLOB['db'], $GLOB['params'][3]);
 	} catch (Exception $e) {
 		pageNotFound();
 	}
@@ -23,7 +23,7 @@
 
 		$smarty->assign('phplivex_init', $phplivex_init);
 
-		$owner = new User($userid);
+		$owner = new User($GLOB['db'], $userid);
 
 		// TODO Only for admins
 		if(isset($GLOB['params'][4]) && Session::isAuthenticated() && $GLOB['params'][4] == 'rebuild_thumbnails') {
@@ -131,7 +131,7 @@
 		global $img, $smarty, $GLOB;
 	
 		try {
-			$comm = new ImageComment();
+			$comm = new ImageComment($GLOB['db']);
 			$comm->setContent($content);
 			$comm->setUserId($GLOB['user']->getId());
 			$comm->setImageId($img->getId());

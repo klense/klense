@@ -99,8 +99,6 @@ class ImagePermission {
 	function getOwnerId() { return $this->_owner_id; }
 	function setOwnerId($value) { $this->_owner_id = (int)$value; }
 
-	function getOwner() { return new User($this->_owner_id); }	
-
 	function getExif() { return $this->_exif; }
 	function setExif(array $value) { $this->_exif = $value; }
 
@@ -474,36 +472,6 @@ class ImagePermission {
 		} else throw new Exception('Query error.', 10000002);
 	}
 
-	/*
-	* Elimina una immagine esistente.
-	*
-	* Restituisce "true" se l'elemento viene eliminato, oppure "false" se l'operazione fallisce.
-	*/
-	public static function deleteFromId($id)
-	{
-		$id = (int)$id;
-		if($id > 0) {
-
-			global $cfg;
-
-			$img = new Image($id);
-
-			if(unlink($img->getFilename())) {
-			
-				$query = "DELETE FROM {$cfg['table_prefix']}_images
-						WHERE (id = {$id})";
-				if(mysql_query($query)) {
-					// Rimuovere tutte le altre associazioni TODO
-					return true;
-				} else throw new Exception('Query error.', 10100002);
-
-			} else throw new Exception('Cannot delete file.', 10100006);
-
-		} else {
-			throw new Exception('Cannot delete a new image.', 10100005);
-		}
-	}
-	
 }
 
 

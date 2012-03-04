@@ -7,7 +7,7 @@
 	if(!isset($GLOB['params'][2])) pageNotFound();
 	if($GLOB['params'][1] <= 0) pageNotFound();
 	try {
-		$usr = new User($GLOB['params'][1]);
+		$usr = new User($GLOB['db'], $GLOB['params'][1]);
 	} catch (Exception $e) {
 		pageNotFound();
 	}
@@ -32,7 +32,7 @@
 		$imgs = Image::getLastUploadedIds(-1, $usr->getId());
 		$exit_images = array();
 		foreach($imgs as $id) {
-			$img = new Image($id);
+			$img = new Image($GLOB['db'], $id);
 
 			/* Build "Other sizes" array */
 			$otherSizes = $img->getAllSizes();

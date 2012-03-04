@@ -12,7 +12,7 @@
 	}
 
 	try {
-		$img = new Image($GLOB['params'][2]);
+		$img = new Image($GLOB['db'], $GLOB['params'][2]);
 	} catch (Exception $e) {
 		pageNotFound();
 	}
@@ -22,7 +22,7 @@
 	//$userid = User::getUserIdFromUsername($GLOB['params'][2]);
 	//if(!($userid > 0 && $img->getOwnerId() == $userid)) pageNotFound();
 
-	//$user = new User($userid);
+	//$user = new User($GLOB['db'], $userid);
 
 	$fullPath = $img->getFilename();
 	if($suffix != '') $fullPath .= '--' . $suffix;

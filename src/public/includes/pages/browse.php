@@ -14,7 +14,7 @@
 	$imgs = Image::getLastUploadedIds(9, -1);
 	$exit_images = array();
 	foreach($imgs as $id) {
-		$img = new Image($id);
+		$img = new Image($GLOB['db'], $id);
 		$usr = $img->getOwner();
 		$exit_images[] = array(  "filename" => htmles($img->getSafeFilename("wh_size2"))
 								,"displayName" => htmles($img->getDisplayName())

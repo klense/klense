@@ -8,8 +8,11 @@ class ImageComment {
 	private $_datetime = null;
 	private $_content = '';
 
-	public function __construct($id=0, array $assocRowData=null)
+	private $db;
+
+	public function __construct(DatabaseInterface $db, $id=0, array $assocRowData=null)
 	{
+		$this->db = $db;
 		if($assocRowData != null) {
 
 			// Load data from the passed array
@@ -32,11 +35,11 @@ class ImageComment {
 							content
 						FROM {$cfg['table_prefix']}_images_comments WHERE id = {$this->_id}";
 
-				$result = mysql_query($query);
+				$result = $this->db->query($query);
 
 				if ($result !== false) {
-					if(mysql_num_rows($result) > 0) {
-						$row = mysql_fetch_assoc($result);
+					if($this->db->numRows($result) > 0) {
+						$row = $this->db->fetchAssoc($result);
 						$this->loadFromAssocRow($row);
 					} else throw new Exception('ID does not exist.', 1000001);
 				} else throw new Exception('Query error.', 10000002);
@@ -108,10 +111,10 @@ class ImageComment {
 							user_id = " 	. (int)$this->_user_id . ",
 							image_id = "	. (int)$this->_image_id . ",
 							datetime = '" 	. $this->_datetime->format('Y-m-d H:i:s') . "',
-							content = '" 	. mysql_real_escape_string($this->_content) . "'
+							content = '" 	. $this->db->escapeString($this->_content) . "'
 						WHERE (id = {$this->_id})";
 
-				if(mysql_query($sql)) {
+				if($this->db->query($sql)) {
 					return $this->_id;
 				} else throw new Exception('Query error.', 10000002); 
 
@@ -125,10 +128,10 @@ class ImageComment {
 							 " . (int)$this->_user_id . ",
 							 " . (int)$this->_image_id . ",
 							'" . $this->_datetime->format('Y-m-d H:i:s') . "',
-							'" . mysql_real_escape_string($this->_content) . "'
+							'" . $this->db->escapeString($this->_content) . "'
 						)";
 
-				if(mysql_query($sql)) {
+				if($this->db->query($sql)) {
 
 					// Get last inserted id
 					$query = "SELECT id FROM {$cfg['table_prefix']}_images_comments WHERE 
@@ -137,11 +140,11 @@ class ImageComment {
 								AND datetime = '" 	. $this->_datetime->format('Y-m-d H:i:s') . "'
 							";
 
-					$result = mysql_query($query);
+					$result = $this->db->query($query);
 
 					if ($result !== false) {
-						if(mysql_num_rows($result) > 0) {
-							$row = mysql_fetch_assoc($result);
+						if($this->db->numRows($result) > 0) {
+							$row = $this->db->fetchAssoc($result);
 							$this->_id = (int)$row['id'];
 							return $this->_id;
 						} else throw new Exception('Inserted id not found.', 10000002);;
@@ -184,7 +187,7 @@ class ImageComment {
 
 	public function getUser()
 	{
-		return new User($this->getUserId());
+		return new User($this->db, $this->getUserId());
 	}
 
 	/*
@@ -201,7 +204,7 @@ class ImageComment {
 			
 			$query = "DELETE FROM {$cfg['table_prefix']}_images_comments
 					WHERE (id = {$this->_id})";
-			if(mysql_query($query)) {
+			if($this->db->query($query)) {
 				$this->_id = 0;
 				return true;
 			}

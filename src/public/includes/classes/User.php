@@ -22,14 +22,16 @@ class User {
 	private $_sex = -1;
 	private $_timezone = null;
 
-	public function __construct($id=0)
+	private $db;
+
+	public function __construct(DatabaseInterface $db, $id=0)
 	{
+		$this->db = $db;
 		$id = (int)$id;
 		$this->_id = $id;
 
 		if($this->_id > 0) {
 			// Carica tutti i valori nel caso in cui l'ID sia > 0
-			global $cfg;
 			
 			$query = "SELECT 
 						username,
@@ -44,13 +46,13 @@ class User {
 						birth_date,
 						sex,
 						timezone
-					FROM {$cfg['table_prefix']}_users WHERE id = {$this->_id}";
+					FROM " . $this->db->getTablePrefix() . "_users WHERE id = {$this->_id}";
 
-			$result = mysql_query($query);
+			$result = $this->db->query($query);
 
 			if ($result !== false) {
-				if(mysql_num_rows($result) > 0) {
-					$row = mysql_fetch_assoc($result);
+				if($this->db->numRows($result) > 0) {
+					$row = $this->db->fetchAssoc($result);
 
 					$this->_username = $row['username'];
 					$this->_password = $row['password'];
@@ -174,7 +176,6 @@ class User {
 	* Restituisce l'id interessato dall'operazione, oppure "false" se l'operazione fallisce.
 	*/	
 	function save() {
-		global $cfg;
 
 		if($this->check_fields()) {
 
@@ -182,22 +183,22 @@ class User {
 
 				// Esegue un UPDATE
 
-				$sql = "UPDATE {$cfg['table_prefix']}_users SET 
-							username = '" 			. mysql_real_escape_string($this->_username) . "',
-							password = '" 			. mysql_real_escape_string($this->_password) . "',
-							email = '" 				. mysql_real_escape_string($this->_email) . "',
+				$sql = "UPDATE " . $this->db->getTablePrefix() . "_users SET 
+							username = '" 			. $this->db->escapeString($this->_username) . "',
+							password = '" 			. $this->db->escapeString($this->_password) . "',
+							email = '" 				. $this->db->escapeString($this->_email) . "',
 							activated = "			. (int)$this->_activated . ",
-							activation_code = '"	. mysql_real_escape_string($this->_activationCode) . "',
+							activation_code = '"	. $this->db->escapeString($this->_activationCode) . "',
 							registration_time = '"	. $this->_registrationTime->format('Y-m-d H:i:s') . "',
 							enabled = "				. (int)$this->_enabled . ",
-							first_name = '"			. mysql_real_escape_string($this->_firstName) . "',
-							last_name = '"			. mysql_real_escape_string($this->_lastName) . "',
+							first_name = '"			. $this->db->escapeString($this->_firstName) . "',
+							last_name = '"			. $this->db->escapeString($this->_lastName) . "',
 							birth_date = '"			. $this->_birthDate->format('Y-m-d 12:0:0') . "',
 							sex = "					. (int)$this->_sex . ",
-							timezone = '"			. mysql_real_escape_string($this->_timezone->getName()) . "'
+							timezone = '"			. $this->db->escapeString($this->_timezone->getName()) . "'
 						WHERE (id = {$this->_id})";
 
-				if(mysql_query($sql)) {
+				if($this->db->query($sql)) {
 					return $this->_id;
 				} else throw new Exception('Query error.', 10000002);
 
@@ -205,24 +206,24 @@ class User {
 
 				// Esegue un INSERT
 
-				$sql = "INSERT INTO {$cfg['table_prefix']}_users
+				$sql = "INSERT INTO " . $this->db->getTablePrefix() . "_users
 						(username, password, email, activated, activation_code, registration_time, enabled, first_name, last_name, birth_date, sex, timezone)
 						VALUES (
-							'" . mysql_real_escape_string($this->_username) . "',
-							'" . mysql_real_escape_string($this->_password) . "',
-							'" . mysql_real_escape_string($this->_email) . "',
+							'" . $this->db->escapeString($this->_username) . "',
+							'" . $this->db->escapeString($this->_password) . "',
+							'" . $this->db->escapeString($this->_email) . "',
 							"  . (int)$this->_activated . ",
-							'" . mysql_real_escape_string($this->_activationCode) . "',
+							'" . $this->db->escapeString($this->_activationCode) . "',
 							'" . $this->_registrationTime->format('Y-m-d H:i:s') . "',
 							"  . (int)$this->_enabled . ",
-							'" . mysql_real_escape_string($this->_firstName) . "',
-							'" . mysql_real_escape_string($this->_lastName) . "',
+							'" . $this->db->escapeString($this->_firstName) . "',
+							'" . $this->db->escapeString($this->_lastName) . "',
 							'" . $this->_birthDate->format('Y-m-d 12:0:0') . "',
 							"  . (int)$this->_sex . ",
-							'" . mysql_real_escape_string($this->_timezone->getName()) . "'
+							'" . $this->db->escapeString($this->_timezone->getName()) . "'
 						)";
 
-				if(mysql_query($sql)) {
+				if($this->db->query($sql)) {
 					$this->_id = $this->getUserIdFromUsername($this->_username);
 					return $this->_id;
 				} else throw new Exception('Query error.', 10000002);
@@ -367,11 +368,9 @@ class User {
 		// Elimina l'utente
 		if($this->_id > 0) {
 
-			global $cfg;
-			
-			$query = "DELETE FROM {$cfg['table_prefix']}_users
+			$query = "DELETE FROM " . $this->db->getTablePrefix() . "_users
 					WHERE (id = {$this->_id})";
-			if(mysql_query($query)) {
+			if($this->db->query($query)) {
 				/* Rimuovere tutte le altre associazioni TODO
 					-images
 					-friends

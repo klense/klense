@@ -8,7 +8,7 @@
 	}
 
 	try {
-		$img = new Image($GLOB['params'][2]);
+		$img = new Image($GLOB['db'], $GLOB['params'][2]);
 	} catch (Exception $e) {
 		echo htmles(__("Image not found."));
 		exit();

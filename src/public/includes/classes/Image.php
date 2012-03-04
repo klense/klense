@@ -19,10 +19,13 @@ class Image {
 	private $_hide_exif = false;
 	private $_description = '';
 
+	private $db;
+
 	private $standard_uploader = true;
 
-	public function __construct($id=0, array $file=null, $standard_uploader=true)
+	public function __construct(DatabaseInterface $db, $id=0, array $file=null, $standard_uploader=true)
 	{
+		$this->db = $db;
 		$id = (int)$id;
 		$this->_id = $id;
 
@@ -42,13 +45,13 @@ class Image {
 						mime,
 						hide_exif,
 						description
-					FROM {$cfg['table_prefix']}_images WHERE id = {$this->_id}";
+					FROM " . $this->db->getTablePrefix() . "_images WHERE id = {$this->_id}";
 
-			$result = mysql_query($query);
+			$result = $this->db->query($query);
 
 			if ($result !== false) {
-				if(mysql_num_rows($result) > 0) {
-					$row = mysql_fetch_assoc($result);
+				if($this->db->numRows($result) > 0) {
+					$row = $this->db->fetchAssoc($result);
 
 					$this->_display_name = $row['display_name'];
 					$this->_file_name = $row['file_name'];
@@ -92,7 +95,7 @@ class Image {
 	function getOwnerId() { return $this->_owner_id; }
 	function setOwnerId($value) { $this->_owner_id = (int)$value; }
 
-	function getOwner() { return new User($this->_owner_id); }
+	function getOwner() { return new User($this->db, $this->_owner_id); }
 
 	function getExif() { return $this->_exif; }
 	function setExif(array $value) { $this->_exif = $value; }
@@ -167,20 +170,20 @@ class Image {
 
 				// Esegue un UPDATE
 
-				$sql = "UPDATE {$cfg['table_prefix']}_images SET 
-							display_name = '" 		. mysql_real_escape_string($this->_display_name) . "',
+				$sql = "UPDATE " . $this->db->getTablePrefix() . "_images SET 
+							display_name = '" 		. $this->db->escapeString($this->_display_name) . "',
 							owner_id = " 			. (int)$this->_owner_id . ",
-							exif = '"				. mysql_real_escape_string(serialize($this->_exif)) . "',
+							exif = '"				. $this->db->escapeString(serialize($this->_exif)) . "',
 							upload_time = '"		. $this->_upload_time->format('Y-m-d H:i:s') . "',
-							tags = '"				. mysql_real_escape_string(implode(' ', $this->_tags)) . "',
+							tags = '"				. $this->db->escapeString(implode(' ', $this->_tags)) . "',
 							width = " 				. (int)$this->_width . ",
 							height = " 				. (int)$this->_height . ",
-							mime = '"				. mysql_real_escape_string($this->_mime) . "',
+							mime = '"				. $this->db->escapeString($this->_mime) . "',
 							hide_exif = "			. (int)$this->_hide_exif . ",
-							description = '"		. mysql_real_escape_string($this->_description) . "'
+							description = '"		. $this->db->escapeString($this->_description) . "'
 						WHERE (id = {$this->_id})";
 
-				if(mysql_query($sql)) {
+				if($this->db->query($sql)) {
 					return $this->_id;
 				} else throw new Exception('Query error.', 10100002);
 
@@ -195,20 +198,20 @@ class Image {
 					$sql = "INSERT INTO {$cfg['table_prefix']}_images
 							(display_name, file_name, owner_id, exif, upload_time, tags, width, height, mime, hide_exif, description)
 							VALUES (
-								'" . mysql_real_escape_string($this->_display_name) . "',
-								'" . mysql_real_escape_string($this->_file_name) . "',
+								'" . $this->db->escapeString($this->_display_name) . "',
+								'" . $this->db->escapeString($this->_file_name) . "',
 								 " . (int)$this->_owner_id . ",
-								'" . mysql_real_escape_string(serialize($this->_exif)) . "',
+								'" . $this->db->escapeString(serialize($this->_exif)) . "',
 								'" . $this->_upload_time->format('Y-m-d H:i:s') . "',
-								'" . mysql_real_escape_string(implode(' ', $this->_tags)) . "',
+								'" . $this->db->escapeString(implode(' ', $this->_tags)) . "',
 								 " . (int)$this->_width . ",
 								 " . (int)$this->_height . ",
-								'" . mysql_real_escape_string($this->_mime) . "',
+								'" . $this->db->escapeString($this->_mime) . "',
 								 " . (int)$this->_hide_exif . ",
-								'" . mysql_real_escape_string($this->_description) . "'
+								'" . $this->db->escapeString($this->_description) . "'
 							)";
 
-					if(mysql_query($sql)) {
+					if($this->db->query($sql)) {
 						$this->_id = $this->getImageIdFromFilename($this->_file_name);
 						return $this->_id;
 					} else throw new Exception('Query error.', 10100002);
@@ -612,13 +615,13 @@ class Image {
 
 		$query = "SELECT 
 					id
-				FROM {$cfg['table_prefix']}_images WHERE file_name = '" . mysql_real_escape_string($filename) . "'";
+				FROM " . $this->db->getTablePrefix() . "_images WHERE file_name = '" . $this->db->escapeString($filename) . "'";
 
-		$result = mysql_query($query);
+		$result = $this->db->query($query);
 
 		if ($result !== false) {
-			if(mysql_num_rows($result) > 0) {
-				$row = mysql_fetch_assoc($result);
+			if($this->db->numRows($result) > 0) {
+				$row = $this->db->fetchAssoc($result);
 				return (int)$row['id'];
 			} else return -1;
 		} else throw new Exception('Query error.', 10000002);
@@ -628,19 +631,19 @@ class Image {
 	{
 		global $cfg;
 
-		$query = "SELECT {$cfg['table_prefix']}_images_comments.*
-				FROM {$cfg['table_prefix']}_images_comments WHERE
+		$query = "SELECT " . $this->db->getTablePrefix() . "_images_comments.*
+				FROM " . $this->db->getTablePrefix() . "_images_comments WHERE
 					user_id = " . $this->getOwnerId() . "
 					AND image_id = " . $this->getId() . "
 				ORDER BY datetime desc";
 
-		$result = mysql_query($query);
+		$result = $this->db->query($query);
 
 		if ($result !== false) {
 			$ret = array();
-			while($row = mysql_fetch_assoc($result)) {
+			while($row = $this->db->fetchAssoc($result)) {
 				$id = (int)$row['id'];
-				$ret[$id] = new ImageComment(null, $row);
+				$ret[$id] = new ImageComment($this->db, null, $row);
 			}
 			return $ret;
 		} else throw new Exception('Query error.', 10000002);
@@ -763,13 +766,13 @@ class Image {
 	*
 	* Restituisce "true" se l'elemento viene eliminato, oppure "false" se l'operazione fallisce.
 	*/
-	public static function deleteFromId($id)
+	public static function deleteFromId(DatabaseInterface $db, $id)
 	{
 		if($id > 0) {
 
 			global $cfg;
 
-			$img = new Image($id);
+			$img = new Image($db, $id);
 
 			if(unlink($img->getFilename())) {
 
