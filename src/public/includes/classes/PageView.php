@@ -26,8 +26,6 @@ class PageView {
 
 	public static function getImageViews($from_date, $to_date, $image_id, $output_mode, DatabaseInterface $db)
 	{
-		global $cfg;
-
 		$image_id = (int)$image_id;
 
 		$query = "SELECT image_id, date, views

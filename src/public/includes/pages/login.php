@@ -8,7 +8,7 @@
 	if($_SERVER['REQUEST_METHOD'] === 'POST') {
 		Session::resetSession();
 
-		$userid = User::login($_POST['username'], $_POST['password']);
+		$userid = User::login($_POST['username'], $_POST['password'], $GLOB['db']);
 		if($userid > 0) {
 			Session::authenticate($userid);
 		} else {

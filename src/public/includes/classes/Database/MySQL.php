@@ -49,6 +49,11 @@ class Database_MySQL implements DatabaseInterface
 		return $this->_tabprefix;
 	}
 
+	public function getPrefixedTable($table_name)
+	{
+		return $this->_tabprefix . '_' . $table_name;
+	}
+
 }
 
 ?>

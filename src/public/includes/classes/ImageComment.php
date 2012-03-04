@@ -25,15 +25,13 @@ class ImageComment {
 
 			if($this->_id > 0) {
 				// Carica tutti i valori nel caso in cui l'ID sia > 0
-				global $cfg;
-				
 				$query = "SELECT 
 							id,
 							user_id,
 							image_id,
 							datetime,
 							content
-						FROM {$cfg['table_prefix']}_images_comments WHERE id = {$this->_id}";
+						FROM " . $this->db->getPrefixedTable('images_comments') . " WHERE id = {$this->_id}";
 
 				$result = $this->db->query($query);
 
@@ -99,7 +97,6 @@ class ImageComment {
 	* Restituisce l'id interessato dall'operazione, oppure "false" se l'operazione fallisce.
 	*/	
 	function save() { 
-		global $cfg;
 
 		if($this->check_fields()) {
 
@@ -107,7 +104,7 @@ class ImageComment {
 
 				// Esegue un UPDATE
 
-				$sql = "UPDATE {$cfg['table_prefix']}_images_comments SET 
+				$sql = "UPDATE " . $this->db->getPrefixedTable('images_comments') . " SET 
 							user_id = " 	. (int)$this->_user_id . ",
 							image_id = "	. (int)$this->_image_id . ",
 							datetime = '" 	. $this->_datetime->format('Y-m-d H:i:s') . "',
@@ -122,7 +119,7 @@ class ImageComment {
 
 				// Esegue un INSERT
 
-				$sql = "INSERT INTO {$cfg['table_prefix']}_images_comments
+				$sql = "INSERT INTO " . $this->db->getPrefixedTable('images_comments') . "
 						(user_id, image_id, datetime, content)
 						VALUES (
 							 " . (int)$this->_user_id . ",
@@ -134,7 +131,7 @@ class ImageComment {
 				if($this->db->query($sql)) {
 
 					// Get last inserted id
-					$query = "SELECT id FROM {$cfg['table_prefix']}_images_comments WHERE 
+					$query = "SELECT id FROM " . $this->db->getPrefixedTable('images_comments') . " WHERE 
 								user_id = " 		. (int)$this->_user_id . "
 								AND image_id = " 	. (int)$this->_image_id . "
 								AND datetime = '" 	. $this->_datetime->format('Y-m-d H:i:s') . "'
@@ -200,9 +197,7 @@ class ImageComment {
 		// Elimina il commento
 		if($this->_id > 0) {
 
-			global $cfg;
-			
-			$query = "DELETE FROM {$cfg['table_prefix']}_images_comments
+			$query = "DELETE FROM " . $this->db->getPrefixedTable('images_comments') . "
 					WHERE (id = {$this->_id})";
 			if($this->db->query($query)) {
 				$this->_id = 0;

@@ -19,7 +19,7 @@
 
 	// TODO Controlla permessi!
 
-	//$userid = User::getUserIdFromUsername($GLOB['params'][2]);
+	//$userid = User::getUserIdFromUsername($GLOB['params'][2], $GLOB['db']);
 	//if(!($userid > 0 && $img->getOwnerId() == $userid)) pageNotFound();
 
 	//$user = new User($GLOB['db'], $userid);

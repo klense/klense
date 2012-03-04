@@ -31,8 +31,6 @@ class Image {
 
 		if($this->_id > 0) {
 			// Carica tutti i valori nel caso in cui l'ID sia > 0
-			global $cfg;
-			
 			$query = "SELECT
 						display_name,
 						file_name,
@@ -162,7 +160,6 @@ class Image {
 	* Restituisce l'id interessato dall'operazione, oppure "false" se l'operazione fallisce.
 	*/	
 	function save() {
-		global $cfg;
 
 		if($this->check_fields()) {
 
@@ -195,7 +192,7 @@ class Image {
 				if($filename !== false) {
 					$this->_file_name = $filename;
 					
-					$sql = "INSERT INTO {$cfg['table_prefix']}_images
+					$sql = "INSERT INTO " . $this->db->getTablePrefix() . "_images
 							(display_name, file_name, owner_id, exif, upload_time, tags, width, height, mime, hide_exif, description)
 							VALUES (
 								'" . $this->db->escapeString($this->_display_name) . "',
@@ -611,8 +608,6 @@ class Image {
 
 	private function getImageIdFromFilename($filename)
 	{
-		global $cfg;
-
 		$query = "SELECT 
 					id
 				FROM " . $this->db->getTablePrefix() . "_images WHERE file_name = '" . $this->db->escapeString($filename) . "'";
@@ -629,8 +624,6 @@ class Image {
 
 	public function getComments()
 	{
-		global $cfg;
-
 		$query = "SELECT " . $this->db->getTablePrefix() . "_images_comments.*
 				FROM " . $this->db->getTablePrefix() . "_images_comments WHERE
 					user_id = " . $this->getOwnerId() . "
@@ -650,9 +643,8 @@ class Image {
 	}
 
 	// Returns an array with the id of the last $num images uploaded
-	public static function getLastUploadedIds($num, $ownerid)
+	public static function getLastUploadedIds($num, $ownerid, DatabaseInterface $db)
 	{
-		global $cfg;
 		$num = (int)$num;
 
 		$limit = '';
@@ -663,16 +655,16 @@ class Image {
 
 		$query = "SELECT 
 					id
-				FROM {$cfg['table_prefix']}_images
+				FROM " . $db->getTablePrefix() . "_images
 				$where
 				ORDER BY upload_time DESC
 				$limit";
 
-		$result = mysql_query($query);
+		$result = $db->query($query);
 
 		if ($result !== false) {
 			$ret = array();
-			while($row = mysql_fetch_assoc($result)) {
+			while($row = $db->fetchAssoc($result)) {
 				$ret[] = (int)$row['id'];
 			}
 			return $ret;
@@ -766,11 +758,9 @@ class Image {
 	*
 	* Restituisce "true" se l'elemento viene eliminato, oppure "false" se l'operazione fallisce.
 	*/
-	public static function deleteFromId(DatabaseInterface $db, $id)
+	public static function deleteFromId($id, DatabaseInterface $db)
 	{
 		if($id > 0) {
-
-			global $cfg;
 
 			$img = new Image($db, $id);
 
@@ -786,9 +776,9 @@ class Image {
 					}
 				}
 			
-				$query = "DELETE FROM {$cfg['table_prefix']}_images
+				$query = "DELETE FROM " . $db->getPrefixedTable('images') . "
 						WHERE (id = {$id})";
-				if(mysql_query($query)) {
+				if($db->query($query)) {
 					// Rimuovere tutte le altre associazioni TODO
 					return true;
 				} else throw new Exception('Query error.', 10100002);

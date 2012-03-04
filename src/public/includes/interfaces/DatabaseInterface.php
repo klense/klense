@@ -12,6 +12,7 @@ interface DatabaseInterface
 
 	public function setTablePrefix($prefix);
 	public function getTablePrefix();
+	public function getPrefixedTable($table_name);
 
 }
 

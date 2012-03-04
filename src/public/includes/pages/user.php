@@ -29,7 +29,7 @@
 			$smarty->assign('user_username', htmles($usr->getUsername()));
 		}
 
-		$imgs = Image::getLastUploadedIds(-1, $usr->getId());
+		$imgs = Image::getLastUploadedIds(-1, $usr->getId(), $GLOB['id']);
 		$exit_images = array();
 		foreach($imgs as $id) {
 			$img = new Image($GLOB['db'], $id);

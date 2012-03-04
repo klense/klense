@@ -103,7 +103,7 @@ class User {
 	function setEmail($value)
 	{
 		// Controlla che non esistano altri utenti con questa email
-		$existingId = self::getUserIdFromEmail($value);
+		$existingId = self::getUserIdFromEmail($value, $this->db);
 		if($this->_id == 0 && $existingId > 0) throw new Exception('Email already exists.', 10000004);
 		if($this->_id > 0 && $existingId > 0 && $existingId != $this->_id) throw new Exception('Email already exists.', 10000004);
 
@@ -271,7 +271,7 @@ class User {
 		if($u > 0 && $u != $this->_id) {
 			return false;
 		}
-		$u = $this->getUserIdFromEmail($this->_email);
+		$u = $this->getUserIdFromEmail($this->_email, $this->db);
 		if($u > 0 && $u != $this->_id) {
 			return false;
 		}
@@ -285,7 +285,7 @@ class User {
 		if($this->getUserIdFromUsername($this->_username) > 0) {
 			return false;
 		}
-		if($this->getUserIdFromEmail($this->_email) > 0) {
+		if($this->getUserIdFromEmail($this->_email, $this->db) > 0) {
 			return false;
 		}
 
@@ -297,23 +297,21 @@ class User {
 		return $this->getUsername(); // TODO
 	}
 	
-	public static function login($username, $password)
+	public static function login($username, $password, DatabaseInterface $db)
 	{
-		global $cfg;
-
 		$query = "SELECT 
 					id,
 					username,
 					password,
 					activated,
 					enabled
-				FROM {$cfg['table_prefix']}_users WHERE username = '" . mysql_real_escape_string($username) . "'";
+				FROM " . $db->getPrefixedTable('users') . " WHERE username = '" . $db->escapeString($username) . "'";
 
-		$result = mysql_query($query);
+		$result = $db->query($query);
 
 		if ($result !== false) {
-			if(mysql_num_rows($result) > 0) {
-				$row = mysql_fetch_assoc($result);
+			if($db->numRows($result) > 0) {
+				$row = $db->fetchAssoc($result);
 				if($row['activated'] && $row['enabled'] && $row['password'] == sha1($password)) {
 					return (int)$row['id'];
 				}
@@ -322,37 +320,33 @@ class User {
 
 	}
 
-	public static function getUserIdFromUsername($username)
+	public static function getUserIdFromUsername($username, DatabaseInterface $db)
 	{
-		global $cfg;
-
 		$query = "SELECT 
 					id
-				FROM {$cfg['table_prefix']}_users WHERE username = '" . mysql_real_escape_string($username) . "'";
+				FROM " . $db->getPrefixedTable('users') . " WHERE username = '" . $db->escapeString($username) . "'";
 
-		$result = mysql_query($query);
+		$result = $db->query($query);
 
 		if ($result !== false) {
-			if(mysql_num_rows($result) > 0) {
-				$row = mysql_fetch_assoc($result);
+			if($db->numRows($result) > 0) {
+				$row = $db->fetchAssoc($result);
 				return (int)$row['id'];
 			} else return -1;
 		} else throw new Exception('Query error.', 10000002);
 	}
 
-	public static function getUserIdFromEmail($email)
+	public static function getUserIdFromEmail($email, DatabaseInterface $db)
 	{
-		global $cfg;
-
 		$query = "SELECT 
 					id
-				FROM {$cfg['table_prefix']}_users WHERE email = '" . mysql_real_escape_string($email) . "'";
+				FROM " . $db->getPrefixedTable('users') . " WHERE email = '" . $db->escapeString($email) . "'";
 
-		$result = mysql_query($query);
+		$result = $db->query($query);
 
 		if ($result !== false) {
-			if(mysql_num_rows($result) > 0) {
-				$row = mysql_fetch_assoc($result);
+			if($db->numRows($result) > 0) {
+				$row = $db->fetchAssoc($result);
 				return (int)$row['id'];
 			} else return -1;
 		} else throw new Exception('Query error.', 10000002);

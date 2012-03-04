@@ -20,7 +20,7 @@
 
 			// Delete
 			try {
-				Image::deleteFromId($img->getId());
+				Image::deleteFromId($img->getId(), $GLOB['db']);
 			} catch (Exception $e) {
 				echo htmles(__("Error deleting image."));
 				exit();
