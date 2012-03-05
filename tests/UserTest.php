@@ -5,22 +5,21 @@ set_include_path(get_include_path() . PATH_SEPARATOR . "../src/public");
 require_once 'PHPUnit/Autoload.php';
 
 require_once '../src/public/includes/classes/User.php';
-require_once "includes/interfaces/DatabaseInterface.php";
 
 class UserTest extends PHPUnit_Framework_TestCase
 {
 
-	protected $user, $db;
+	protected $user, $mdao;
 
 	protected function setUp()
 	{
-		$this->db = $this->getMock('DatabaseInterface');
-		$this->user = new User($this->db);
+		$this->mdao = $this->getMock('UserDao');
+		$this->user = new User($this->mdao);
 	}
 
 	protected function tearDown()
 	{
-		unset($this->db);
+		unset($this->mdao);
 		unset($this->user);
 	}
 
