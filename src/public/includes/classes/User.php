@@ -67,7 +67,7 @@ class User {
 			if($this->_id > 0 && $existingId > 0 && $existingId != $this->_id) throw new Exception('Username already exists.', 10000004);
 
 			$this->_username = $value;
-		} else throw new Exception('Invalid username.', 10000003);
+		} else throw new InvalidArgumentException('Invalid username.', 10000003);
 	}
 	
 	function setPassword($value)

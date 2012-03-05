@@ -21,7 +21,7 @@ class PageViewDao implements DaoInterface {
 		$this->dao = $dao;
 	}
 	
-	public function getImageViews($from_date, $to_date, $image_id, $output_mode)
+	public function getImageViews($from_date, $to_date, $image_id)
 	{
 		$image_id = (int)$image_id;
 		$from_date->setTimezone(new DateTimeZone('UTC'));
