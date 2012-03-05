@@ -1,7 +1,5 @@
 <?php
 
-require_once("includes/interfaces/DatabaseInterface.php");
-
 class PageView {
 
 	const OutputMode_SimpleYXComma = 1;

@@ -31,41 +31,21 @@ class User {
 		if($this->_id > 0) {
 			// Carica tutti i valori nel caso in cui l'ID sia > 0
 			
-			$query = "SELECT 
-						username,
-						password,
-						email,
-						activated,
-						activation_code,
-						registration_time,
-						enabled,
-						first_name,
-						last_name,
-						birth_date,
-						sex,
-						timezone
-					FROM " . $this->db->getTablePrefix() . "_users WHERE id = {$this->_id}";
-
-			$result = $this->db->query($query);
-
-			if ($result !== false) {
-				if($this->db->numRows($result) > 0) {
-					$row = $this->db->fetchAssoc($result);
-
-					$this->_username = $row['username'];
-					$this->_password = $row['password'];
-					$this->_email = $row['email'];
-					$this->_activated = (bool)$row['activated'];
-					$this->_activationCode = $row['activation_code'];
-					$this->_registrationTime = new DateTime($row['registration_time'], new DateTimeZone('UTC'));
-					$this->_enabled = (bool)$row['enabled'];
-					$this->_firstName = $row['first_name'];
-					$this->_lastName = $row['last_name'];
-					$this->_birthDate = new DateTime($row['birth_date'], new DateTimeZone('UTC'));
-					$this->_sex = (int)$row['sex'];
-					$this->_timezone = new DateTimeZone($row['timezone']);
-				} else throw new Exception('ID does not exist.', 1000001);
-			} else throw new Exception('Query error.', 10000002);
+			$row = $this->mdao->getUserFromId($this->_id);
+			if($row !== false) {
+				$this->_username = $row['username'];
+				$this->_password = $row['password'];
+				$this->_email = $row['email'];
+				$this->_activated = (bool)$row['activated'];
+				$this->_activationCode = $row['activation_code'];
+				$this->_registrationTime = new DateTime($row['registration_time'], new DateTimeZone('UTC'));
+				$this->_enabled = (bool)$row['enabled'];
+				$this->_firstName = $row['first_name'];
+				$this->_lastName = $row['last_name'];
+				$this->_birthDate = new DateTime($row['birth_date'], new DateTimeZone('UTC'));
+				$this->_sex = (int)$row['sex'];
+				$this->_timezone = new DateTimeZone($row['timezone']);
+			} else throw new Exception('ID does not exist.', 1000001);
 
 		} else {
 			// Inizializza
@@ -82,7 +62,7 @@ class User {
 	{
 		if(preg_match('/^[a-z\d_]{5,20}$/i', $value)) {
 			// Controlla che non esistano altri utenti con questa email
-			$existingId = self::getUserIdFromUsername($value);
+			$existingId = self::getUserIdFromUsername($value, $this->mdao);
 			if($this->_id == 0 && $existingId > 0) throw new Exception('Username already exists.', 10000004);
 			if($this->_id > 0 && $existingId > 0 && $existingId != $this->_id) throw new Exception('Username already exists.', 10000004);
 
@@ -181,50 +161,43 @@ class User {
 
 				// Esegue un UPDATE
 
-				$sql = "UPDATE " . $this->db->getTablePrefix() . "_users SET 
-							username = '" 			. $this->db->escapeString($this->_username) . "',
-							password = '" 			. $this->db->escapeString($this->_password) . "',
-							email = '" 				. $this->db->escapeString($this->_email) . "',
-							activated = "			. (int)$this->_activated . ",
-							activation_code = '"	. $this->db->escapeString($this->_activationCode) . "',
-							registration_time = '"	. $this->_registrationTime->format('Y-m-d H:i:s') . "',
-							enabled = "				. (int)$this->_enabled . ",
-							first_name = '"			. $this->db->escapeString($this->_firstName) . "',
-							last_name = '"			. $this->db->escapeString($this->_lastName) . "',
-							birth_date = '"			. $this->_birthDate->format('Y-m-d 12:0:0') . "',
-							sex = "					. (int)$this->_sex . ",
-							timezone = '"			. $this->db->escapeString($this->_timezone->getName()) . "'
-						WHERE (id = {$this->_id})";
+				$res = $this->mdao->updateUserFromId($this->_id,
+														$this->_username,
+														$this->_password,
+														$this->_email,
+														$this->_activated,
+														$this->_activationCode,
+														$this->_registrationTime,
+														$this->_enabled,
+														$this->_firstName,
+														$this->_lastName,
+														$this->_birthDate,
+														$this->_sex,
+														$this->_timezone
+													);
 
-				if($this->db->query($sql)) {
+				if($res) {
 					return $this->_id;
-				} else throw new Exception('Query error.', 10000002);
+				}
 
 			} else {
 
 				// Esegue un INSERT
 
-				$sql = "INSERT INTO " . $this->db->getTablePrefix() . "_users
-						(username, password, email, activated, activation_code, registration_time, enabled, first_name, last_name, birth_date, sex, timezone)
-						VALUES (
-							'" . $this->db->escapeString($this->_username) . "',
-							'" . $this->db->escapeString($this->_password) . "',
-							'" . $this->db->escapeString($this->_email) . "',
-							"  . (int)$this->_activated . ",
-							'" . $this->db->escapeString($this->_activationCode) . "',
-							'" . $this->_registrationTime->format('Y-m-d H:i:s') . "',
-							"  . (int)$this->_enabled . ",
-							'" . $this->db->escapeString($this->_firstName) . "',
-							'" . $this->db->escapeString($this->_lastName) . "',
-							'" . $this->_birthDate->format('Y-m-d 12:0:0') . "',
-							"  . (int)$this->_sex . ",
-							'" . $this->db->escapeString($this->_timezone->getName()) . "'
-						)";
-
-				if($this->db->query($sql)) {
-					$this->_id = $this->getUserIdFromUsername($this->_username);
-					return $this->_id;
-				} else throw new Exception('Query error.', 10000002);
+				$this->_id = $this->mdao->insertUser($this->_username,
+														$this->_password,
+														$this->_email,
+														$this->_activated,
+														$this->_activationCode,
+														$this->_registrationTime,
+														$this->_enabled,
+														$this->_firstName,
+														$this->_lastName,
+														$this->_birthDate,
+														$this->_sex,
+														$this->_timezone
+													);
+				return $this->_id;
 
 			}
 
@@ -265,11 +238,11 @@ class User {
 	// Controlla i campi per fare l'UPDATE (es. username duplicati)
 	private function check_fields_update()
 	{
-		$u = $this->getUserIdFromUsername($this->_username);
+		$u = $this->getUserIdFromUsername($this->_username, $this->mdao);
 		if($u > 0 && $u != $this->_id) {
 			return false;
 		}
-		$u = $this->getUserIdFromEmail($this->_email, $this->db);
+		$u = $this->getUserIdFromEmail($this->_email, $this->mdao);
 		if($u > 0 && $u != $this->_id) {
 			return false;
 		}
@@ -280,10 +253,10 @@ class User {
 	// Controlla i campi per fare l'INSERT (es. username duplicati)
 	private function check_fields_insert()
 	{
-		if($this->getUserIdFromUsername($this->_username) > 0) {
+		if($this->getUserIdFromUsername($this->_username, $this->mdao) > 0) {
 			return false;
 		}
-		if($this->getUserIdFromEmail($this->_email, $this->db) > 0) {
+		if($this->getUserIdFromEmail($this->_email, $this->mdao) > 0) {
 			return false;
 		}
 
@@ -295,59 +268,26 @@ class User {
 		return $this->getUsername(); // TODO
 	}
 	
-	public static function login($username, $password, DatabaseInterface $db)
+	public static function login($username, $password, UserDao $mdao)
 	{
-		$query = "SELECT 
-					id,
-					username,
-					password,
-					activated,
-					enabled
-				FROM " . $db->getPrefixedTable('users') . " WHERE username = '" . $db->escapeString($username) . "'";
+		$res = $mdao->getAuthenticationDataFromUsername($username);
 
-		$result = $db->query($query);
-
-		if ($result !== false) {
-			if($db->numRows($result) > 0) {
-				$row = $db->fetchAssoc($result);
-				if($row['activated'] && $row['enabled'] && $row['password'] == sha1($password)) {
-					return (int)$row['id'];
+		if ($res !== false) {
+				if($res['activated'] && $res['enabled'] && $res['password'] == sha1($password)) {
+					return (int)$res['id'];
 				}
-			} else return -1;
-		} else throw new Exception('Query error.', 10000002);
+		} else return -1;
 
 	}
 
-	public static function getUserIdFromUsername($username, DatabaseInterface $db)
+	public static function getUserIdFromUsername($username, UserDao $mdao)
 	{
-		$query = "SELECT 
-					id
-				FROM " . $db->getPrefixedTable('users') . " WHERE username = '" . $db->escapeString($username) . "'";
-
-		$result = $db->query($query);
-
-		if ($result !== false) {
-			if($db->numRows($result) > 0) {
-				$row = $db->fetchAssoc($result);
-				return (int)$row['id'];
-			} else return -1;
-		} else throw new Exception('Query error.', 10000002);
+		return $mdao->getUserIdFromUsername($username);
 	}
 
-	public static function getUserIdFromEmail($email, DatabaseInterface $db)
+	public static function getUserIdFromEmail($email, UserDao $mdao)
 	{
-		$query = "SELECT 
-					id
-				FROM " . $db->getPrefixedTable('users') . " WHERE email = '" . $db->escapeString($email) . "'";
-
-		$result = $db->query($query);
-
-		if ($result !== false) {
-			if($db->numRows($result) > 0) {
-				$row = $db->fetchAssoc($result);
-				return (int)$row['id'];
-			} else return -1;
-		} else throw new Exception('Query error.', 10000002);
+		return $mdao->getUserIdFromUsername($email);
 	}
 
 	/*
@@ -360,18 +300,16 @@ class User {
 		// Elimina l'utente
 		if($this->_id > 0) {
 
-			$query = "DELETE FROM " . $this->db->getTablePrefix() . "_users
-					WHERE (id = {$this->_id})";
-			if($this->db->query($query)) {
-				/* Rimuovere tutte le altre associazioni TODO
-					-images
-					-friends
-					-...
-				*/
-				$this->_id = 0;
-				return true;
-			}
-			throw new Exception('Query error.', 10000002);
+			$this->mdao->deleteUserFromId($this->_id);
+
+			/* Rimuovere tutte le altre associazioni TODO
+				-images
+				-friends
+				-...
+			*/
+
+			$this->_id = 0;
+			return true;
 
 		} else {
 			throw new Exception('Cannot delete a new user.', 10000005);

@@ -29,9 +29,9 @@
 			$smarty->assign('user_username', htmles($usr->getUsername()));
 		}
 
-		$imgs = Image::getLastUploadedIds(-1, $usr->getId(), $GLOB['id']);
+		$img_dao = new ImageDao($GLOB['dao']);
+		$imgs = Image::getLastUploadedIds(-1, $usr->getId(), $img_dao);
 		$exit_images = array();
-		$img_dao = new ImageDao($GLOB['dao'])
 		foreach($imgs as $id) {
 			$img = new Image($img_dao, $id);
 

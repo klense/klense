@@ -98,7 +98,7 @@ class ImageDao implements DaoInterface {
 		} else throw new Exception('Query error.', 10000002); 
 	}
 
-	private function getImageIdFromFilename($filename)
+	public function getImageIdFromFilename($filename)
 	{
 		$query = "SELECT 
 					id

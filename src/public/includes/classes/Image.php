@@ -586,22 +586,20 @@ class Image {
 	{
 
 		$comments = $this->mdao->getImageCommentsFromImageId($this->_id);
-		if(!empty($comments)) {
-			$imgdao = new ImageCommentDao($this->mdao->getDao());
-			$ret = array();
-			foreach($comments as $comm) {
-				$id = (int)$comm['id'];
-				$ret[$id] = new ImageComment($imgdao, null, $comm);
-			}
-			return $ret;
-		} else throw new Exception('ID does not exist.', 1000001);
+		$imgdao = new ImageCommentDao($this->mdao->getDao());
+		$ret = array();
+		foreach($comments as $comm) {
+			$id = (int)$comm['id'];
+			$ret[$id] = new ImageComment($imgdao, null, $comm);
+		}
+		return $ret;
 
 	}
 
 	// Returns an array with the id of the last $num images uploaded
-	public static function getLastUploadedIds($num, $ownerid, ImageCommentDao $mdao)
+	public static function getLastUploadedIds($num, $ownerid, ImageDao $mdao)
 	{
-		$ids = $mdao->getLastUploadedIds($num, $owner_id);
+		$ids = $mdao->getLastUploadedIds($num, $ownerid);
 		$ret = array();
 		foreach($ids as $row) {
 			$ret[] = (int)$row['id'];
@@ -696,7 +694,7 @@ class Image {
 	*
 	* Restituisce "true" se l'elemento viene eliminato, oppure "false" se l'operazione fallisce.
 	*/
-	public static function deleteFromId($id, ImageCommentDao $mdao)
+	public static function deleteFromId($id, ImageDao $mdao)
 	{
 		if($id > 0) {
 
