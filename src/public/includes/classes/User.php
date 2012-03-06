@@ -1,5 +1,7 @@
 <?php
 
+require_once("includes/classes/UserDao.php");
+
 class User {
 
 	const Sex_Undefined = -1;
@@ -63,8 +65,8 @@ class User {
 		if(preg_match('/^[a-z\d_]{5,20}$/i', $value)) {
 			// Controlla che non esistano altri utenti con questa email
 			$existingId = self::getUserIdFromUsername($value, $this->mdao);
-			if($this->_id == 0 && $existingId > 0) throw new Exception('Username already exists.', 10000004);
-			if($this->_id > 0 && $existingId > 0 && $existingId != $this->_id) throw new Exception('Username already exists.', 10000004);
+			if($this->_id == 0 && $existingId > 0) throw new InvalidArgumentException('Username already exists.', 10000004);
+			if($this->_id > 0 && $existingId > 0 && $existingId != $this->_id) throw new InvalidArgumentException('Username already exists.', 10000004);
 
 			$this->_username = $value;
 		} else throw new InvalidArgumentException('Invalid username.', 10000003);
@@ -74,16 +76,16 @@ class User {
 	{
 		if(preg_match('/^.{6,}$/', $value)) {
 			$this->_password = sha1($value);
-		} else throw new Exception('Invalid password.', 10000003);
+		} else throw new InvalidArgumentException('Invalid password.', 10000003);
 	}
 
 	function getEmail() { return $this->_email; }
 	function setEmail($value)
 	{
 		// Controlla che non esistano altri utenti con questa email
-		$existingId = self::getUserIdFromEmail($value, $this->db);
-		if($this->_id == 0 && $existingId > 0) throw new Exception('Email already exists.', 10000004);
-		if($this->_id > 0 && $existingId > 0 && $existingId != $this->_id) throw new Exception('Email already exists.', 10000004);
+		$existingId = self::getUserIdFromEmail($value, $this->mdao);
+		if($this->_id == 0 && $existingId > 0) throw new InvalidArgumentException('Email already exists.', 10000004);
+		if($this->_id > 0 && $existingId > 0 && $existingId != $this->_id) throw new InvalidArgumentException('Email already exists.', 10000004);
 
 		$this->_email = mb_strtolower(str_replace(array(',',';','<','>'), '', $value));
 	}
@@ -287,7 +289,7 @@ class User {
 
 	public static function getUserIdFromEmail($email, UserDao $mdao)
 	{
-		return $mdao->getUserIdFromUsername($email);
+		return $mdao->getUserIdFromEmail($email);
 	}
 
 	/*
@@ -312,7 +314,7 @@ class User {
 			return true;
 
 		} else {
-			throw new Exception('Cannot delete a new user.', 10000005);
+			throw new LogicException('Cannot delete a new user.', 10000005);
 		}
 	}
 	
